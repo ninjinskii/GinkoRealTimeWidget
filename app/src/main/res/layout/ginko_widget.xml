@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widgetLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#50D3D3D3" >
+
+    <TextView
+        android:id="@+id/imgLigne"
+        android:layout_width="wrap_content"
+        android:layout_height="25dp"
+        android:layout_alignParentStart="true"
+        android:padding="4dp"
+        android:layout_margin="4dp"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:contentDescription="@string/imgLigne" />
+
+    <TextView
+        android:id="@+id/textLigne"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_margin="4dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:text="@string/directionLigne"
+        android:textColor="@android:color/white"
+        android:layout_alignParentEnd="true"
+        android:layout_toEndOf="@id/imgLigne"
+        android:textSize="18sp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+    <TextView
+        android:id="@+id/tempsBus1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/imgLigne"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="15dp"
+        android:padding="5dp"
+        android:textColor="@android:color/white"
+        android:background="#40D3D3D3" />
+
+    <TextView
+        android:id="@+id/tempsBus2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/imgLigne"
+        android:layout_toEndOf="@+id/tempsBus1"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="15dp"
+        android:padding="5dp"
+        android:textColor="@android:color/white"
+        android:background="#40D3D3D3" />
+
+    <TextView
+        android:id="@+id/tempsBus3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/imgLigne"
+        android:layout_toEndOf="@+id/tempsBus2"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
+        android:layout_marginStart="4dp"
+        android:padding="5dp"
+        android:textColor="@android:color/white"
+        android:background="#40D3D3D3" />
+
+    <TextView
+        android:id="@+id/tempsRefresh"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="4dp"
+        android:textSize="12sp"
+        android:textStyle="italic"
+        android:textColor="@color/colorDarkText"
+        android:text="@string/refreshTime"/>
+
+    <ImageButton
+        android:id="@+id/boutonRefresh"
+        android:layout_width="58dp"
+        android:layout_height="58dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:src="@drawable/ic_refresh"
+        android:contentDescription="Refresh"
+        android:background="?android:selectableItemBackground" />
+
+    <ImageButton
+        android:id="@+id/boutonReverse"
+        android:layout_width="58dp"
+        android:layout_height="58dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:src="@drawable/ic_reverse"
+        android:contentDescription="Reverse"
+        android:background="?android:selectableItemBackground" />
+
+
+</RelativeLayout>
