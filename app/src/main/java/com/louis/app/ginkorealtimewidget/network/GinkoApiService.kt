@@ -22,7 +22,7 @@ private val retrofit = Retrofit.Builder()
 
 interface GinkoApiService {
     @GET(ApiConstants.URL_GET_LINES)
-    fun getLines(): Call<GinkoApiResponse>
+    fun getLines(): Deferred<GinkoApiResponse>
 }
 
 object GinkoApi {

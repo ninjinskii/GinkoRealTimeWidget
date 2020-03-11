@@ -7,5 +7,9 @@ class L {
         fun v(message: String, clue: String = "Default") {
             Log.v("________$clue _______", message)
         }
+
+        fun e(throwable: Throwable){
+            Log.e("_______________", throwable.message)
+        }
     }
 }

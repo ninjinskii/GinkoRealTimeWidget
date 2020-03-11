@@ -7,14 +7,12 @@ import com.louis.app.ginkorealtimewidget.model.Line
 import com.louis.app.ginkorealtimewidget.network.GinkoApi
 import com.louis.app.ginkorealtimewidget.network.GinkoApiResponse
 import com.louis.app.ginkorealtimewidget.util.L
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class PathViewModel() : ViewModel() { // PathViewModel(val currentLine: Line) ?
+class PathViewModel : ViewModel() { // PathViewModel(val currentLine: Line) ?
 
     // Coroutines
     private var viewModelJob = Job()
@@ -33,29 +31,23 @@ class PathViewModel() : ViewModel() { // PathViewModel(val currentLine: Line) ?
     // Actualise la valeur du LiveData qui contient la ligne de bus voulue
     fun fetchLine(lineName: String) {
         _isFetchingData.postValue(true)
-        getAllLines()
-    }
 
-    private fun getAllLines(): List<Line?>? {
-        var lines: List<Line?>? = emptyList()
+        CoroutineScope(viewModelJob + Dispatchers.Main).launch {
+            val apiResponse : Deferred<GinkoApiResponse> = GinkoApi.retrofitService.getLines()
 
-        // Requete à l'API
-        GinkoApi.retrofitService.getLines().enqueue(
-                object : Callback<GinkoApiResponse> {
-                    override fun onFailure(call: Call<GinkoApiResponse>, t: Throwable) {
-                        L.v("La requete à l'API a échouée", "____________")
-                        lines = emptyList()
-                        _isFetchingData.postValue(false)
-                    }
+            try {
+                val response: GinkoApiResponse = apiResponse.await()
 
-                    override fun onResponse(call: Call<GinkoApiResponse>,
-                                            response: Response<GinkoApiResponse>) {
-                        L.v("La requete à l'API a réussie", "_______________")
-                        onLineFetched(response.body()?.lines)
-                    }
+                _currentLine.postValue(response.lines.first {
+                    it.publicName == lineName
                 })
 
-        return lines
+                _isFetchingData.postValue(false)
+            } catch (e: Exception){
+                L.e(e)
+                _isFetchingData.postValue(false)
+            }
+        }
     }
 
     private fun onLineFetched(lines: List<Line?>?){
