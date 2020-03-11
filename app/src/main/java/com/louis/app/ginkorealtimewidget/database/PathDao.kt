@@ -1,9 +1,6 @@
 package com.louis.app.ginkorealtimewidget.database
 
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Update
+import androidx.room.*
 import com.louis.app.ginkorealtimewidget.model.Path
 
 @Dao
@@ -17,4 +14,7 @@ interface PathDao {
 
     @Delete
     suspend fun deletePath(path: Path)
+
+    @Query("SELECT * FROM path WHERE name=:busStopName")
+    suspend fun getPathForStartPoint(busStopName: String)
 }

@@ -29,6 +29,6 @@ data class Path(
      *
      * @return le nom du trajet à afficher à l'utilisateur
      */
-    fun getName() = "${startingPoint.nom} - ${endingPoint.nom}"
+    fun getName() = "${startingPoint.name} - ${endingPoint.name}"
 
 }
