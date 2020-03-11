@@ -1,5 +1,6 @@
 package com.louis.app.ginkorealtimewidget.model
 
+import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -7,9 +8,9 @@ import androidx.room.PrimaryKey
 // Représente un trajet de bus
 @Entity(tableName = "path")
 data class Path(
-        @PrimaryKey val id: Long,
-        @Embedded val startingPoint: BusStop,
-        @Embedded val endingPoint: BusStop) {
+        @PrimaryKey var id: Long,
+        @Embedded var startingPoint: StartPoint,
+        @Embedded var endingPoint: EndPoint) {
 
     /**
      * Vérifie la validité des arrêts saisis

@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.louis.app.ginkorealtimewidget.model.Path
 
-@Database(entities = [Path::class], version = 1)
+@Database(entities = [Path::class], version = 1, exportSchema = false)
 abstract class PathDatabase() : RoomDatabase() {
 
     companion object {
