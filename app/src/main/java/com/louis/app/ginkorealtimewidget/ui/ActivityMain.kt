@@ -16,9 +16,10 @@ class ActivityMain : AppCompatActivity() {
     private lateinit var binding: ActivityMain2Binding
 
     private val viewModelFactory = PathViewModelFactory()
-    private val viewModel: PathViewModel by lazy {
+    /*private val viewModel: PathViewModel by lazy {
         ViewModelProvider(this, viewModelFactory).get(PathViewModel::class.java)
-    }
+    }*/
+    private lateinit var pathViewModel: PathViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,19 +27,26 @@ class ActivityMain : AppCompatActivity() {
         val rootView = binding.root
         setContentView(rootView)
 
+        pathViewModel = ViewModelProvider(this).get(PathViewModel::class.java)
+
         setListeners()
         observe()
     }
 
     private fun observe() {
-        viewModel.currentLine.observe(this, Observer {
+        pathViewModel.currentLine.observe(this, Observer {
             Toast.makeText(this, "Trajet de la ligne ${it.publicWayInfo}", Toast.LENGTH_LONG).show()
+        })
+
+        pathViewModel.isFetchingData.observe(this, Observer {
+            L.v("Message affiché dans le text d'input")
+            binding.inputLine.setText(it.toString())
         })
     }
 
     private fun setListeners() {
         binding.buttonNext.setOnClickListener {
-            viewModel.fetchLine(binding.inputLine.text.toString())
+            pathViewModel.fetchLine(binding.inputLine.text.toString())
         }
     }
 }

@@ -15,6 +15,6 @@ interface PathDao {
     @Delete
     suspend fun deletePath(path: Path)
 
-    @Query("SELECT * FROM path WHERE name=:busStopName")
-    suspend fun getPathForStartPoint(busStopName: String)
+    /*@Query("SELECT * FROM path WHERE start_point_name=:busStopName")
+    suspend fun getPathForStartPoint(busStopName: String)*/
 }

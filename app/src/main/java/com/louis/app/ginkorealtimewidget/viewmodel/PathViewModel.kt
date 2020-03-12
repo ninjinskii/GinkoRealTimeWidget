@@ -1,18 +1,26 @@
 package com.louis.app.ginkorealtimewidget.viewmodel
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.louis.app.ginkorealtimewidget.database.PathDatabase
 import com.louis.app.ginkorealtimewidget.model.Line
-import com.louis.app.ginkorealtimewidget.network.GinkoApi
 import com.louis.app.ginkorealtimewidget.network.GinkoApiResponse
-import com.louis.app.ginkorealtimewidget.util.L
-import kotlinx.coroutines.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 
-class PathViewModel : ViewModel() { // PathViewModel(val currentLine: Line) ?
+class PathViewModel(application: Application) : AndroidViewModel(application) {
+
+    private val repository: PathRepository
+
+    init {
+        val pathDao = PathDatabase.getInstance(application).pathDao()
+        repository = PathRepository(pathDao)
+    }
 
     // Coroutines
     private var viewModelJob = Job()
@@ -32,25 +40,18 @@ class PathViewModel : ViewModel() { // PathViewModel(val currentLine: Line) ?
     fun fetchLine(lineName: String) {
         _isFetchingData.postValue(true)
 
-        CoroutineScope(viewModelJob + Dispatchers.Main).launch {
-            val apiResponse : Deferred<GinkoApiResponse> = GinkoApi.retrofitService.getLines()
-
-            try {
-                val response: GinkoApiResponse = apiResponse.await()
-
-                _currentLine.postValue(response.lines.first {
-                    it.publicName == lineName
-                })
-
-                _isFetchingData.postValue(false)
-            } catch (e: Exception){
-                L.e(e)
-                _isFetchingData.postValue(false)
+        uiScope.launch {
+            val apiResponse: GinkoApiResponse? = repository.getLines()
+            val lines = apiResponse.let {
+                it?.lines
             }
+
+            _currentLine.postValue(lines?.first { it.publicName == lineName })
+            _isFetchingData.postValue(false)
         }
     }
 
-    private fun onLineFetched(lines: List<Line?>?){
+    private fun onLineFetched(lines: List<Line?>?) {
         _currentLine.postValue(lines?.get(0))
         _isFetchingData.postValue(false)
     }

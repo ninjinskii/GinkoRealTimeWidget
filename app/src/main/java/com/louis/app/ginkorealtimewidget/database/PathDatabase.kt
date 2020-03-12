@@ -7,21 +7,29 @@ import androidx.room.RoomDatabase
 import com.louis.app.ginkorealtimewidget.model.Path
 
 @Database(entities = [Path::class], version = 1, exportSchema = false)
-abstract class PathDatabase() : RoomDatabase() {
+abstract class PathDatabase : RoomDatabase() {
+
+    abstract fun pathDao(): PathDao
 
     companion object {
+        @Volatile
         private var INSTANCE: PathDatabase? = null
 
-        fun getInstance(context: Context): PathDatabase? {
-            if (INSTANCE == null) {
-                synchronized(PathDatabase::class) {
-                    INSTANCE = Room.databaseBuilder(context.applicationContext,
-                                    PathDatabase::class.java, "path.db")
-                            .build()
-                }
+        fun getInstance(context: Context): PathDatabase {
+            val tempInstance = INSTANCE
+            if (tempInstance != null) {
+                return tempInstance
             }
 
-            return INSTANCE
+            synchronized(this) {
+                val instance = Room.databaseBuilder(
+                                context.applicationContext,
+                                PathDatabase::class.java,
+                                "path.db")
+                        .build()
+                INSTANCE = instance
+                return instance
+            }
         }
     }
 

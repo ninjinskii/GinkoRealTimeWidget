@@ -8,9 +8,9 @@ import androidx.room.PrimaryKey
 // Représente un trajet de bus
 @Entity(tableName = "path")
 data class Path(
-        @PrimaryKey var id: Long,
-        @Embedded var startingPoint: StartPoint,
-        @Embedded var endingPoint: EndPoint) {
+        @PrimaryKey(autoGenerate = true) var id: Long,
+        @Embedded val startingPoint: StartPoint,
+        @Embedded val endingPoint: EndPoint) {
 
     /**
      * Vérifie la validité des arrêts saisis
@@ -30,6 +30,6 @@ data class Path(
      *
      * @return le nom du trajet à afficher à l'utilisateur
      */
-    fun getName() = "${startingPoint.name} - ${endingPoint.name}"
+    fun getName() = "${startingPoint.startName} - ${endingPoint.endName}"
 
 }
