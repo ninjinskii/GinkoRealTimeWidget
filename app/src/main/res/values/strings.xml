@@ -27,4 +27,9 @@
     <string name="CONFIG_arret2Error">Arrêt de retour inexistant ou sens incohérant</string>
     <string name="CONFIG_arretErrorOrNoBus">Trajet incohérent ou aucun bus prévus.</string>
     <string name="CONFIG_finished">Widget configuré !</string>
+
+    <string name="explanation">L\'application va enregistrer votre trajet et l\'afficher sur un widget.
+                                Vous pouvez changer le sens du trajet depuis le widget.
+                                Vous pouvez gérez la liste de tous vos trajets en cliquant sur les flèches en haut droite.</string>
+    <string name="managePath">Gérer vos trajets</string>
 </resources>

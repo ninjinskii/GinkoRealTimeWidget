@@ -1,15 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/coordinator"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimaryLight">
 
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:titleTextColor="@color/colorLightText"
+            app:title="@string/app_name" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginLeft="12dp"
-        android:layout_marginTop="?attr/actionBarSize"
+        android:layout_marginTop="?actionBarSize"
         android:layout_marginRight="12dp"
         android:layout_marginBottom="12dp"
         android:orientation="vertical">
@@ -22,7 +37,8 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/inputLine"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:hint="@string/HINT_directionLigne" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -32,14 +48,25 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="12dp"
-            android:text="VALIDER" />
+            android:backgroundTint="@color/colorAccent"
+            android:text="@string/valider" />
 
         <ProgressBar
             android:id="@+id/progressBar"
-            android:layout_width="46dp"
-            android:layout_height="46dp"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:layout_marginTop="12dp"
+            android:layout_gravity="center_horizontal"
             android:indeterminate="true"
-            android:visibility="gone" />
+            android:visibility="visible" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:visibility="gone"
+            android:text="@string/explanation" />
+
 
     </LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
