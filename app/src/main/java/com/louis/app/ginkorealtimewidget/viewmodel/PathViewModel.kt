@@ -4,14 +4,11 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.louis.app.ginkorealtimewidget.database.PathDatabase
 import com.louis.app.ginkorealtimewidget.model.Line
 import com.louis.app.ginkorealtimewidget.network.GinkoApiResponse
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
+import com.louis.app.ginkorealtimewidget.util.L
+import kotlinx.coroutines.*
 
 class PathViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -42,23 +39,35 @@ class PathViewModel(application: Application) : AndroidViewModel(application) {
 
         uiScope.launch {
             val apiResponse: GinkoApiResponse? = repository.getLines()
-            val lines = apiResponse.let {
-                it?.lines
+            val lines = apiResponse?.lines
+            val line = lines?.let { filterLines(it, lineName) }
+
+            if (line.isNullOrEmpty()) {
+                _currentLine.postValue(null)
+                _isFetchingData.postValue(false)
+                return@launch
             }
 
-            _currentLine.postValue(lines?.first { it.publicName == lineName })
             _isFetchingData.postValue(false)
+            _currentLine.postValue(line[0])
         }
     }
 
-    private fun onLineFetched(lines: List<Line?>?) {
-        _currentLine.postValue(lines?.get(0))
-        _isFetchingData.postValue(false)
+    // Filtre les lignes dans un background thread pour récupérer celle que l'utilisateur a choisi
+    private suspend fun filterLines(lines: List<Line>, lineName: String): List<Line> {
+        var line = emptyList<Line>()
+
+        withContext(Dispatchers.Default) {
+            line = lines.filter { it.publicName == lineName }
+        }
+
+        return line
     }
 
     override fun onCleared() {
         super.onCleared()
 
+        _isFetchingData.postValue(false)
         viewModelJob.cancel()
     }
 }

@@ -1,22 +1,23 @@
 package com.louis.app.ginkorealtimewidget.ui
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.material.snackbar.Snackbar
 import com.louis.app.ginkorealtimewidget.databinding.ActivityMain2Binding
-import com.louis.app.ginkorealtimewidget.model.Line
 import com.louis.app.ginkorealtimewidget.util.L
 import com.louis.app.ginkorealtimewidget.viewmodel.PathViewModel
-import com.louis.app.ginkorealtimewidget.viewmodel.PathViewModelFactory
+import java.lang.IllegalArgumentException
 
 class ActivityMain : AppCompatActivity() {
 
     private lateinit var binding: ActivityMain2Binding
 
-    private val viewModelFactory = PathViewModelFactory()
-    /*private val viewModel: PathViewModel by lazy {
+    /*private val viewModelFactory = PathViewModelFactory()
+    private val viewModel: PathViewModel by lazy {
         ViewModelProvider(this, viewModelFactory).get(PathViewModel::class.java)
     }*/
     private lateinit var pathViewModel: PathViewModel
@@ -35,18 +36,30 @@ class ActivityMain : AppCompatActivity() {
 
     private fun observe() {
         pathViewModel.currentLine.observe(this, Observer {
-            Toast.makeText(this, "Trajet de la ligne ${it.publicWayInfo}", Toast.LENGTH_LONG).show()
+            val message = it?.publicWayInfo ?: "Aucune ligne trouvée pour la recherche"
+            showSnackbar(message)
         })
 
         pathViewModel.isFetchingData.observe(this, Observer {
-            L.v("Message affiché dans le text d'input")
-            binding.inputLine.setText(it.toString())
+            if (it)
+                binding.progressBar.visibility = View.VISIBLE
+            else
+                binding.progressBar.visibility = View.GONE
         })
     }
 
     private fun setListeners() {
         binding.buttonNext.setOnClickListener {
-            pathViewModel.fetchLine(binding.inputLine.text.toString())
+            val lineName = binding.inputLine.text.toString()
+            pathViewModel.fetchLine(lineName)
         }
+    }
+
+    private fun lineNotFound(lineName: String) {
+        showSnackbar("Aucune ligne trouvée pour la recherche $lineName")
+    }
+
+    private fun showSnackbar(message: String){
+        Snackbar.make(binding.coordinator, message, Snackbar.LENGTH_LONG).show()
     }
 }
