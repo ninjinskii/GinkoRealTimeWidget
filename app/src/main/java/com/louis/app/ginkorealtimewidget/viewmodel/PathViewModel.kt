@@ -21,7 +21,7 @@ class PathViewModel(application: Application) : AndroidViewModel(application) {
 
     // Coroutines
     private var viewModelJob = Job()
-    private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
+    private val defaultScope = CoroutineScope(Dispatchers.Default + viewModelJob)
 
     // Détermine si on est en attente de réponse de l'API ou non. (MutableLiveData en interne,
     // mais on expose un LiveData reprenant la valeur du Mutable)
@@ -34,22 +34,24 @@ class PathViewModel(application: Application) : AndroidViewModel(application) {
         get() = _currentLine
 
     // Actualise la valeur du LiveData qui contient la ligne de bus voulue
-    fun fetchLine(lineName: String) {
+    fun fetchLine(requestedLineName: String) {
         _isFetchingData.postValue(true)
 
-        uiScope.launch {
+        // TODO: Une des opérations ne doit pas etre faite sur le threadUI
+        defaultScope.launch {
             val apiResponse: GinkoApiResponse? = repository.getLines()
-            val lines = apiResponse?.lines
-            val line = lines?.let { filterLines(it, lineName) }
 
-            if (line.isNullOrEmpty()) {
-                _currentLine.postValue(null)
-                _isFetchingData.postValue(false)
-                return@launch
+            if (apiResponse?.isSuccessful!!) {
+                val lines = apiResponse.lines
+                val line = filterLines(lines, requestedLineName)
+
+                if (!line.isNullOrEmpty())
+                    _currentLine.postValue(line[0])
+                else
+                    _currentLine.postValue(null)
             }
 
             _isFetchingData.postValue(false)
-            _currentLine.postValue(line[0])
         }
     }
 

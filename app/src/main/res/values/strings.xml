@@ -21,7 +21,7 @@
     <string name="CONFIG_ligne">Ligne demandée: %1$s</string>
     <string name="CONFIG_vers1">Vers %1$s ?</string>
     <string name="CONFIG_vers2">Vers %1$s ?</string>
-    <string name="CONFIG_ligneError">Ligne inexistante</string>
+    <string name="CONFIG_lineError">Aucune ligne trouvée pour la recherche</string>
     <string name="CONFIG_notSupported">Ligne non prise en charge</string>
     <string name="CONFIG_arret1Error">Arrêt d\'aller inexistant ou sens incohérant</string>
     <string name="CONFIG_arret2Error">Arrêt de retour inexistant ou sens incohérant</string>

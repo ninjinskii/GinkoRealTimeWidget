@@ -6,11 +6,14 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
 import com.louis.app.ginkorealtimewidget.R
 import com.louis.app.ginkorealtimewidget.databinding.ActivityMain2Binding
+import com.louis.app.ginkorealtimewidget.util.L
+import com.louis.app.ginkorealtimewidget.util.NoSuchLineException
 import com.louis.app.ginkorealtimewidget.viewmodel.PathViewModel
 
 const val EXTRA_LINE = "com.louis.app.ginkorealtimewidget.EXTRA_LINE"
@@ -38,14 +41,13 @@ class ActivityMain : AppCompatActivity() {
 
     private fun observe() {
         pathViewModel.currentLine.observe(this, Observer { line ->
-            if(line != null) {
+            if (line != null) {
                 val intent = Intent(this, ActivityConfig::class.java)
                 intent.putExtra(EXTRA_LINE, line.publicName)
 
                 startActivity(intent)
-            }
-            else
-                showError()
+            } else
+                showError(resources.getString(R.string.CONFIG_lineError))
         })
 
         pathViewModel.isFetchingData.observe(this, Observer {
@@ -58,13 +60,12 @@ class ActivityMain : AppCompatActivity() {
 
     private fun setListeners() {
         binding.buttonNext.setOnClickListener {
-            val lineName = binding.inputLine.text.toString()
+            val lineName = binding.inputLine.text.toString().trim()
             pathViewModel.fetchLine(lineName)
         }
     }
 
-    private fun showError() {
-        val message = "Aucune ligne trouvée pour la recherche"
+    private fun showError(message: String) {
         Snackbar.make(binding.coordinator, message, Snackbar.LENGTH_LONG).show()
     }
 
