@@ -23,16 +23,14 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="12dp"
         android:layout_marginTop="?actionBarSize"
-        android:layout_marginRight="12dp"
         android:layout_marginBottom="12dp"
         android:orientation="vertical">
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp">
+            android:layout_margin="12dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/inputLine"
@@ -45,10 +43,10 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/buttonNext"
-            android:layout_width="350dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="12dp"
+            android:layout_margin="12dp"
             android:backgroundTint="@color/colorAccent"
             android:text="@string/valider" />
 
@@ -60,14 +58,6 @@
             android:layout_gravity="center_horizontal"
             android:indeterminate="true"
             android:visibility="gone" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:visibility="gone"
-            android:text="@string/explanation" />
-
 
     </LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

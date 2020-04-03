@@ -37,7 +37,6 @@ class PathViewModel(application: Application) : AndroidViewModel(application) {
     fun fetchLine(requestedLineName: String) {
         _isFetchingData.postValue(true)
 
-        // TODO: Une des opérations ne doit pas etre faite sur le threadUI
         defaultScope.launch {
             val apiResponse: GinkoApiResponse? = repository.getLines()
 
