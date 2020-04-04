@@ -1,35 +1,38 @@
 <resources>
-    <string name="app_name">Ginko Real Time Widget</string>
+  <string name="app_name">Ginko Real Time Widget</string>
 
-    <string name="directionLigne">Ligne de bus/tram</string>
-    <string name="imgLigne">Ligne</string>
-    <string name="erreurServeurGinko">Erreur du serveur Ginko</string>
-    <string name="erreurApp">Erreur dans l\'application, tabInfos = null</string>
-    <string name="loading">Chargement&#8230;</string>
-    <string name="refreshed">Temps actualisés</string>
-    <string name="internetError">Erreur du serveur Ginko. Vérifiez votre connexion internet dans un premier temps.</string>
-    <string name="suivant">Suivant</string>
-    <string name="valider">Valider</string>
-    <string name="hint1">Renseignez le nom de la ligne souhaitée</string>
-    <string name="hint2">Saisissez les informations suivantes pour configurer le widget</string>
-    <string name="refreshTime">Actualisé à %1$s</string>
+  <string name="directionLigne">Ligne de bus/tram</string>
+  <string name="imgLigne">Ligne</string>
+  <string name="erreurServeurGinko">Erreur du serveur Ginko</string>
+  <string name="erreurApp">Erreur dans l\'application, tabInfos = null</string>
+  <string name="loading">Chargement&#8230;</string>
+  <string name="refreshed">Temps actualisés</string>
+  <string name="internetError">Erreur du serveur Ginko. Vérifiez votre connexion internet dans un premier temps.</string>
+  <string name="suivant">Suivant</string>
+  <string name="valider">Valider</string>
+  <string name="hint1">Renseignez le nom de la ligne souhaitée</string>
+  <string name="hint2">Saisissez les informations suivantes pour configurer le widget</string>
+  <string name="refreshTime">Actualisé à %1$s</string>
 
-    <string name="HINT_directionLigne">Ligne du bus/tram</string>
-    <string name="HINT_arret1">Arrêt de départ</string>
-    <string name="HINT_arret2">Arrêt de retour</string>
+  <string name="HINT_directionLigne">Ligne du bus/tram</string>
+  <string name="HINT_arret1">Arrêt de départ</string>
+  <string name="HINT_arret2">Arrêt de retour</string>
 
-    <string name="CONFIG_ligne">Ligne demandée: %1$s</string>
-    <string name="CONFIG_vers1">Vers %1$s ?</string>
-    <string name="CONFIG_vers2">Vers %1$s ?</string>
-    <string name="CONFIG_lineError">Aucune ligne trouvée pour la recherche</string>
-    <string name="CONFIG_notSupported">Ligne non prise en charge</string>
-    <string name="CONFIG_arret1Error">Arrêt d\'aller inexistant ou sens incohérant</string>
-    <string name="CONFIG_arret2Error">Arrêt de retour inexistant ou sens incohérant</string>
-    <string name="CONFIG_arretErrorOrNoBus">Trajet incohérent ou aucun bus prévus.</string>
-    <string name="CONFIG_finished">Widget configuré !</string>
+  <string name="CONFIG_ligne">Ligne demandée: %1$s</string>
+  <string name="CONFIG_vers1">Vers %1$s ?</string>
+  <string name="CONFIG_vers2">Vers %1$s ?</string>
+  <string name="CONFIG_lineError">Aucune ligne trouvée pour la recherche</string>
+  <string name="CONFIG_notSupported">Ligne non prise en charge</string>
+  <string name="CONFIG_arret1Error">Arrêt d\'aller inexistant ou sens incohérant</string>
+  <string name="CONFIG_arret2Error">Arrêt de retour inexistant ou sens incohérant</string>
+  <string name="CONFIG_arretErrorOrNoBus">Trajet incohérent ou aucun bus prévus.</string>
+  <string name="CONFIG_finished">Widget configuré !</string>
 
-    <string name="explanation">L\'application va enregistrer votre trajet et l\'afficher sur un widget.
+  <string name="explanation">L\'application va enregistrer votre trajet et l\'afficher sur un widget.
                                 Vous pouvez changer le sens du trajet depuis le widget.
                                 Vous pouvez gérez la liste de tous vos trajets en cliquant sur les flèches en haut droite.</string>
-    <string name="managePath">Gérer vos trajets</string>
+  <string name="managePath">Gérer vos trajets</string>
+
+  <!-- TODO: Remove or change this placeholder text -->
+  <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

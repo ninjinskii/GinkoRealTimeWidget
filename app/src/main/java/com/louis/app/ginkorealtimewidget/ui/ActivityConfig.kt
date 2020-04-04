@@ -42,7 +42,7 @@ class ActivityConfig : AppCompatActivity() {
                     Snackbar.make(binding.coordinator, "with", Snackbar.LENGTH_LONG).show()
                 }
             } else {
-                Toast.makeText(this, "null", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "line is null", Toast.LENGTH_LONG).show()
             }
         })
         // Current line is null since the viewmodel can be shared beteween activities
