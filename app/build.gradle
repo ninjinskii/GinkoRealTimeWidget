@@ -25,6 +25,10 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
+
     viewBinding {
         enabled = true
     }
@@ -42,6 +46,7 @@ dependencies {
     implementation 'com.android.volley:volley:1.1.1'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'androidx.fragment:fragment-ktx:1.2.4'
 
 
     implementation "androidx.room:room-runtime:$room_version"

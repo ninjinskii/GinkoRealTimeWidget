@@ -12,13 +12,14 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
 import com.louis.app.ginkorealtimewidget.R
 import com.louis.app.ginkorealtimewidget.databinding.ActivityMain2Binding
+import com.louis.app.ginkorealtimewidget.model.Line
 import com.louis.app.ginkorealtimewidget.util.L
 import com.louis.app.ginkorealtimewidget.util.NoSuchLineException
 import com.louis.app.ginkorealtimewidget.viewmodel.PathViewModel
 
 const val EXTRA_LINE = "com.louis.app.ginkorealtimewidget.EXTRA_LINE"
 
-class ActivityMain : AppCompatActivity() {
+class ActivityMain : AppCompatActivity(), FragmentAddLine.OnLineAddedListener {
 
     /*private val viewModelFactory = PathViewModelFactory()
     private val viewModel: PathViewModel by lazy {
@@ -35,7 +36,6 @@ class ActivityMain : AppCompatActivity() {
 
         pathViewModel = ViewModelProvider(this).get(PathViewModel::class.java)
 
-        setListeners()
         observe()
     }
 
@@ -45,7 +45,12 @@ class ActivityMain : AppCompatActivity() {
                 val intent = Intent(this, ActivityConfig::class.java)
                 intent.putExtra(EXTRA_LINE, line.publicName)
 
-                startActivity(intent)
+                //startActivity(intent)
+                /*val fragmentManager = supportFragmentManager
+                val fragmentTransaction = fragmentManager.beginTransaction()
+                val fragment = FragmentAddPath()
+                fragmentTransaction.replace(R.id., fragment)
+                fragmentTransaction.commit()*/
             } else
                 showError(resources.getString(R.string.CONFIG_lineError))
         })
@@ -56,13 +61,6 @@ class ActivityMain : AppCompatActivity() {
             else
                 binding.progressBar.visibility = View.GONE
         })
-    }
-
-    private fun setListeners() {
-        binding.buttonNext.setOnClickListener {
-            val lineName = binding.inputLine.text.toString().trim()
-            pathViewModel.fetchLine(lineName)
-        }
     }
 
     private fun showError(message: String) {
@@ -81,5 +79,9 @@ class ActivityMain : AppCompatActivity() {
         }
 
         return true
+    }
+
+    override fun onLineAdded(lineName: String) {
+        pathViewModel.fetchLine(lineName)
     }
 }

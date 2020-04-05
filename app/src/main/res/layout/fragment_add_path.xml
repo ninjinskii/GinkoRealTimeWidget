@@ -1,14 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/coordinator"
+    tools:context=".ui.FragmentAddPath"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.FragmentAddPath">
+    android:background="@color/colorPrimaryLight">
 
-  <!-- TODO: Update blank fragment layout -->
-  <TextView
+  <LinearLayout
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:text="@string/hello_blank_fragment" />
+      android:orientation="vertical">
 
-</FrameLayout>
+    <TextView
+        android:id="@+id/requestedLine"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center"
+        android:layout_margin="12dp"
+        android:gravity="center" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="12dp">
+
+      <com.google.android.material.textfield.TextInputEditText
+          android:id="@+id/inputBusStop1"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:hint="@string/HINT_arret1"
+          android:imeOptions="actionNext"
+          android:inputType="textCapSentences" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <CheckBox
+        android:id="@+id/chooseEndpoint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="12dp" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="12dp">
+
+      <com.google.android.material.textfield.TextInputEditText
+          android:id="@+id/inputBusStop2"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:hint="@string/HINT_arret2"
+          android:imeOptions="actionDone"
+          android:inputType="textCapSentences" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/buttonNext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="12dp"
+        android:backgroundTint="@color/colorAccent"
+        android:text="@string/valider" />
+
+  </LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

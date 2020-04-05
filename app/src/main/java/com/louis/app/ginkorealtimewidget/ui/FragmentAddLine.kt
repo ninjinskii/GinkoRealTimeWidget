@@ -1,5 +1,6 @@
 package com.louis.app.ginkorealtimewidget.ui
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -10,20 +11,37 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 
 import com.louis.app.ginkorealtimewidget.R
+import com.louis.app.ginkorealtimewidget.model.Line
 import com.louis.app.ginkorealtimewidget.viewmodel.PathViewModel
+import java.lang.ClassCastException
 
 /**
  * A simple [Fragment] subclass.
  * Use the [FragmentAddPath.newInstance] factory method to
  * create an instance of this fragment.
  */
-class FragmentAddPath : Fragment(R.layout.fragment_add_path) {
+class FragmentAddLine : Fragment(R.layout.fragment_add_line) {
     private val pathViewModel: PathViewModel by activityViewModels()
+    private var listener: OnLineAddedListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         Toast.makeText(activity, "Ma ligne: " + pathViewModel.currentLine.value.toString(), Toast.LENGTH_LONG).show()
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        listener = context as? OnLineAddedListener
+
+        if(listener == null) {
+            throw ClassCastException("$context must implement OnLineAdded")
+        }
+    }
+
+    interface OnLineAddedListener {
+        fun onLineAdded(lineName: String)
     }
 
     override fun onPause() {
