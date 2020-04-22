@@ -36,5 +36,11 @@
         android:backgroundTint="@color/colorAccent"
         android:text="@string/valider" />
 
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="bonjour" />
+
   </LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

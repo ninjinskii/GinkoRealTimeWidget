@@ -9,7 +9,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.tabs.TabLayoutMediator
 import com.louis.app.ginkorealtimewidget.R
 import com.louis.app.ginkorealtimewidget.databinding.ActivityMain2Binding
 import com.louis.app.ginkorealtimewidget.model.Line
@@ -36,7 +38,19 @@ class ActivityMain : AppCompatActivity(), FragmentAddLine.OnLineAddedListener {
 
         pathViewModel = ViewModelProvider(this).get(PathViewModel::class.java)
 
+        setViewPager()
         observe()
+    }
+
+    private fun setViewPager() {
+        val tabTitles = arrayOf("Mes trajets", "Ajouter un trajet")
+        val viewPager = binding.viewPager
+        viewPager.adapter = BusPagerAdapter(this)
+        viewPager.orientation = ViewPager2.ORIENTATION_HORIZONTAL
+
+        TabLayoutMediator(binding.tabLayout, binding.viewPager) {
+            tab, position -> tab.text = tabTitles[position]
+        }.attach()
     }
 
     private fun observe() {
