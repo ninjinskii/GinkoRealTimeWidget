@@ -15,8 +15,7 @@ class BusPagerAdapter(fragmentActivity: FragmentActivity) : FragmentStateAdapter
     override fun createFragment(position: Int): Fragment {
         return when(position){
             0 -> FragmentAddLine()
-            1 -> FragmentAddPath()
-            else -> Fragment()
+            else -> FragmentAddPath()
         }
     }
 

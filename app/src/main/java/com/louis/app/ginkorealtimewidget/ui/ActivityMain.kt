@@ -43,7 +43,7 @@ class ActivityMain : AppCompatActivity(), FragmentAddLine.OnLineAddedListener {
     }
 
     private fun setViewPager() {
-        val tabTitles = arrayOf("Mes trajets", "Ajouter un trajet")
+        val tabTitles = arrayOf("Mes trajets", "Nouveau trajet")
         val viewPager = binding.viewPager
         viewPager.adapter = BusPagerAdapter(this)
         viewPager.orientation = ViewPager2.ORIENTATION_HORIZONTAL

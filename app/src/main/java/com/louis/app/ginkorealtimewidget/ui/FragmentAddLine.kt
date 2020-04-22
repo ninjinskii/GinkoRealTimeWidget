@@ -2,32 +2,25 @@ package com.louis.app.ginkorealtimewidget.ui
 
 import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.ViewModelProvider
-
 import com.louis.app.ginkorealtimewidget.R
-import com.louis.app.ginkorealtimewidget.model.Line
+import com.louis.app.ginkorealtimewidget.databinding.FragmentAddLineBinding
 import com.louis.app.ginkorealtimewidget.viewmodel.PathViewModel
-import java.lang.ClassCastException
 
-/**
- * A simple [Fragment] subclass.
- * Use the [FragmentAddPath.newInstance] factory method to
- * create an instance of this fragment.
- */
 class FragmentAddLine : Fragment(R.layout.fragment_add_line) {
     private val pathViewModel: PathViewModel by activityViewModels()
     private var listener: OnLineAddedListener? = null
+    private lateinit var binding: FragmentAddLineBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        Toast.makeText(activity, "Ma ligne: " + pathViewModel.currentLine.value.toString(), Toast.LENGTH_LONG).show()
+        Toast.makeText(activity,
+                "Ma ligne: " + pathViewModel.currentLine.value.toString(),
+                Toast.LENGTH_LONG).show()
     }
 
     override fun onAttach(context: Context) {
@@ -35,8 +28,19 @@ class FragmentAddLine : Fragment(R.layout.fragment_add_line) {
 
         listener = context as? OnLineAddedListener
 
-        if(listener == null) {
-            throw ClassCastException("$context must implement OnLineAdded")
+        if (listener == null) {
+            throw ClassCastException("$context must implement FragmentAddLine#OnLineAddedListener")
+        }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding = FragmentAddLineBinding.bind(view)
+        binding.buttonNext.setOnClickListener {
+            val requestedLine = binding.inputLine.text.toString()
+            pathViewModel.fetchLine(requestedLine)
+            Toast.makeText(activity, "Click", Toast.LENGTH_LONG).show()
         }
     }
 
@@ -47,7 +51,9 @@ class FragmentAddLine : Fragment(R.layout.fragment_add_line) {
     override fun onPause() {
         super.onPause()
 
-        Toast.makeText(activity, "Ma ligne: " + pathViewModel.currentLine.value.toString(), Toast.LENGTH_LONG).show()
+        Toast.makeText(activity,
+                "Ma ligne: " + pathViewModel.currentLine.value.toString(),
+                Toast.LENGTH_LONG).show()
     }
 
     companion object {

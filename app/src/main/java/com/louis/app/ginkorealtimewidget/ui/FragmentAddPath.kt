@@ -12,41 +12,22 @@ import androidx.lifecycle.ViewModelProvider
 import com.louis.app.ginkorealtimewidget.R
 import com.louis.app.ginkorealtimewidget.viewmodel.PathViewModel
 
-/**
- * A simple [Fragment] subclass.
- * Use the [FragmentAddPath.newInstance] factory method to
- * create an instance of this fragment.
- */
 class FragmentAddPath : Fragment(R.layout.fragment_add_path) {
     private val pathViewModel: PathViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        Toast.makeText(activity, "Ma ligne: " + pathViewModel.currentLine.value.toString(), Toast.LENGTH_LONG).show()
+        Toast.makeText(activity,
+                "Ma ligne: " + pathViewModel.currentLine.value.toString(),
+                Toast.LENGTH_LONG).show()
     }
 
     override fun onPause() {
         super.onPause()
 
-        Toast.makeText(activity, "Ma ligne: " + pathViewModel.currentLine.value.toString(), Toast.LENGTH_LONG).show()
-    }
-
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment FragmentAddPath.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-                FragmentAddPath().apply {
-                    arguments = Bundle().apply {
-                    }
-                }
+        Toast.makeText(activity,
+                "Ma ligne: " + pathViewModel.currentLine.value.toString(),
+                Toast.LENGTH_LONG).show()
     }
 }
