@@ -1,18 +1,20 @@
 package com.louis.app.ginkorealtimewidget.ui
 
+import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
+import com.google.android.material.snackbar.Snackbar
 import com.louis.app.ginkorealtimewidget.R
 import com.louis.app.ginkorealtimewidget.databinding.FragmentAddLineBinding
 import com.louis.app.ginkorealtimewidget.viewmodel.PathViewModel
 
 class FragmentAddLine : Fragment(R.layout.fragment_add_line) {
     private val pathViewModel: PathViewModel by activityViewModels()
-    private var listener: OnLineAddedListener? = null
     private lateinit var binding: FragmentAddLineBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,29 +25,29 @@ class FragmentAddLine : Fragment(R.layout.fragment_add_line) {
                 Toast.LENGTH_LONG).show()
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-
-        listener = context as? OnLineAddedListener
-
-        if (listener == null) {
-            throw ClassCastException("$context must implement FragmentAddLine#OnLineAddedListener")
-        }
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         binding = FragmentAddLineBinding.bind(view)
+        setListener()
+        observe()
+    }
+
+    private fun observe() {
+        pathViewModel.isFetchingData.observe(viewLifecycleOwner, Observer {
+            if (it)
+                binding.progressBar.visibility = View.VISIBLE
+            else
+                binding.progressBar.visibility = View.GONE
+        })
+    }
+
+    private fun setListener() {
         binding.buttonNext.setOnClickListener {
             val requestedLine = binding.inputLine.text.toString()
             pathViewModel.fetchLine(requestedLine)
             Toast.makeText(activity, "Click", Toast.LENGTH_LONG).show()
         }
-    }
-
-    interface OnLineAddedListener {
-        fun onLineAdded(lineName: String)
     }
 
     override fun onPause() {

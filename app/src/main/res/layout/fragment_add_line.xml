@@ -36,11 +36,12 @@
         android:backgroundTint="@color/colorAccent"
         android:text="@string/valider" />
 
-    <TextView
-        android:id="@+id/text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="bonjour" />
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_gravity="center_horizontal"
+        android:visibility="gone" />
 
   </LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
