@@ -1,9 +1,7 @@
 package com.louis.app.ginkorealtimewidget.ui
 
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
-import androidx.fragment.app.Fragment
+import android.view.View
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -16,14 +14,14 @@ import com.louis.app.ginkorealtimewidget.viewmodel.PathViewModel
 
 const val EXTRA_LINE = "com.louis.app.ginkorealtimewidget.EXTRA_LINE"
 
-class ActivityMain : FragmentActivity() {
+class ActivityMain : FragmentActivity(), FragmentSeePaths.OnAddLineRequestListener {
 
     /*private val viewModelFactory = PathViewModelFactory()
     private val viewModel: PathViewModel by lazy {
         ViewModelProvider(this, viewModelFactory).get(PathViewModel::class.java)
     }*/
     private lateinit var pathViewModel: PathViewModel
-    private lateinit var binding: ActivityMain2Binding
+    lateinit var binding: ActivityMain2Binding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,9 +36,9 @@ class ActivityMain : FragmentActivity() {
     }
 
     private fun setViewPager() {
-        val tabTitles = arrayOf("Mes trajets", "Nouveau trajet")
+        val tabTitles = arrayOf("Mes trajets", "Mon widget")
         val viewPager = binding.viewPager
-        viewPager.adapter = BusPagerAdapter(this)
+        viewPager.adapter = BusPagerAdapter(this, FragmentSeePaths())
         viewPager.orientation = ViewPager2.ORIENTATION_HORIZONTAL
 
         TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
@@ -50,18 +48,19 @@ class ActivityMain : FragmentActivity() {
 
     private fun observe() {
         pathViewModel.currentLine.observe(this, Observer { line ->
-            if (line != null) {
-//                supportFragmentManager
-//                        .beginTransaction()
-//                        .replace(R.id.viewPager, FragmentAddPath())
-//                        .addToBackStack(null)
-//                        .commit()
-            } else
-                showError(resources.getString(R.string.CONFIG_lineError))
+            if (line != null)
+                showSnackbar("Ligne changée")
+            else
+                showSnackbar(resources.getString(R.string.CONFIG_lineError))
         })
     }
 
-    private fun showError(message: String) {
+    private fun showSnackbar(message: String) {
         Snackbar.make(binding.coordinator, message, Snackbar.LENGTH_LONG).show()
+    }
+
+    override fun onAddLineResquest() {
+        showSnackbar("Hey, you've clicked")
+        binding.viewPager.adapter = BusPagerAdapter(this, FragmentAddLine())
     }
 }

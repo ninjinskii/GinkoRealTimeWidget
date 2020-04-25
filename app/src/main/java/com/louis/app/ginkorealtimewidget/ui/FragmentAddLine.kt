@@ -17,14 +17,6 @@ class FragmentAddLine : Fragment(R.layout.fragment_add_line) {
     private val pathViewModel: PathViewModel by activityViewModels()
     private lateinit var binding: FragmentAddLineBinding
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        Toast.makeText(activity,
-                "Ma ligne: " + pathViewModel.currentLine.value.toString(),
-                Toast.LENGTH_LONG).show()
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -48,14 +40,6 @@ class FragmentAddLine : Fragment(R.layout.fragment_add_line) {
             pathViewModel.fetchLine(requestedLine)
             Toast.makeText(activity, "Click", Toast.LENGTH_LONG).show()
         }
-    }
-
-    override fun onPause() {
-        super.onPause()
-
-        Toast.makeText(activity,
-                "Ma ligne: " + pathViewModel.currentLine.value.toString(),
-                Toast.LENGTH_LONG).show()
     }
 
     companion object {

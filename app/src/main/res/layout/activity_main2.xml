@@ -32,19 +32,21 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-<!--    <androidx.fragment.app.FragmentContainerView-->
-<!--        android:id="@+id/fragmentContainer"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:layout_marginTop="?actionBarSize"-->
-<!--        android:name="com.louis.app.ginkorealtimewidget.ui.FragmentAddLine" />-->
-
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:elevation="4dp"
         style="@style/Widget.MaterialComponents.TabLayout.Colored" />
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragmentContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:name="com.louis.app.ginkorealtimewidget.ui.FragmentAddLine"
+        android:visibility="gone">
+
+    </androidx.fragment.app.FragmentContainerView>
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager"

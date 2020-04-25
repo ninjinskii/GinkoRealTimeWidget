@@ -6,12 +6,12 @@ import androidx.lifecycle.LiveData
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.louis.app.ginkorealtimewidget.model.Line
 
-class BusPagerAdapter(fragmentActivity: FragmentActivity) : FragmentStateAdapter(fragmentActivity) {
+class BusPagerAdapter(fragmentActivity: FragmentActivity, private val fragmentToShow: Fragment) : FragmentStateAdapter(fragmentActivity) {
 
     override fun createFragment(position: Int): Fragment {
         return when (position) {
-            0 -> FragmentAddLine()
-            else -> FragmentSeePaths()
+            0 -> fragmentToShow
+            else -> FragmentAddPath()
         }
     }
 
