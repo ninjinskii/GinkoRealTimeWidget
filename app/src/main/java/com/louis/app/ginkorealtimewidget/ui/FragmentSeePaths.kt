@@ -22,10 +22,12 @@ class FragmentSeePaths : Fragment(R.layout.fragment_see_paths) {
         super.onViewCreated(view, savedInstanceState)
 
         binding = FragmentSeePathsBinding.bind(view)
-        binding.myText.text = pathViewModel.currentLine.value.toString()
 
-        binding.buttonAdd.setOnClickListener {
-            listener.onAddLineResquest()
+        with(binding) {
+            myText.text = pathViewModel.currentLine.value.toString()
+            buttonAdd.setOnClickListener {
+                listener.onAddLineResquest()
+            }
         }
     }
 
@@ -33,10 +35,6 @@ class FragmentSeePaths : Fragment(R.layout.fragment_see_paths) {
         super.onAttach(context)
 
         listener = context as OnAddLineRequestListener
-
-        if(listener == null) {
-            throw ClassCastException("$context must implement OnLineAdded")
-        }
     }
 
     interface OnAddLineRequestListener {

@@ -7,67 +7,74 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimaryLight">
 
-  <LinearLayout
+  <ScrollView
       android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:orientation="vertical">
+      android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/requestedLine"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_gravity="center"
-        android:layout_margin="12dp"
-        android:gravity="center" />
-
-    <com.google.android.material.textfield.TextInputLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="12dp">
+        android:orientation="vertical">
 
-      <com.google.android.material.textfield.TextInputEditText
-          android:id="@+id/inputBusStop1"
+      <TextView
+          android:id="@+id/requestedLine"
+          android:layout_width="100dp"
+          android:layout_height="100dp"
+          android:layout_gravity="center"
+          android:layout_margin="12dp"
+          android:gravity="center"
+          android:textSize="36sp"
+          android:textStyle="bold" />
+
+      <com.google.android.material.textfield.TextInputLayout
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:hint="@string/HINT_arret1"
-          android:imeOptions="actionNext"
-          android:inputType="textCapSentences" />
+          android:layout_margin="12dp">
 
-    </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/inputBusStop1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/HINT_arret1"
+            android:imeOptions="actionNext"
+            android:inputType="textCapSentences" />
 
-    <CheckBox
-        android:id="@+id/chooseEndpoint"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="12dp" />
+      </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="12dp"
-        android:layout_marginBottom="12dp">
-
-      <com.google.android.material.textfield.TextInputEditText
-          android:id="@+id/inputBusStop2"
+      <CheckBox
+          android:id="@+id/chooseEndpoint"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:hint="@string/HINT_arret2"
-          android:imeOptions="actionDone"
-          android:inputType="textCapSentences" />
+          android:layout_marginStart="24dp"
+          android:layout_marginEnd="12dp" />
 
-    </com.google.android.material.textfield.TextInputLayout>
+      <com.google.android.material.textfield.TextInputLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="12dp"
+          android:layout_marginTop="32dp"
+          android:layout_marginEnd="12dp"
+          android:layout_marginBottom="12dp">
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/buttonNext"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_margin="12dp"
-        android:backgroundTint="@color/colorAccent"
-        android:text="@string/valider" />
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/inputBusStop2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/HINT_arret2"
+            android:imeOptions="actionDone"
+            android:inputType="textCapSentences" />
 
-  </LinearLayout>
+      </com.google.android.material.textfield.TextInputLayout>
+
+      <com.google.android.material.button.MaterialButton
+          android:id="@+id/buttonNext"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_gravity="center_horizontal"
+          android:layout_margin="12dp"
+          android:backgroundTint="@color/colorAccent"
+          android:text="@string/valider" />
+
+    </LinearLayout>
+  </ScrollView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -49,7 +49,7 @@ class ActivityMain : FragmentActivity(), FragmentSeePaths.OnAddLineRequestListen
     private fun observe() {
         pathViewModel.currentLine.observe(this, Observer { line ->
             if (line != null)
-                showSnackbar("Ligne changée")
+                binding.viewPager.adapter = BusPagerAdapter(this, FragmentAddPath())
             else
                 showSnackbar(resources.getString(R.string.CONFIG_lineError))
         })
@@ -60,7 +60,14 @@ class ActivityMain : FragmentActivity(), FragmentSeePaths.OnAddLineRequestListen
     }
 
     override fun onAddLineResquest() {
-        showSnackbar("Hey, you've clicked")
         binding.viewPager.adapter = BusPagerAdapter(this, FragmentAddLine())
     }
+
+    /*
+    override fun onAddPathRequest() {
+        // TODO: vérification ligne correcte
+        binding.viewPager.adapter = BusPagerAdapter(this, FragmentAddPath())
+    }*/
+
+    //override fun onPathAdded(): vérifier validité du chemin, ajouter en bd, remettre le fragment initial
 }

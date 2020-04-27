@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.louis.app.ginkorealtimewidget.database.PathDatabase
 import com.louis.app.ginkorealtimewidget.model.Line
+import com.louis.app.ginkorealtimewidget.model.Path
 import com.louis.app.ginkorealtimewidget.network.GinkoApiResponse
 import com.louis.app.ginkorealtimewidget.util.L
 import kotlinx.coroutines.*
@@ -32,6 +33,10 @@ class PathViewModel(application: Application) : AndroidViewModel(application) {
     private val _currentLine = MutableLiveData<Line>()
     val currentLine: LiveData<Line>
         get() = _currentLine
+
+    private val _currentPath = MutableLiveData<Path>()
+    val currentPath: LiveData<Path>
+        get() = _currentPath
 
     // Actualise la valeur du LiveData qui contient la ligne de bus voulue
     fun fetchLine(requestedLineName: String) {
@@ -63,6 +68,10 @@ class PathViewModel(application: Application) : AndroidViewModel(application) {
         }
 
         return line
+    }
+
+    private fun fetchBusTime() {
+
     }
 
     override fun onCleared() {
