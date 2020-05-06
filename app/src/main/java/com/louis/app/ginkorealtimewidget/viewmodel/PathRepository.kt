@@ -7,7 +7,7 @@ import com.louis.app.ginkorealtimewidget.network.GinkoTimesResponse
 import com.louis.app.ginkorealtimewidget.util.L
 import kotlinx.coroutines.Deferred
 
-class PathRepository(pathDao: PathDao) {
+class PathRepository() { // (pathDao: PathDao)
 
     suspend fun getLines(): GinkoLinesResponse? {
         val linesResponse: Deferred<GinkoLinesResponse> = GinkoApi.retrofitService.getLinesAsync()

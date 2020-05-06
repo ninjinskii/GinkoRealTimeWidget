@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 
 import com.louis.app.ginkorealtimewidget.R
@@ -29,6 +30,7 @@ class FragmentAddPath : Fragment(R.layout.fragment_add_path) {
         binding = FragmentAddPathBinding.bind(view)
         updateUI()
         setListeners()
+        observe()
 
     }
 
@@ -57,5 +59,18 @@ class FragmentAddPath : Fragment(R.layout.fragment_add_path) {
 
             pathViewModel.fetchBusTime(busStop1, isNaturalWay)
         }
+    }
+
+    private fun observe() {
+        pathViewModel.currentTimes.observe(viewLifecycleOwner, Observer {
+            Toast.makeText(activity, "New times! : ${it?.get(0)}, ${it?.get(0)}", Toast.LENGTH_LONG).show()
+        })
+
+        pathViewModel.isFetchingData.observe(viewLifecycleOwner, Observer {
+            if (it)
+                binding.progressBar.visibility = View.VISIBLE
+            else
+                binding.progressBar.visibility = View.GONE
+        })
     }
 }
