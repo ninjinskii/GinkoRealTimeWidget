@@ -7,7 +7,8 @@ import androidx.lifecycle.MutableLiveData
 import com.louis.app.ginkorealtimewidget.database.PathDatabase
 import com.louis.app.ginkorealtimewidget.model.Line
 import com.louis.app.ginkorealtimewidget.model.Path
-import com.louis.app.ginkorealtimewidget.network.GinkoApiResponse
+import com.louis.app.ginkorealtimewidget.network.GinkoLinesResponse
+import com.louis.app.ginkorealtimewidget.network.GinkoTimesResponse
 import com.louis.app.ginkorealtimewidget.util.L
 import kotlinx.coroutines.*
 
@@ -43,10 +44,10 @@ class PathViewModel(application: Application) : AndroidViewModel(application) {
         _isFetchingData.postValue(true)
 
         defaultScope.launch {
-            val apiResponse: GinkoApiResponse? = repository.getLines()
+            val linesResponse: GinkoLinesResponse? = repository.getLines()
 
-            if (apiResponse?.isSuccessful!!) {
-                val lines = apiResponse.lines
+            if (linesResponse?.isSuccessful!!) {
+                val lines = linesResponse.lines
                 val line = filterLines(lines, requestedLineName)
 
                 if (!line.isNullOrEmpty())
@@ -70,8 +71,18 @@ class PathViewModel(application: Application) : AndroidViewModel(application) {
         return line
     }
 
-    private fun fetchBusTime() {
+    fun fetchBusTime(busStop1: String, naturalWay: Boolean) {
+        _isFetchingData.postValue(true)
 
+        defaultScope.launch {
+            val timesResponse: GinkoTimesResponse? = repository.getTimes(
+                    busStop1,
+                    _currentLine.value?.id,
+                    naturalWay
+                    )
+
+            _isFetchingData.postValue(false)
+        }
     }
 
     override fun onCleared() {

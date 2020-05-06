@@ -1,7 +1,6 @@
 package com.louis.app.ginkorealtimewidget.model
 
 import com.squareup.moshi.Json
-import retrofit2.http.GET
 
 // Représente une ligne de bus
 data class Line(@Json(name = "id") val id : String,

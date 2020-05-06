@@ -38,25 +38,6 @@ class FragmentAddLine : Fragment(R.layout.fragment_add_line) {
         binding.buttonNext.setOnClickListener {
             val requestedLine = binding.inputLine.text.toString()
             pathViewModel.fetchLine(requestedLine)
-            Toast.makeText(activity, "Click", Toast.LENGTH_LONG).show()
         }
-    }
-
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment FragmentAddPath.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-                FragmentAddPath().apply {
-                    arguments = Bundle().apply {
-                    }
-                }
     }
 }

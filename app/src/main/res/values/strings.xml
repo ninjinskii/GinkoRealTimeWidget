@@ -13,6 +13,7 @@
   <string name="hint1">Renseignez le nom de la ligne souhaitée</string>
   <string name="hint2">Saisissez les informations suivantes pour configurer le widget</string>
   <string name="refreshTime">Actualisé à %1$s</string>
+  <string name="toward">Vers %1$s ?</string>
 
   <string name="HINT_directionLigne">Ligne du bus/tram</string>
   <string name="HINT_arret1">Arrêt de départ</string>
@@ -32,8 +33,5 @@
                                 Vous pouvez changer le sens du trajet depuis le widget.
                                 Vous pouvez gérez la liste de tous vos trajets en cliquant sur les flèches en haut droite.</string>
   <string name="managePath">Gérer vos trajets</string>
-
-  <!-- TODO: Remove or change this placeholder text -->
-  <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="add_path">Ajouter un trajet</string>
+  <string name="add_path">Ajouter un trajet</string>
 </resources>

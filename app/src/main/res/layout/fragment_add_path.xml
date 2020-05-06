@@ -37,6 +37,7 @@
             android:layout_height="wrap_content"
             android:hint="@string/HINT_arret1"
             android:imeOptions="actionNext"
+            android:text="Isenbart"
             android:inputType="textCapSentences" />
 
       </com.google.android.material.textfield.TextInputLayout>
@@ -62,6 +63,7 @@
             android:layout_height="wrap_content"
             android:hint="@string/HINT_arret2"
             android:imeOptions="actionDone"
+            android:text="Crous université"
             android:inputType="textCapSentences" />
 
       </com.google.android.material.textfield.TextInputLayout>
