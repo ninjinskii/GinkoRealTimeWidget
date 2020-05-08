@@ -1,14 +1,10 @@
 package com.louis.app.ginkorealtimewidget.ui
 
-import android.app.Activity
-import android.content.Context
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
-import com.google.android.material.snackbar.Snackbar
 import com.louis.app.ginkorealtimewidget.R
 import com.louis.app.ginkorealtimewidget.databinding.FragmentAddLineBinding
 import com.louis.app.ginkorealtimewidget.viewmodel.PathViewModel

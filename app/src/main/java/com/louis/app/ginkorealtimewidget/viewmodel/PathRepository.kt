@@ -1,5 +1,6 @@
 package com.louis.app.ginkorealtimewidget.viewmodel
 
+import androidx.lifecycle.LiveData
 import com.louis.app.ginkorealtimewidget.database.PathDao
 import com.louis.app.ginkorealtimewidget.model.Path
 import com.louis.app.ginkorealtimewidget.network.GinkoApi
@@ -45,4 +46,6 @@ class PathRepository(private val pathDao: PathDao) {
     suspend fun deletePath(path: Path) = pathDao.deletePath(path)
 
     suspend fun updatePath(path: Path) = pathDao.updatePath(path)
+
+    suspend fun getAllPaths(): LiveData<List<Path>> = pathDao.getAllPaths()
 }

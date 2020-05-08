@@ -1,9 +1,10 @@
 package com.louis.app.ginkorealtimewidget.viewmodel
 
 import android.app.Application
-import android.widget.Toast
+import android.content.Context
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import com.louis.app.ginkorealtimewidget.database.PathDatabase
 import com.louis.app.ginkorealtimewidget.model.Line
@@ -39,10 +40,6 @@ class PathViewModel(application: Application) : AndroidViewModel(application) {
     val currentLine: LiveData<Line>
         get() = _currentLine
 
-    private val _currentPath = MutableLiveData<Path>()
-    val currentPath: LiveData<Path>
-        get() = _currentPath
-
     private val _currentTimes = MutableLiveData<List<Time>>()
     val currentTimes: LiveData<List<Time>>
         get() = _currentTimes
@@ -52,7 +49,6 @@ class PathViewModel(application: Application) : AndroidViewModel(application) {
         _isFetchingData.postValue(true)
 
         defaultScope.launch {
-            L.v("fetchline running in thread ${Thread.currentThread().name}")
             val linesResponse: GinkoLinesResponse? = repository.getLines()
 
             if (linesResponse!!.isSuccessful) {
@@ -76,7 +72,6 @@ class PathViewModel(application: Application) : AndroidViewModel(application) {
         var line = emptyList<Line>()
 
         withContext(Dispatchers.Default) {
-            L.v("filterLines running in thread ${Thread.currentThread().name}")
             line = lines.filter { it.publicName == lineName }
         }
 
@@ -89,19 +84,18 @@ class PathViewModel(application: Application) : AndroidViewModel(application) {
         defaultScope.launch {
             val timesResponse: GinkoTimesResponse? = repository.getTimes(
                     busStop1,
-                    _currentLine.value?.id,
+                    _currentLine.value?.lineId,
                     naturalWay
             )
 
-            if(timesResponse!!.isSuccessful) {
-                if(timesResponse.data.isEmpty()) {
+            if (timesResponse!!.isSuccessful) {
+                if (timesResponse.data.isEmpty()) {
                     // There is no planned bus at this precise moment
                     // TODO: User feedback
                 } else {
                     val response: TimeWrapper? = timesResponse.data.first()
                     val verifiedBusStopName = response?.verifiedBusStopName
                     _currentTimes.postValue(response?.timeList)
-                    // TODO: display seepaths fragment
                 }
             } else {
                 L.e(FetchTimeException("An error occured while fetching times"))
@@ -111,7 +105,12 @@ class PathViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    fun getUsersPaths(): LiveData<List<Path>> = runBlocking {
+        repository.getAllPaths()
+    }
+
     fun savePath(path: Path) {
+        // TODO: display seepaths fragment
         defaultScope.launch {
             repository.insertPath(path)
         }

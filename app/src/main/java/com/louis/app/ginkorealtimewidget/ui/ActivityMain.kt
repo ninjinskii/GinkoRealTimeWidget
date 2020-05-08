@@ -1,7 +1,6 @@
 package com.louis.app.ginkorealtimewidget.ui
 
 import android.os.Bundle
-import android.view.View
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -10,6 +9,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayoutMediator
 import com.louis.app.ginkorealtimewidget.R
 import com.louis.app.ginkorealtimewidget.databinding.ActivityMain2Binding
+import com.louis.app.ginkorealtimewidget.util.L
 import com.louis.app.ginkorealtimewidget.viewmodel.PathViewModel
 
 const val EXTRA_LINE = "com.louis.app.ginkorealtimewidget.EXTRA_LINE"
@@ -53,6 +53,14 @@ class ActivityMain : FragmentActivity(), FragmentSeePaths.OnAddLineRequestListen
             else
                 showSnackbar(resources.getString(R.string.CONFIG_lineError))
         })
+
+//        pathViewModel.currentPath.observe(this, Observer { path ->
+//            if (path != null) {
+//                binding.viewPager.adapter = BusPagerAdapter(this, FragmentSeePaths())
+//                L.v("Fragment see paths is set")
+//            } else
+//                L.v("Path change, but it is null")
+//        })
     }
 
     private fun showSnackbar(message: String) {

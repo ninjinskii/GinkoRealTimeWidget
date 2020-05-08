@@ -1,10 +1,8 @@
 package com.louis.app.ginkorealtimewidget.ui
 
-import android.app.Activity
 import android.graphics.Color
 import android.os.Bundle
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -34,7 +32,7 @@ class ActivityConfig : FragmentActivity() {
     private fun updateUI() {
         pathViewModel.currentLine.observe(this, Observer { line ->
             if (line != null) {
-                val oneWayLine = line.oneWayLines.find { it.naturalWay }
+                val oneWayLine = line.variants.find { it.naturalWay }
 
                 with(line) {
                     binding.requestedLine.setBackgroundColor(Color.parseColor(backgroundColor))
@@ -55,9 +53,5 @@ class ActivityConfig : FragmentActivity() {
             Snackbar.make(binding.coordinator, "Not implemented yet", Snackbar.LENGTH_LONG)
                     .show()
         }
-    }
-
-    fun savePath() {
-
     }
 }
