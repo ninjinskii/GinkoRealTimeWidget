@@ -62,6 +62,11 @@ class FragmentAddPath : Fragment(R.layout.fragment_add_path) {
     }
 
     private fun observe() {
+        pathViewModel.currentPath.observe(viewLifecycleOwner, Observer {
+            L.v("Saving this path: $it")
+            pathViewModel.savePath(it)
+        })
+
         pathViewModel.currentTimes.observe(viewLifecycleOwner, Observer {
             Toast.makeText(activity, "New times! : ${it?.get(0)}, ${it?.get(0)}", Toast.LENGTH_LONG).show()
         })

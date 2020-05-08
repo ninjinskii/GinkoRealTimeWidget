@@ -22,7 +22,7 @@ class PathViewModel(application: Application) : AndroidViewModel(application) {
 
     init {
         val pathDao = PathDatabase.getInstance(application).pathDao()
-        repository = PathRepository()
+        repository = PathRepository(pathDao)
     }
 
     // Coroutines
@@ -52,6 +52,7 @@ class PathViewModel(application: Application) : AndroidViewModel(application) {
         _isFetchingData.postValue(true)
 
         defaultScope.launch {
+            L.v("fetchline running in thread ${Thread.currentThread().name}")
             val linesResponse: GinkoLinesResponse? = repository.getLines()
 
             if (linesResponse!!.isSuccessful) {
@@ -75,6 +76,7 @@ class PathViewModel(application: Application) : AndroidViewModel(application) {
         var line = emptyList<Line>()
 
         withContext(Dispatchers.Default) {
+            L.v("filterLines running in thread ${Thread.currentThread().name}")
             line = lines.filter { it.publicName == lineName }
         }
 
@@ -99,13 +101,19 @@ class PathViewModel(application: Application) : AndroidViewModel(application) {
                     val response: TimeWrapper? = timesResponse.data.first()
                     val verifiedBusStopName = response?.verifiedBusStopName
                     _currentTimes.postValue(response?.timeList)
-                    // TODO: store to database, display seepaths fragment
+                    // TODO: display seepaths fragment
                 }
             } else {
                 L.e(FetchTimeException("An error occured while fetching times"))
             }
 
             _isFetchingData.postValue(false)
+        }
+    }
+
+    fun savePath(path: Path) {
+        defaultScope.launch {
+            repository.insertPath(path)
         }
     }
 
