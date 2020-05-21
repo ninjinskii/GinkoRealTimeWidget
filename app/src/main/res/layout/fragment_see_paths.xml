@@ -65,17 +65,17 @@
             android:layout_height="match_parent"
             tools:listitem="@layout/item_path" />
 
-
-        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-            android:id="@+id/buttonAdd"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|center_horizontal"
-            android:layout_margin="16dp"
-            android:text="@string/add_path"
-            android:textColor="#FFFFFF"
-            app:icon="@drawable/ic_add"
-            app:iconTint="#FFFFFF" />
-
     </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/buttonAdd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_margin="16dp"
+        android:text="@string/add_path"
+        android:textColor="#FFFFFF"
+        app:icon="@drawable/ic_add"
+        app:iconTint="#FFFFFF" />
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

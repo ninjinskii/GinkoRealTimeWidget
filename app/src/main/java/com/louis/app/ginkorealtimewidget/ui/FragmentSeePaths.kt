@@ -1,6 +1,7 @@
 package com.louis.app.ginkorealtimewidget.ui
 
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
@@ -29,6 +30,7 @@ class FragmentSeePaths : Fragment(R.layout.fragment_see_paths) {
         }
 
         initRecyclerView()
+        observeWidgetPath()
     }
 
     private fun initRecyclerView() {
@@ -40,11 +42,24 @@ class FragmentSeePaths : Fragment(R.layout.fragment_see_paths) {
             adapter = pathAdapter
         }
 
-        pathViewModel.getUsersPaths().observe(viewLifecycleOwner, Observer {
+        pathViewModel.getUserPaths().observe(viewLifecycleOwner, Observer {
             it.forEach { path ->
                 L.v("path $path")
             }
             pathAdapter.submitList(it)
+        })
+    }
+
+    private fun observeWidgetPath() {
+        pathViewModel.getUserWidgetPath().observe(viewLifecycleOwner, Observer {
+            if (it != null) {
+                val backColor = Color.parseColor("#${it.line.backgroundColor}")
+                val textColor = Color.parseColor("#${it.line.textColor}")
+                binding.widgetRequestedLine.text = it.line.publicName
+                binding.widgetRequestedLine.setBackgroundColor(backColor)
+                binding.widgetRequestedLine.setTextColor(textColor)
+                binding.path.text = it.getName()
+            }
         })
     }
 

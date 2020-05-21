@@ -44,6 +44,10 @@ class PathViewModel(application: Application) : AndroidViewModel(application) {
     val currentTimes: LiveData<List<Time>>
         get() = _currentTimes
 
+    private val _currentPath = MutableLiveData<Path>()
+    val currentPath: LiveData<Path>
+        get() = _currentPath
+
     // Actualise la valeur du LiveData qui contient la ligne de bus voulue
     fun fetchLine(requestedLineName: String) {
         _isFetchingData.postValue(true)
@@ -60,7 +64,7 @@ class PathViewModel(application: Application) : AndroidViewModel(application) {
                 else
                     _currentLine.postValue(null)
             } else {
-                L.e(NoSuchLineException("An erro occured while fetching lines"))
+                L.e(NoSuchLineException("An error occured while fetching lines"))
             }
 
             _isFetchingData.postValue(false)
@@ -105,12 +109,16 @@ class PathViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun getUsersPaths(): LiveData<List<Path>> = runBlocking {
-        repository.getAllPaths()
+    fun getUserPaths(): LiveData<List<Path>> = runBlocking {
+        repository.getAllPathsButCurrentPath()
+    }
+
+    fun getUserWidgetPath(): LiveData<Path> = runBlocking {
+        repository.getWidgetPath()
     }
 
     fun savePath(path: Path) {
-        // TODO: display seepaths fragment
+        _currentPath.postValue(path)
         defaultScope.launch {
             repository.insertPath(path)
         }

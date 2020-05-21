@@ -21,4 +21,10 @@ interface PathDao {
 
     @Query("SELECT * FROM path")
     fun getAllPaths(): LiveData<List<Path>>
+
+    @Query("SELECT * FROM path WHERE is_current_path = 0")
+    fun getAllPathsButCurrentPath(): LiveData<List<Path>>
+
+    @Query("SELECT * FROM path WHERE is_current_path = 1")
+    fun getWidgetPath(): LiveData<Path>
 }

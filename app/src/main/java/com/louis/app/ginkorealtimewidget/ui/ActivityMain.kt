@@ -54,13 +54,10 @@ class ActivityMain : FragmentActivity(), FragmentSeePaths.OnAddLineRequestListen
                 showSnackbar(resources.getString(R.string.CONFIG_lineError))
         })
 
-//        pathViewModel.currentPath.observe(this, Observer { path ->
-//            if (path != null) {
-//                binding.viewPager.adapter = BusPagerAdapter(this, FragmentSeePaths())
-//                L.v("Fragment see paths is set")
-//            } else
-//                L.v("Path change, but it is null")
-//        })
+        pathViewModel.currentPath.observe(this, Observer { path ->
+            if (path != null)
+                binding.viewPager.adapter = BusPagerAdapter(this, FragmentSeePaths())
+        })
     }
 
     private fun showSnackbar(message: String) {
