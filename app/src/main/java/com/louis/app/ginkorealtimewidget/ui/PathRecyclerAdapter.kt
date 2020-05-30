@@ -12,11 +12,12 @@ import com.louis.app.ginkorealtimewidget.R
 import com.louis.app.ginkorealtimewidget.model.Path
 import com.louis.app.ginkorealtimewidget.util.L
 
-class PathRecyclerAdapter :
+class PathRecyclerAdapter(private val onSetPathForWidgetListener: OnSetPathForWidgetListener) :
         ListAdapter<Path, PathRecyclerAdapter.PathViewHolder>(PathItemDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = PathViewHolder(
-            LayoutInflater.from(parent.context).inflate(R.layout.item_path, parent, false)
+            LayoutInflater.from(parent.context).inflate(R.layout.item_path, parent, false),
+            onSetPathForWidgetListener
     )
 
     override fun onBindViewHolder(holder: PathViewHolder, position: Int) =
@@ -28,8 +29,8 @@ class PathRecyclerAdapter :
         override fun areContentsTheSame(oldItem: Path, newItem: Path) = oldItem == newItem
     }
 
-    inner class PathViewHolder
-    constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class PathViewHolder(itemView: View, private val listener: OnSetPathForWidgetListener) :
+            RecyclerView.ViewHolder(itemView) {
         private val requestedLine: TextView = itemView.findViewById(R.id.requestedLine)
         private val pathEndPoints: TextView = itemView.findViewById(R.id.path)
         private val updateWidgetPath: Button = itemView.findViewById(R.id.updateCurrentPath)
@@ -46,8 +47,13 @@ class PathRecyclerAdapter :
             pathEndPoints.text = path.getName()
 
             updateWidgetPath.setOnClickListener {
-                L.v("Clicked on recycler view")
+                path.isCurrentPath = 1
+                listener.onSetPathForWidget(path)
             }
         }
+    }
+
+    interface OnSetPathForWidgetListener {
+        fun onSetPathForWidget(path: Path)
     }
 }

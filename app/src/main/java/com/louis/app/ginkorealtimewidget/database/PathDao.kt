@@ -27,4 +27,7 @@ interface PathDao {
 
     @Query("SELECT * FROM path WHERE is_current_path = 1")
     fun getWidgetPath(): LiveData<Path>
+
+    @Query("UPDATE path SET is_current_path = 0 WHERE is_current_path = 1")
+    fun resetWidgetPath()
 }

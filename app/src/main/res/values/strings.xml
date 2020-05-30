@@ -34,4 +34,6 @@
                                 Vous pouvez gérez la liste de tous vos trajets en cliquant sur les flèches en haut droite.</string>
   <string name="managePath">Gérer vos trajets</string>
   <string name="add_path">Ajouter un trajet</string>
+  <string name="currentPath">Trajet actuel</string>
+  <string name="noPathForWidget">Aucun trajet sélectionné pour le widget</string>
 </resources>

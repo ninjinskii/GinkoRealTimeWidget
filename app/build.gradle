@@ -74,4 +74,7 @@ dependencies {
     // ViewPager
     implementation 'androidx.viewpager2:viewpager2:1.1.0-alpha01'
 
+    // LiveData coroutine
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.3.0-alpha03"
+
 }

@@ -82,40 +82,55 @@ class PathViewModel(application: Application) : AndroidViewModel(application) {
         return line
     }
 
-    fun fetchBusTime(busStop1: String, naturalWay: Boolean) {
-        _isFetchingData.postValue(true)
-
-        defaultScope.launch {
+    fun fetchBusTime(line: Line, busStopName: String, naturalWay: Boolean): List<Time>? {
+        /*runBlocking {
             val timesResponse: GinkoTimesResponse? = repository.getTimes(
-                    busStop1,
-                    _currentLine.value?.lineId,
+                    busStopName,
+                    line.lineId,
                     naturalWay
             )
 
             if (timesResponse!!.isSuccessful) {
                 if (timesResponse.data.isEmpty()) {
-                    // There is no planned bus at this precise moment
-                    // TODO: User feedback
+                    listOf(Time("9999"), Time("9999"), Time("9999"))
                 } else {
                     val response: TimeWrapper? = timesResponse.data.first()
                     val verifiedBusStopName = response?.verifiedBusStopName
-                    _currentTimes.postValue(response?.timeList)
+                    listOf(Time("10"), Time("10"), Time("10"))
                 }
             } else {
                 L.e(FetchTimeException("An error occured while fetching times"))
+                listOf(Time("0"), Time("0"), Time("0"))
             }
+        }
 
-            _isFetchingData.postValue(false)
+        return null*/
+
+        return runBlocking {
+            val timesResponse: GinkoTimesResponse? = repository.getTimes(
+                    busStopName,
+                    line.lineId,
+                    naturalWay
+            )
+
+            if (timesResponse != null && timesResponse.isSuccessful) {
+                if (timesResponse.data.isEmpty()) {
+                    listOf(Time("9999"), Time("9999"), Time("9999"))
+                } else {
+                    val response: TimeWrapper? = timesResponse.data.first()
+                    val verifiedBusStopName = response?.verifiedBusStopName
+                    response!!.timeList
+                }
+            } else {
+                L.e(FetchTimeException("An error occured while fetching times"))
+                listOf(Time("0"), Time("0"), Time("0"))
+            }
         }
     }
 
-    fun getUserPaths(): LiveData<List<Path>> = runBlocking {
-        repository.getAllPathsButCurrentPath()
-    }
+    fun getUserPaths(): LiveData<List<Path>> = runBlocking { repository.getAllPathsButCurrentPath() }
 
-    fun getUserWidgetPath(): LiveData<Path> = runBlocking {
-        repository.getWidgetPath()
-    }
+    fun getUserWidgetPath(): LiveData<Path> = runBlocking { repository.getWidgetPath() }
 
     fun savePath(path: Path) {
         _currentPath.postValue(path)
@@ -123,6 +138,10 @@ class PathViewModel(application: Application) : AndroidViewModel(application) {
             repository.insertPath(path)
         }
     }
+
+    fun updatePath(path: Path) = defaultScope.launch { repository.updatePath(path) }
+
+    fun resetWidgetPath() = defaultScope.launch { repository.resetWidgetPath() }
 
     override fun onCleared() {
         super.onCleared()

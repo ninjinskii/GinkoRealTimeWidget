@@ -1,6 +1,7 @@
 package com.louis.app.ginkorealtimewidget.viewmodel
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.liveData
 import com.louis.app.ginkorealtimewidget.database.PathDao
 import com.louis.app.ginkorealtimewidget.model.Path
 import com.louis.app.ginkorealtimewidget.network.GinkoApi
@@ -24,7 +25,7 @@ class PathRepository(private val pathDao: PathDao) {
 
     suspend fun getTimes(busStop: String,
                          idLine: String?,
-                         naturalWay: Boolean) : GinkoTimesResponse? {
+                         naturalWay: Boolean): GinkoTimesResponse? {
         idLine ?: return null
 
         val timesResponse: Deferred<GinkoTimesResponse> = GinkoApi.retrofitService.getTimesAsync(
@@ -47,10 +48,11 @@ class PathRepository(private val pathDao: PathDao) {
 
     suspend fun updatePath(path: Path) = pathDao.updatePath(path)
 
-    suspend fun getAllPaths(): LiveData<List<Path>> = pathDao.getAllPaths()
+    fun getAllPaths() = pathDao.getAllPaths()
 
-    suspend fun getAllPathsButCurrentPath(): LiveData<List<Path>> =
-            pathDao.getAllPathsButCurrentPath()
+    fun getAllPathsButCurrentPath() = pathDao.getAllPathsButCurrentPath()
 
-    suspend fun getWidgetPath() : LiveData<Path> = pathDao.getWidgetPath()
+    fun getWidgetPath() = pathDao.getWidgetPath()
+
+    fun resetWidgetPath() = pathDao.resetWidgetPath()
 }
