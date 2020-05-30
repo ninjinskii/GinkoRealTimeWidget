@@ -59,11 +59,7 @@ class FragmentSeePaths : Fragment(R.layout.fragment_see_paths),
             if (it != null) {
                 val backColor = Color.parseColor("#${it.line.backgroundColor}")
                 val textColor = Color.parseColor("#${it.line.textColor}")
-                val times = pathViewModel.fetchBusTime(
-                        it.line,
-                        it.startingPoint.startName,
-                        it.isStartPointNaturalWay
-                )
+                val times = pathViewModel.fetchBusTime(it)
 
                 with(binding) {
                     currentPathLayout.visibility = View.VISIBLE

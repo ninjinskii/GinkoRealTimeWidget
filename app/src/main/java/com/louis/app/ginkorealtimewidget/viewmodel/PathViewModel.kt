@@ -62,7 +62,14 @@ class PathViewModel(application: Application) : AndroidViewModel(application) {
                 if (!line.isNullOrEmpty())
                     _currentLine.postValue(line[0])
                 else
-                    _currentLine.postValue(null)
+                    _currentLine.postValue(Line(
+                            "0",
+                            "error",
+                            "error",
+                            "000000",
+                            "FFFFFF",
+                            listOf())
+                    )
             } else {
                 L.e(NoSuchLineException("An error occured while fetching lines"))
             }
@@ -82,11 +89,11 @@ class PathViewModel(application: Application) : AndroidViewModel(application) {
         return line
     }
 
-    fun fetchBusTime(line: Line, busStopName: String, naturalWay: Boolean): List<Time>? = runBlocking {
+    fun fetchBusTime(path: Path): List<Time>? = runBlocking {
         val timesResponse: GinkoTimesResponse? = repository.getTimes(
-                busStopName,
-                line.lineId,
-                naturalWay
+                path.startingPoint.startName,
+                path.line.lineId,
+                path.isStartPointNaturalWay
         )
 
         if (timesResponse != null && timesResponse.isSuccessful) {

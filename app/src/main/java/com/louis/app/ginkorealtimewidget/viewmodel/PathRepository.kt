@@ -54,5 +54,7 @@ class PathRepository(private val pathDao: PathDao) {
 
     fun getWidgetPath() = pathDao.getWidgetPath()
 
+    suspend fun getWidgetPathNotLive() = pathDao.getWidgetPathNotLive()
+
     fun resetWidgetPath() = pathDao.resetWidgetPath()
 }
