@@ -82,49 +82,24 @@ class PathViewModel(application: Application) : AndroidViewModel(application) {
         return line
     }
 
-    fun fetchBusTime(line: Line, busStopName: String, naturalWay: Boolean): List<Time>? {
-        /*runBlocking {
-            val timesResponse: GinkoTimesResponse? = repository.getTimes(
-                    busStopName,
-                    line.lineId,
-                    naturalWay
-            )
+    fun fetchBusTime(line: Line, busStopName: String, naturalWay: Boolean): List<Time>? = runBlocking {
+        val timesResponse: GinkoTimesResponse? = repository.getTimes(
+                busStopName,
+                line.lineId,
+                naturalWay
+        )
 
-            if (timesResponse!!.isSuccessful) {
-                if (timesResponse.data.isEmpty()) {
-                    listOf(Time("9999"), Time("9999"), Time("9999"))
-                } else {
-                    val response: TimeWrapper? = timesResponse.data.first()
-                    val verifiedBusStopName = response?.verifiedBusStopName
-                    listOf(Time("10"), Time("10"), Time("10"))
-                }
+        if (timesResponse != null && timesResponse.isSuccessful) {
+            if (timesResponse.data.isEmpty()) {
+                listOf(Time("9999"), Time("9999"), Time("9999"))
             } else {
-                L.e(FetchTimeException("An error occured while fetching times"))
-                listOf(Time("0"), Time("0"), Time("0"))
+                val response: TimeWrapper? = timesResponse.data.first()
+                val verifiedBusStopName = response?.verifiedBusStopName
+                response!!.timeList
             }
-        }
-
-        return null*/
-
-        return runBlocking {
-            val timesResponse: GinkoTimesResponse? = repository.getTimes(
-                    busStopName,
-                    line.lineId,
-                    naturalWay
-            )
-
-            if (timesResponse != null && timesResponse.isSuccessful) {
-                if (timesResponse.data.isEmpty()) {
-                    listOf(Time("9999"), Time("9999"), Time("9999"))
-                } else {
-                    val response: TimeWrapper? = timesResponse.data.first()
-                    val verifiedBusStopName = response?.verifiedBusStopName
-                    response!!.timeList
-                }
-            } else {
-                L.e(FetchTimeException("An error occured while fetching times"))
-                listOf(Time("0"), Time("0"), Time("0"))
-            }
+        } else {
+            L.e(FetchTimeException("An error occured while fetching times"))
+            listOf(Time("0"), Time("0"), Time("0"))
         }
     }
 
