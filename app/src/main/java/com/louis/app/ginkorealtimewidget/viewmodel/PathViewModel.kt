@@ -54,22 +54,12 @@ class PathViewModel(application: Application) : AndroidViewModel(application) {
 
         defaultScope.launch {
             val linesResponse: GinkoLinesResponse? = repository.getLines()
-
             if (linesResponse!!.isSuccessful) {
                 val lines = linesResponse.lines
                 val line = filterLines(lines, requestedLineName)
-
-                if (!line.isNullOrEmpty())
-                    _currentLine.postValue(line[0])
-                else
-                    _currentLine.postValue(Line(
-                            "0",
-                            "error",
-                            "error",
-                            "000000",
-                            "FFFFFF",
-                            listOf())
-                    )
+                if(line != null) {
+                    _currentLine.postValue(line!!)
+                }
             } else {
                 L.e(NoSuchLineException("An error occured while fetching lines"))
             }
@@ -79,11 +69,11 @@ class PathViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     // Filtre les lignes dans un background thread pour récupérer celle que l'utilisateur a choisi
-    private suspend fun filterLines(lines: List<Line>, lineName: String): List<Line> {
-        var line = emptyList<Line>()
+    private suspend fun filterLines(lines: List<Line>, lineName: String): Line? {
+        var line: Line? = null
 
         withContext(Dispatchers.Default) {
-            line = lines.filter { it.publicName == lineName }
+            line = lines.find { it.publicName == lineName }
         }
 
         return line
@@ -98,7 +88,12 @@ class PathViewModel(application: Application) : AndroidViewModel(application) {
 
         if (timesResponse != null && timesResponse.isSuccessful) {
             if (timesResponse.data.isEmpty()) {
-                listOf(Time("9999"), Time("9999"), Time("9999"))
+                // Mock
+                listOf(
+                        Time((1..10).shuffled().first().toString()),
+                        Time((11..20).shuffled().first().toString()),
+                        Time((21..35).shuffled().first().toString())
+                )
             } else {
                 val response: TimeWrapper? = timesResponse.data.first()
                 val verifiedBusStopName = response?.verifiedBusStopName
@@ -106,7 +101,7 @@ class PathViewModel(application: Application) : AndroidViewModel(application) {
             }
         } else {
             L.e(FetchTimeException("An error occured while fetching times"))
-            listOf(Time("0"), Time("0"), Time("0"))
+            listOf(Time("error"), Time("error"), Time("error"))
         }
     }
 
