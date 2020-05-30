@@ -17,6 +17,7 @@ import com.louis.app.ginkorealtimewidget.util.FetchTimeException
 import com.louis.app.ginkorealtimewidget.util.L
 import com.louis.app.ginkorealtimewidget.util.NoSuchLineException
 import kotlinx.coroutines.*
+import kotlin.system.measureTimeMillis
 
 class PathViewModel(application: Application) : AndroidViewModel(application) {
     private val repository: PathRepository
@@ -57,7 +58,7 @@ class PathViewModel(application: Application) : AndroidViewModel(application) {
             if (linesResponse!!.isSuccessful) {
                 val lines = linesResponse.lines
                 val line = filterLines(lines, requestedLineName)
-                if(line != null) {
+                if (line != null) {
                     _currentLine.postValue(line!!)
                 }
             } else {
@@ -80,6 +81,7 @@ class PathViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun fetchBusTime(path: Path): List<Time>? = runBlocking {
+        L.thread()
         val timesResponse: GinkoTimesResponse? = repository.getTimes(
                 path.startingPoint.startName,
                 path.line.lineId,
@@ -97,7 +99,7 @@ class PathViewModel(application: Application) : AndroidViewModel(application) {
             } else {
                 val response: TimeWrapper? = timesResponse.data.first()
                 val verifiedBusStopName = response?.verifiedBusStopName
-                response!!.timeList
+                response?.timeList
             }
         } else {
             L.e(FetchTimeException("An error occured while fetching times"))

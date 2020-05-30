@@ -15,6 +15,7 @@ import com.louis.app.ginkorealtimewidget.databinding.FragmentSeePathsBinding
 import com.louis.app.ginkorealtimewidget.model.Path
 import com.louis.app.ginkorealtimewidget.util.L
 import com.louis.app.ginkorealtimewidget.viewmodel.PathViewModel
+import kotlin.system.measureTimeMillis
 
 class FragmentSeePaths : Fragment(R.layout.fragment_see_paths),
         PathRecyclerAdapter.OnSetPathForWidgetListener {
@@ -56,34 +57,37 @@ class FragmentSeePaths : Fragment(R.layout.fragment_see_paths),
 
     private fun observeWidgetPath() {
         pathViewModel.getUserWidgetPath().observe(viewLifecycleOwner, Observer {
-            if (it != null) {
-                val backColor = Color.parseColor("#${it.line.backgroundColor}")
-                val textColor = Color.parseColor("#${it.line.textColor}")
-                val times = pathViewModel.fetchBusTime(it)
+            val timestamp = measureTimeMillis {
+                if (it != null) {
+                    val backColor = Color.parseColor("#${it.line.backgroundColor}")
+                    val textColor = Color.parseColor("#${it.line.textColor}")
+                    val times = pathViewModel.fetchBusTime(it)
 
-                with(binding) {
-                    currentPathLayout.visibility = View.VISIBLE
-                    noCurrentPathLayout.visibility = View.GONE
-                    widgetRequestedLine.text = it.line.publicName
-                    widgetRequestedLine.setBackgroundColor(backColor)
-                    widgetRequestedLine.setTextColor(textColor)
-                    path.text = it.getName()
+                    with(binding) {
+                        currentPathLayout.visibility = View.VISIBLE
+                        noCurrentPathLayout.visibility = View.GONE
+                        widgetRequestedLine.text = it.line.publicName
+                        widgetRequestedLine.setBackgroundColor(backColor)
+                        widgetRequestedLine.setTextColor(textColor)
+                        path.text = it.getName()
 
-                    val textViews = listOf(times1, times2, times3)
-                    times?.forEachIndexed {
-                        index, time -> textViews[index].text = time.remainingTime
+                        val textViews = listOf(times1, times2, times3)
+                        times?.forEachIndexed { index, time ->
+                            textViews[index].text = time.remainingTime
+                        }
+                    }
+
+
+                } else {
+                    with(binding) {
+                        noCurrentPathLayout.visibility = View.VISIBLE
+                        currentPathLayout.visibility = View.GONE
                     }
                 }
-
-
-
-            } else {
-                with(binding) {
-                    noCurrentPathLayout.visibility = View.VISIBLE
-                    currentPathLayout.visibility = View.GONE
-                }
             }
+            L.v(timestamp.toString())
         })
+
     }
 
     override fun onAttach(context: Context) {

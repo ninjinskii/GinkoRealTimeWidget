@@ -11,5 +11,9 @@ class L {
         fun e(throwable: Throwable){
             Log.e("_______________", throwable.message)
         }
+
+        fun thread() {
+            Log.e("________Running in thread________", Thread.currentThread().name)
+        }
     }
 }

@@ -118,7 +118,7 @@ class WidgetProvider : AppWidgetProvider() {
             } else {
                 val response: TimeWrapper? = timesResponse.data.first()
                 val verifiedBusStopName = response?.verifiedBusStopName
-                response!!.timeList
+                response?.timeList
             }
         } else {
             L.e(FetchTimeException("An error occured while fetching times"))
@@ -130,7 +130,7 @@ class WidgetProvider : AppWidgetProvider() {
                             views: RemoteViews,
                             refreshTime: String,
                             path: Path,
-                            times: List<Time>) {
+                            times: List<Time>?) {
         val destinationName = if (translateBoolean(path.isStartPointUsedForWidget))
             path.startingPoint.startName
         else path.endingPoint.endName
@@ -149,7 +149,7 @@ class WidgetProvider : AppWidgetProvider() {
                     parseColor("#${path.line.backgroundColor}")
             )
             val textViews = listOf(R.id.tempsBus1, R.id.tempsBus2, R.id.tempsBus3)
-            times.forEachIndexed { index, time ->
+            times?.forEachIndexed { index, time ->
                 setTextViewText(textViews[index], time.remainingTime)
             }
         }
