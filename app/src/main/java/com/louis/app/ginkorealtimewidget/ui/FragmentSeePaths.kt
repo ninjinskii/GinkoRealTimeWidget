@@ -13,8 +13,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.louis.app.ginkorealtimewidget.R
 import com.louis.app.ginkorealtimewidget.databinding.FragmentSeePathsBinding
 import com.louis.app.ginkorealtimewidget.model.Path
+import com.louis.app.ginkorealtimewidget.model.Time
 import com.louis.app.ginkorealtimewidget.util.L
 import com.louis.app.ginkorealtimewidget.viewmodel.PathViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kotlin.system.measureTimeMillis
 
 class FragmentSeePaths : Fragment(R.layout.fragment_see_paths),
@@ -24,18 +30,19 @@ class FragmentSeePaths : Fragment(R.layout.fragment_see_paths),
     private lateinit var listener: OnAddLineRequestListener
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+        L.timestamp("FragSeePaths onViewCreated") {
+            super.onViewCreated(view, savedInstanceState)
 
-        binding = FragmentSeePathsBinding.bind(view)
+            binding = FragmentSeePathsBinding.bind(view)
 
-        with(binding) {
-            buttonAdd.setOnClickListener {
-                listener.onAddLineResquest()
+            with(binding) {
+                buttonAdd.setOnClickListener {
+                    listener.onAddLineResquest()
+                }
             }
+            initRecyclerView()
+            observeWidgetPath()
         }
-
-        initRecyclerView()
-        observeWidgetPath()
     }
 
     private fun initRecyclerView() {
@@ -48,46 +55,48 @@ class FragmentSeePaths : Fragment(R.layout.fragment_see_paths),
         }
 
         pathViewModel.getUserPaths().observe(viewLifecycleOwner, Observer {
-            it.forEach { path ->
-                L.v("path $path")
-            }
             pathAdapter.submitList(it)
         })
     }
 
     private fun observeWidgetPath() {
         pathViewModel.getUserWidgetPath().observe(viewLifecycleOwner, Observer {
-            val timestamp = measureTimeMillis {
-                if (it != null) {
-                    val backColor = Color.parseColor("#${it.line.backgroundColor}")
-                    val textColor = Color.parseColor("#${it.line.textColor}")
-                    val times = pathViewModel.fetchBusTime(it)
-
-                    with(binding) {
-                        currentPathLayout.visibility = View.VISIBLE
-                        noCurrentPathLayout.visibility = View.GONE
-                        widgetRequestedLine.text = it.line.publicName
-                        widgetRequestedLine.setBackgroundColor(backColor)
-                        widgetRequestedLine.setTextColor(textColor)
-                        path.text = it.getName()
-
-                        val textViews = listOf(times1, times2, times3)
-                        times?.forEachIndexed { index, time ->
-                            textViews[index].text = time.remainingTime
-                        }
-                    }
-
-
-                } else {
-                    with(binding) {
-                        noCurrentPathLayout.visibility = View.VISIBLE
-                        currentPathLayout.visibility = View.GONE
+            if (it != null) {
+                val timestamp = measureTimeMillis {
+                    CoroutineScope(IO).launch {
+                        val times = pathViewModel.fetchBusTime(it)
+                        updateUI(it, times)
                     }
                 }
+                L.v(timestamp.toString())
+            } else {
+                with(binding) {
+                    noCurrentPathLayout.visibility = View.VISIBLE
+                    currentPathLayout.visibility = View.GONE
+                }
             }
-            L.v(timestamp.toString())
         })
+    }
 
+    private suspend fun updateUI(path: Path, times: List<Time>?) {
+        val backColor = Color.parseColor("#${path.line.backgroundColor}")
+        val textColor = Color.parseColor("#${path.line.textColor}")
+
+        withContext(Main) {
+            with(binding) {
+                currentPathLayout.visibility = View.VISIBLE
+                noCurrentPathLayout.visibility = View.GONE
+                widgetRequestedLine.text = path.line.publicName
+                widgetRequestedLine.setBackgroundColor(backColor)
+                widgetRequestedLine.setTextColor(textColor)
+                currentPath.text = path.getName()
+
+                val textViews = listOf(times1, times2, times3)
+                times?.forEachIndexed { index, time ->
+                    textViews[index].text = time.remainingTime
+                }
+            }
+        }
     }
 
     override fun onAttach(context: Context) {

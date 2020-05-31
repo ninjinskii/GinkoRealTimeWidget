@@ -29,10 +29,15 @@ class ActivityMain : FragmentActivity(), FragmentSeePaths.OnAddLineRequestListen
         val rootView = binding.root
         setContentView(rootView)
 
-        pathViewModel = ViewModelProvider(this).get(PathViewModel::class.java)
+        L.timestamp("ActivityMain get viewModel") {
+            pathViewModel = ViewModelProvider(this).get(PathViewModel::class.java)
+        }
 
-        setViewPager()
-        observe()
+        L.timestamp("ActivityMain setViewPager & observe") {
+            setViewPager()
+            observe()
+        }
+
     }
 
     private fun setViewPager() {

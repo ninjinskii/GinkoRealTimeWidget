@@ -2,10 +2,7 @@ package com.louis.app.ginkorealtimewidget.viewmodel
 
 import android.app.Application
 import android.content.Context
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.*
 import com.louis.app.ginkorealtimewidget.database.PathDatabase
 import com.louis.app.ginkorealtimewidget.model.Line
 import com.louis.app.ginkorealtimewidget.model.Path
@@ -21,10 +18,17 @@ import kotlin.system.measureTimeMillis
 
 class PathViewModel(application: Application) : AndroidViewModel(application) {
     private val repository: PathRepository
+    private lateinit var repositoryFake: PathRepository
 
     init {
+        L.timestamp("ViewModel getDatabase") {
+            val pathDaoFake = PathDatabase.getInstance(application).pathDao()
+            repositoryFake = PathRepository(pathDaoFake)
+        }
+
         val pathDao = PathDatabase.getInstance(application).pathDao()
         repository = PathRepository(pathDao)
+
     }
 
     // Coroutines
@@ -80,8 +84,8 @@ class PathViewModel(application: Application) : AndroidViewModel(application) {
         return line
     }
 
-    fun fetchBusTime(path: Path): List<Time>? = runBlocking {
-        L.thread()
+    suspend fun fetchBusTime(path: Path): List<Time>? {
+        L.thread("fetchBusTimeUI")
         val timesResponse: GinkoTimesResponse? = repository.getTimes(
                 path.startingPoint.startName,
                 path.line.lineId,
@@ -89,7 +93,7 @@ class PathViewModel(application: Application) : AndroidViewModel(application) {
         )
 
         if (timesResponse != null && timesResponse.isSuccessful) {
-            if (timesResponse.data.isEmpty()) {
+            return if (timesResponse.data.isEmpty()) {
                 // Mock
                 listOf(
                         Time((1..10).shuffled().first().toString()),
@@ -103,7 +107,7 @@ class PathViewModel(application: Application) : AndroidViewModel(application) {
             }
         } else {
             L.e(FetchTimeException("An error occured while fetching times"))
-            listOf(Time("error"), Time("error"), Time("error"))
+            return listOf(Time("error"), Time("error"), Time("error"))
         }
     }
 

@@ -32,6 +32,7 @@ class WidgetProvider : AppWidgetProvider() {
     override fun onUpdate(context: Context?,
                           appWidgetManager: AppWidgetManager?,
                           appWidgetIds: IntArray?) {
+        L.thread("onUpdate")
         val database = PathDatabase.getInstance(context!!)
         val repository = PathRepository(database.pathDao())
         val path = runBlocking { repository.getWidgetPathNotLive() }
@@ -75,6 +76,7 @@ class WidgetProvider : AppWidgetProvider() {
     }
 
     override fun onReceive(context: Context?, intent: Intent?) {
+        L.thread("onReceive")
         if (intent!!.action != null) {
             if (intent.action == ACTION_REVERSE) {
                 val database = PathDatabase.getInstance(context!!)
@@ -99,6 +101,7 @@ class WidgetProvider : AppWidgetProvider() {
     private fun parseColor(color: String) = Color.parseColor(color)
 
     private fun fetchBusTimes(repository: PathRepository, path: Path) = runBlocking {
+        L.thread("fetchBusTime")
         val useStartPoint = translateBoolean(path.isStartPointUsedForWidget)
         val busStop = if (useStartPoint) path.startingPoint.startName else path.endingPoint.endName
 
