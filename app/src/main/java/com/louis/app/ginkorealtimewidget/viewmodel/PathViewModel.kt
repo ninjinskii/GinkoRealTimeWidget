@@ -28,7 +28,7 @@ class PathViewModel(application: Application) : AndroidViewModel(application) {
 
 
     private var viewModelJob = Job()
-    private val defaultScope = CoroutineScope(Default + viewModelJob)
+    private val defaultScope = CoroutineScope(IO + viewModelJob)
 
     private val _isFetchingData = MutableLiveData<Boolean>()
     val isFetchingData: LiveData<Boolean>
@@ -50,7 +50,7 @@ class PathViewModel(application: Application) : AndroidViewModel(application) {
     fun fetchLine(requestedLineName: String) {
         _isFetchingData.postValue(true)
 
-        defaultScope.launch(IO) {
+        defaultScope.launch {
             val linesResponse: GinkoLinesResponse? = repository.getLines()
             if (linesResponse!!.isSuccessful) {
                 val lines = linesResponse.lines
@@ -111,14 +111,14 @@ class PathViewModel(application: Application) : AndroidViewModel(application) {
 
     fun savePath(path: Path) {
         _currentPath.postValue(path)
-        defaultScope.launch(IO) {
+        defaultScope.launch {
             repository.insertPath(path)
         }
     }
 
-    fun updatePath(path: Path) = defaultScope.launch(IO) { repository.updatePath(path) }
+    fun updatePath(path: Path) = defaultScope.launch { repository.updatePath(path) }
 
-    fun resetWidgetPath() = defaultScope.launch(IO) { repository.resetWidgetPath() }
+    fun resetWidgetPath() = defaultScope.launch { repository.resetWidgetPath() }
 
     override fun onCleared() {
         super.onCleared()
