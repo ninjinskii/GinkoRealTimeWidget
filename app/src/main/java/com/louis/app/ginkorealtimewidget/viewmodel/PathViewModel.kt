@@ -80,6 +80,8 @@ class PathViewModel(application: Application) : AndroidViewModel(application) {
     // TODO: remove suspend modifier and use livedata to get result from coroutine
     suspend fun fetchBusTime(path: Path): Pair<List<Time>?, List<Time>?> {
         L.thread("fetchBusTimeUI")
+        // Allows us to know if we have to update path with correct name
+        var isBusStopNameMispelled = false
         val timesResponseStartPoint: GinkoTimesResponse? = repository.getTimes(
                 path.startingPoint.startName,
                 path.line.lineId,
@@ -102,8 +104,11 @@ class PathViewModel(application: Application) : AndroidViewModel(application) {
                 )
             } else {
                 val response: TimeWrapper? = timesResponseStartPoint.data.first()
-                path.startingPoint.startName = response?.verifiedBusStopName
-                        ?: path.startingPoint.startName
+                 if (path.startingPoint.startName != response?.verifiedBusStopName) {
+                    path.startingPoint.startName = response?.verifiedBusStopName
+                            ?: path.startingPoint.startName
+                     isBusStopNameMispelled = true
+                 }
 
                 response?.timeList
             }
@@ -122,8 +127,11 @@ class PathViewModel(application: Application) : AndroidViewModel(application) {
                 )
             } else {
                 val response: TimeWrapper? = timesResponseEndPoint.data.first()
-                path.endingPoint.endName = response?.verifiedBusStopName
-                        ?: path.endingPoint.endName
+                if (path.endingPoint.endName != response?.verifiedBusStopName) {
+                    path.endingPoint.endName = response?.verifiedBusStopName
+                            ?: path.endingPoint.endName
+                    isBusStopNameMispelled = true
+                }
 
                 response?.timeList
             }
@@ -132,7 +140,7 @@ class PathViewModel(application: Application) : AndroidViewModel(application) {
             listOf(Time("error"), Time("error"), Time("error"))
         }
 
-        updatePath(path)
+        if (isBusStopNameMispelled) updatePath(path)
 
         return resultStartPoint to resultEndPoint
     }

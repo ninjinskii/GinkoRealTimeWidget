@@ -61,16 +61,11 @@ class FragmentSeePaths : Fragment(R.layout.fragment_see_paths),
     }
 
     private fun observeWidgetPath() {
-        var id = -1L
         pathViewModel.getUserWidgetPath().observe(viewLifecycleOwner, Observer {
             if (it != null) {
                 lifecycleScope.launch {
-                    // Prevent infinite update / notify loop
-                    if (id != it.id) {
-                        id = it.id
-                        val times = pathViewModel.fetchBusTime(it)
-                        updateUI(it, times)
-                    }
+                    val times = pathViewModel.fetchBusTime(it)
+                    updateUI(it, times)
                 }
             } else {
                 with(binding) {
