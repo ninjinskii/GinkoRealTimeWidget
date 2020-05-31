@@ -18,25 +18,15 @@ import kotlin.system.measureTimeMillis
 
 class PathViewModel(application: Application) : AndroidViewModel(application) {
     private val repository: PathRepository
-    private lateinit var repositoryFake: PathRepository
 
     init {
-        L.timestamp("ViewModel getDatabase") {
-            val pathDaoFake = PathDatabase.getInstance(application).pathDao()
-            repositoryFake = PathRepository(pathDaoFake)
-        }
-
         val pathDao = PathDatabase.getInstance(application).pathDao()
         repository = PathRepository(pathDao)
-
     }
 
-    // Coroutines
     private var viewModelJob = Job()
     private val defaultScope = CoroutineScope(Dispatchers.Default + viewModelJob)
 
-    // Détermine si on est en attente de réponse de l'API ou non. (MutableLiveData en interne,
-    // mais on expose un LiveData reprenant la valeur du Mutable)
     private val _isFetchingData = MutableLiveData<Boolean>()
     val isFetchingData: LiveData<Boolean>
         get() = _isFetchingData

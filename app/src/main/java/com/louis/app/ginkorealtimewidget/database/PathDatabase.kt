@@ -25,9 +25,10 @@ abstract class PathDatabase : RoomDatabase() {
 
             synchronized(this) {
                 val instance = Room.databaseBuilder(
-                                context.applicationContext,
-                                PathDatabase::class.java,
-                                "path.db")
+                        context.applicationContext,
+                        PathDatabase::class.java,
+                        "path.db"
+                )
                         .build()
                 INSTANCE = instance
                 return instance

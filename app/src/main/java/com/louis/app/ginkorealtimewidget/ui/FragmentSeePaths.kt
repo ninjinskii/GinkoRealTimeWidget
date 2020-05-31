@@ -9,6 +9,7 @@ import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.louis.app.ginkorealtimewidget.R
 import com.louis.app.ginkorealtimewidget.databinding.FragmentSeePathsBinding
@@ -63,7 +64,7 @@ class FragmentSeePaths : Fragment(R.layout.fragment_see_paths),
         pathViewModel.getUserWidgetPath().observe(viewLifecycleOwner, Observer {
             if (it != null) {
                 val timestamp = measureTimeMillis {
-                    CoroutineScope(IO).launch {
+                    lifecycleScope.launch {
                         val times = pathViewModel.fetchBusTime(it)
                         updateUI(it, times)
                     }

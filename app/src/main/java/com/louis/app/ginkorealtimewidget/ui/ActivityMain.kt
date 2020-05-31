@@ -1,6 +1,7 @@
 package com.louis.app.ginkorealtimewidget.ui
 
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -12,15 +13,13 @@ import com.louis.app.ginkorealtimewidget.databinding.ActivityMain2Binding
 import com.louis.app.ginkorealtimewidget.util.L
 import com.louis.app.ginkorealtimewidget.viewmodel.PathViewModel
 
-const val EXTRA_LINE = "com.louis.app.ginkorealtimewidget.EXTRA_LINE"
-
 class ActivityMain : FragmentActivity(), FragmentSeePaths.OnAddLineRequestListener {
 
-    /*private val viewModelFactory = PathViewModelFactory()
-    private val viewModel: PathViewModel by lazy {
-        ViewModelProvider(this, viewModelFactory).get(PathViewModel::class.java)
-    }*/
-    private lateinit var pathViewModel: PathViewModel
+    companion object {
+        const val EXTRA_LINE = "com.louis.app.ginkorealtimewidget.EXTRA_LINE"
+    }
+
+    private val pathViewModel: PathViewModel by viewModels()
     lateinit var binding: ActivityMain2Binding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,10 +27,6 @@ class ActivityMain : FragmentActivity(), FragmentSeePaths.OnAddLineRequestListen
         binding = ActivityMain2Binding.inflate(layoutInflater)
         val rootView = binding.root
         setContentView(rootView)
-
-        L.timestamp("ActivityMain get viewModel") {
-            pathViewModel = ViewModelProvider(this).get(PathViewModel::class.java)
-        }
 
         L.timestamp("ActivityMain setViewPager & observe") {
             setViewPager()

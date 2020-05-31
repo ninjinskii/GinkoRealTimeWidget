@@ -42,11 +42,17 @@ class PathRepository(private val pathDao: PathDao) {
         }
     }
 
-    suspend fun insertPath(path: Path) = pathDao.insertPath(path)
+    suspend fun insertPath(path: Path) {
+        L.v("Inserted path", "Fix slow DB")
+        pathDao.insertPath(path)
+    }
 
     suspend fun deletePath(path: Path) = pathDao.deletePath(path)
 
-    suspend fun updatePath(path: Path) = pathDao.updatePath(path)
+    suspend fun updatePath(path: Path) {
+        L.v("Updated path", "Fix slow DB")
+        pathDao.updatePath(path)
+    }
 
     fun getAllPaths() = pathDao.getAllPaths()
 
@@ -56,5 +62,8 @@ class PathRepository(private val pathDao: PathDao) {
 
     suspend fun getWidgetPathNotLive() = pathDao.getWidgetPathNotLive()
 
-    fun resetWidgetPath() = pathDao.resetWidgetPath()
+    fun resetWidgetPath() {
+        L.v("reset widget path", "Fix slow DB")
+        pathDao.resetWidgetPath()
+    }
 }
