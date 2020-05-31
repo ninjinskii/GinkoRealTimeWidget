@@ -14,6 +14,8 @@ import com.louis.app.ginkorealtimewidget.util.FetchTimeException
 import com.louis.app.ginkorealtimewidget.util.L
 import com.louis.app.ginkorealtimewidget.util.NoSuchLineException
 import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers.Default
+import kotlinx.coroutines.Dispatchers.IO
 import kotlin.system.measureTimeMillis
 
 class PathViewModel(application: Application) : AndroidViewModel(application) {
@@ -24,8 +26,9 @@ class PathViewModel(application: Application) : AndroidViewModel(application) {
         repository = PathRepository(pathDao)
     }
 
+
     private var viewModelJob = Job()
-    private val defaultScope = CoroutineScope(Dispatchers.Default + viewModelJob)
+    private val defaultScope = CoroutineScope(Default + viewModelJob)
 
     private val _isFetchingData = MutableLiveData<Boolean>()
     val isFetchingData: LiveData<Boolean>
@@ -47,7 +50,7 @@ class PathViewModel(application: Application) : AndroidViewModel(application) {
     fun fetchLine(requestedLineName: String) {
         _isFetchingData.postValue(true)
 
-        defaultScope.launch {
+        defaultScope.launch(IO) {
             val linesResponse: GinkoLinesResponse? = repository.getLines()
             if (linesResponse!!.isSuccessful) {
                 val lines = linesResponse.lines
@@ -67,13 +70,14 @@ class PathViewModel(application: Application) : AndroidViewModel(application) {
     private suspend fun filterLines(lines: List<Line>, lineName: String): Line? {
         var line: Line? = null
 
-        withContext(Dispatchers.Default) {
+        withContext(Default) {
             line = lines.find { it.publicName == lineName }
         }
 
         return line
     }
 
+    // TODO: remove suspend modifier and use livedata to get result from coroutine
     suspend fun fetchBusTime(path: Path): List<Time>? {
         L.thread("fetchBusTimeUI")
         val timesResponse: GinkoTimesResponse? = repository.getTimes(
@@ -107,14 +111,14 @@ class PathViewModel(application: Application) : AndroidViewModel(application) {
 
     fun savePath(path: Path) {
         _currentPath.postValue(path)
-        defaultScope.launch {
+        defaultScope.launch(IO) {
             repository.insertPath(path)
         }
     }
 
-    fun updatePath(path: Path) = defaultScope.launch { repository.updatePath(path) }
+    fun updatePath(path: Path) = defaultScope.launch(IO) { repository.updatePath(path) }
 
-    fun resetWidgetPath() = defaultScope.launch { repository.resetWidgetPath() }
+    fun resetWidgetPath() = defaultScope.launch(IO) { repository.resetWidgetPath() }
 
     override fun onCleared() {
         super.onCleared()
