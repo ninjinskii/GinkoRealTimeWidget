@@ -63,10 +63,8 @@ class FragmentSeePaths : Fragment(R.layout.fragment_see_paths),
     private fun observeWidgetPath() {
         pathViewModel.getUserWidgetPath().observe(viewLifecycleOwner, Observer {
             if (it != null) {
-                lifecycleScope.launch {
-                    val times = pathViewModel.fetchBusTime(it)
-                    updateUI(it, times)
-                }
+                pathViewModel.fetchBusTime(it)
+                updateUI(it)
             } else {
                 with(binding) {
                     noCurrentPathLayout.visibility = View.VISIBLE
@@ -74,31 +72,36 @@ class FragmentSeePaths : Fragment(R.layout.fragment_see_paths),
                 }
             }
         })
-    }
 
-    private suspend fun updateUI(path: Path, times: Pair<List<Time>?, List<Time>?>) {
-        val backColor = Color.parseColor("#${path.line.backgroundColor}")
-        val textColor = Color.parseColor("#${path.line.textColor}")
-
-        withContext(Main) {
+        pathViewModel.currentTimes.observe(viewLifecycleOwner, Observer {
             with(binding) {
-                currentPathLayout.visibility = View.VISIBLE
-                noCurrentPathLayout.visibility = View.GONE
-                widgetRequestedLine.text = path.line.publicName
-                widgetRequestedLine.setBackgroundColor(backColor)
-                widgetRequestedLine.setTextColor(textColor)
-                currentPath.text = path.getName()
-
                 val textViewsFirst = listOf(times1, times2, times3)
                 val textViewsSecond = listOf(times4, times5, times6)
-                times.first?.forEachIndexed { index, time ->
+
+                it.first?.forEachIndexed { index, time ->
                     textViewsFirst[index].text = time.remainingTime
                 }
 
-                times.second?.forEachIndexed { index, time ->
+                it.second?.forEachIndexed { index, time ->
                     textViewsSecond[index].text = time.remainingTime
                 }
+
+                binding.timesLayout.visibility = View.VISIBLE
+                binding.progressBar.visibility = View.GONE
             }
+        })
+    }
+
+    private fun updateUI(path: Path) {
+        val backColor = Color.parseColor("#${path.line.backgroundColor}")
+        val textColor = Color.parseColor("#${path.line.textColor}")
+        with(binding) {
+            currentPathLayout.visibility = View.VISIBLE
+            noCurrentPathLayout.visibility = View.GONE
+            widgetRequestedLine.text = path.line.publicName
+            widgetRequestedLine.setBackgroundColor(backColor)
+            widgetRequestedLine.setTextColor(textColor)
+            currentPath.text = path.getName()
         }
     }
 
@@ -113,6 +116,8 @@ class FragmentSeePaths : Fragment(R.layout.fragment_see_paths),
     }
 
     override fun onSetPathForWidget(path: Path) {
+        binding.timesLayout.visibility = View.INVISIBLE
+        binding.progressBar.visibility = View.VISIBLE
         pathViewModel.resetWidgetPath()
         pathViewModel.updatePath(path)
     }
