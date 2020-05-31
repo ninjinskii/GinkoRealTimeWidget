@@ -78,16 +78,22 @@ class PathViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     // TODO: remove suspend modifier and use livedata to get result from coroutine
-    suspend fun fetchBusTime(path: Path): List<Time>? {
+    suspend fun fetchBusTime(path: Path): Pair<List<Time>?, List<Time>?> {
         L.thread("fetchBusTimeUI")
-        val timesResponse: GinkoTimesResponse? = repository.getTimes(
+        val timesResponseStartPoint: GinkoTimesResponse? = repository.getTimes(
                 path.startingPoint.startName,
                 path.line.lineId,
                 path.isStartPointNaturalWay
         )
 
-        if (timesResponse != null && timesResponse.isSuccessful) {
-            return if (timesResponse.data.isEmpty()) {
+        val timesResponseEndPoint: GinkoTimesResponse? = repository.getTimes(
+                path.endingPoint.endName,
+                path.line.lineId,
+                path.isStartPointNaturalWay
+        )
+
+        val resultStartPoint = if (timesResponseStartPoint != null && timesResponseStartPoint.isSuccessful) {
+             if (timesResponseStartPoint.data.isEmpty()) {
                 // Mock
                 listOf(
                         Time((1..10).shuffled().first().toString()),
@@ -95,14 +101,40 @@ class PathViewModel(application: Application) : AndroidViewModel(application) {
                         Time((21..35).shuffled().first().toString())
                 )
             } else {
-                val response: TimeWrapper? = timesResponse.data.first()
-                val verifiedBusStopName = response?.verifiedBusStopName
+                val response: TimeWrapper? = timesResponseStartPoint.data.first()
+                path.startingPoint.startName = response?.verifiedBusStopName
+                        ?: path.startingPoint.startName
+
                 response?.timeList
             }
         } else {
             L.e(FetchTimeException("An error occured while fetching times"))
-            return listOf(Time("error"), Time("error"), Time("error"))
+            listOf(Time("error"), Time("error"), Time("error"))
         }
+
+        val resultEndPoint = if (timesResponseEndPoint != null && timesResponseEndPoint.isSuccessful) {
+            if (timesResponseEndPoint.data.isEmpty()) {
+                // Mock
+                listOf(
+                        Time((1..10).shuffled().first().toString()),
+                        Time((11..20).shuffled().first().toString()),
+                        Time((21..35).shuffled().first().toString())
+                )
+            } else {
+                val response: TimeWrapper? = timesResponseEndPoint.data.first()
+                path.endingPoint.endName = response?.verifiedBusStopName
+                        ?: path.endingPoint.endName
+
+                response?.timeList
+            }
+        } else {
+            L.e(FetchTimeException("An error occured while fetching times"))
+            listOf(Time("error"), Time("error"), Time("error"))
+        }
+
+        updatePath(path)
+
+        return resultStartPoint to resultEndPoint
     }
 
     fun getUserPaths(): LiveData<List<Path>> = runBlocking { repository.getAllPathsButCurrentPath() }

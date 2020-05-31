@@ -61,15 +61,17 @@ class FragmentSeePaths : Fragment(R.layout.fragment_see_paths),
     }
 
     private fun observeWidgetPath() {
+        var id = -1L
         pathViewModel.getUserWidgetPath().observe(viewLifecycleOwner, Observer {
             if (it != null) {
-                val timestamp = measureTimeMillis {
-                    lifecycleScope.launch {
+                lifecycleScope.launch {
+                    // Prevent infinite update / notify loop
+                    if (id != it.id) {
+                        id = it.id
                         val times = pathViewModel.fetchBusTime(it)
                         updateUI(it, times)
                     }
                 }
-                L.v(timestamp.toString())
             } else {
                 with(binding) {
                     noCurrentPathLayout.visibility = View.VISIBLE
@@ -79,7 +81,7 @@ class FragmentSeePaths : Fragment(R.layout.fragment_see_paths),
         })
     }
 
-    private suspend fun updateUI(path: Path, times: List<Time>?) {
+    private suspend fun updateUI(path: Path, times: Pair<List<Time>?, List<Time>?>) {
         val backColor = Color.parseColor("#${path.line.backgroundColor}")
         val textColor = Color.parseColor("#${path.line.textColor}")
 
@@ -92,9 +94,14 @@ class FragmentSeePaths : Fragment(R.layout.fragment_see_paths),
                 widgetRequestedLine.setTextColor(textColor)
                 currentPath.text = path.getName()
 
-                val textViews = listOf(times1, times2, times3)
-                times?.forEachIndexed { index, time ->
-                    textViews[index].text = time.remainingTime
+                val textViewsFirst = listOf(times1, times2, times3)
+                val textViewsSecond = listOf(times4, times5, times6)
+                times.first?.forEachIndexed { index, time ->
+                    textViewsFirst[index].text = time.remainingTime
+                }
+
+                times.second?.forEachIndexed { index, time ->
+                    textViewsSecond[index].text = time.remainingTime
                 }
             }
         }

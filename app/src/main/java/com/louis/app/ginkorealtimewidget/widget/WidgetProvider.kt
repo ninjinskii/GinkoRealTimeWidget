@@ -101,7 +101,7 @@ class WidgetProvider : AppWidgetProvider() {
     private fun parseColor(color: String) = Color.parseColor(color)
 
     private fun fetchBusTimes(repository: PathRepository, path: Path) = runBlocking {
-        L.thread("fetchBusTime")
+        L.thread("fetchBusTimeWidget")
         val useStartPoint = translateBoolean(path.isStartPointUsedForWidget)
         val busStop = if (useStartPoint) path.startingPoint.startName else path.endingPoint.endName
 
@@ -120,12 +120,11 @@ class WidgetProvider : AppWidgetProvider() {
                 )
             } else {
                 val response: TimeWrapper? = timesResponse.data.first()
-                val verifiedBusStopName = response?.verifiedBusStopName
                 response?.timeList
             }
         } else {
             L.e(FetchTimeException("An error occured while fetching times"))
-            listOf(Time("0"), Time("0"), Time("0"))
+            listOf(Time("error"), Time("error"), Time("error"))
         }
     }
 

@@ -87,6 +87,26 @@
               android:layout_marginStart="20dp"
               android:textSize="20sp" />
 
+          <TextView
+              android:id="@+id/times4"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:textSize="20sp" />
+
+          <TextView
+              android:id="@+id/times5"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginStart="20dp"
+              android:textSize="20sp" />
+
+          <TextView
+              android:id="@+id/times6"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginStart="20dp"
+              android:textSize="20sp" />
+
         </LinearLayout>
       </RelativeLayout>
 
