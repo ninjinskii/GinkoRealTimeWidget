@@ -1,23 +1,25 @@
 <resources>
   <string name="app_name">Ginko Real Time Widget</string>
 
-  <string name="directionLigne">Ligne de bus/tram</string>
-  <string name="imgLigne">Ligne</string>
-  <string name="erreurServeurGinko">Erreur du serveur Ginko</string>
-  <string name="erreurApp">Erreur dans l\'application, tabInfos = null</string>
+  <string name="lineDirection">Ligne de bus/tram</string>
+  <string name="lineImage">Ligne</string>
+  <string name="ginkoServerError">Erreur du serveur Ginko</string>
+  <string name="appError">Erreur dans l\'application, tabInfos = null</string>
   <string name="loading">Chargement&#8230;</string>
   <string name="refreshed">Temps actualisés</string>
+  <string name="refresh">Actualiser les temps</string>
+  <string name="reverse">Inverser le sens du trajet</string>
   <string name="internetError">Erreur du serveur Ginko. Vérifiez votre connexion internet dans un premier temps.</string>
-  <string name="suivant">Suivant</string>
-  <string name="valider">Valider</string>
+  <string name="next">Suivant</string>
+  <string name="validate">Valider</string>
   <string name="hint1">Renseignez le nom de la ligne souhaitée</string>
   <string name="hint2">Saisissez les informations suivantes pour configurer le widget</string>
   <string name="refreshTime">Actualisé à %1$s</string>
   <string name="toward">Vers %1$s ?</string>
 
-  <string name="HINT_directionLigne">Ligne du bus/tram</string>
-  <string name="HINT_arret1">Arrêt de départ</string>
-  <string name="HINT_arret2">Arrêt de retour</string>
+  <string name="HINT_lineDirection">Ligne du bus/tram</string>
+  <string name="HINT_busStop1">Arrêt de départ</string>
+  <string name="HINT_busStop2">Arrêt de retour</string>
 
   <string name="CONFIG_ligne">Ligne demandée: %1$s</string>
   <string name="CONFIG_vers1">Vers %1$s ?</string>

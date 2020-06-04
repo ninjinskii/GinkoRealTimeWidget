@@ -67,8 +67,8 @@ class WidgetProvider : AppWidgetProvider() {
                     PendingIntent.FLAG_UPDATE_CURRENT
             )
 
-            views.setOnClickPendingIntent(R.id.boutonRefresh, pIntentUpdate)
-            views.setOnClickPendingIntent(R.id.boutonReverse, pIntentReverse)
+            views.setOnClickPendingIntent(R.id.refresh, pIntentUpdate)
+            views.setOnClickPendingIntent(R.id.reverse, pIntentReverse)
             appWidgetManager!!.updateAppWidget(appWidgetId, views)
 
         }
@@ -138,19 +138,19 @@ class WidgetProvider : AppWidgetProvider() {
         else path.endingPoint.endName
 
         with(views) {
-            setTextColor(R.id.imgLigne, parseColor("#${path.line.textColor}"))
-            setTextViewText(R.id.imgLigne, path.line.publicName)
-            setTextViewText(R.id.textLigne, destinationName)
+            setTextColor(R.id.lineImage, parseColor("#${path.line.textColor}"))
+            setTextViewText(R.id.lineImage, path.line.publicName)
+            setTextViewText(R.id.lineText, destinationName)
             setTextViewText(
-                    R.id.tempsRefresh, String.format(context.getString(R.string.refreshTime),
+                    R.id.refreshTime, String.format(context.getString(R.string.refreshTime),
                     refreshTime)
             )
             setInt(
-                    R.id.imgLigne,
+                    R.id.lineImage,
                     "setBackgroundColor",
                     parseColor("#${path.line.backgroundColor}")
             )
-            val textViews = listOf(R.id.tempsBus1, R.id.tempsBus2, R.id.tempsBus3)
+            val textViews = listOf(R.id.busTime1, R.id.busTime2, R.id.busTime3)
             times?.forEachIndexed { index, time ->
                 setTextViewText(textViews[index], time.remainingTime)
             }

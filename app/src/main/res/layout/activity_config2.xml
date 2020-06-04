@@ -43,7 +43,7 @@
           android:id="@+id/inputBusStop1"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:hint="@string/HINT_arret1"
+          android:hint="@string/HINT_busStop1"
           android:imeOptions="actionNext"
           android:inputType="textCapSentences" />
 
@@ -76,7 +76,7 @@
           android:id="@+id/inputBusStop2"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:hint="@string/HINT_arret2"
+          android:hint="@string/HINT_busStop2"
           android:imeOptions="actionDone"
           android:inputType="textCapSentences" />
 
@@ -89,7 +89,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_margin="12dp"
         android:backgroundTint="@color/colorAccent"
-        android:text="@string/valider" />
+        android:text="@string/validate" />
 
   </LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
