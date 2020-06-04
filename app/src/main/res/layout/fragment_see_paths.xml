@@ -7,160 +7,180 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimaryLight">
 
-  <LinearLayout
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:orientation="vertical">
-
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="4dp"
-        app:cardElevation="12dp">
-
-      <RelativeLayout
-          android:id="@+id/currentPathLayout"
-          android:layout_width="match_parent"
-          android:layout_height="match_parent"
-          android:layout_margin="8dp"
-          android:visibility="visible">
-
-        <TextView
-            android:id="@+id/currentPathLabel"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:text="@string/currentPath"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:textSize="24sp" />
-
-        <TextView
-            android:id="@+id/widgetRequestedLine"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_below="@+id/currentPathLabel"
-            android:layout_marginEnd="12dp"
-            android:gravity="center"
-            android:textSize="22sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/currentPath"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_below="@+id/currentPathLabel"
-            android:layout_alignParentEnd="true"
-            android:layout_toEndOf="@id/widgetRequestedLine"
-            android:ellipsize="end"
-            android:gravity="center_vertical"
-            android:maxLines="1"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:textSize="20sp" />
-
-        <LinearLayout
-            android:id="@+id/timesLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/widgetRequestedLine"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="32dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp"
-            android:orientation="horizontal">
-
-          <TextView
-              android:id="@+id/times1"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:textSize="20sp" />
-
-          <TextView
-              android:id="@+id/times2"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:layout_marginStart="20dp"
-              android:textSize="20sp" />
-
-          <TextView
-              android:id="@+id/times3"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:layout_marginStart="20dp"
-              android:textSize="20sp" />
-
-          <TextView
-              android:id="@+id/times4"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:textSize="20sp" />
-
-          <TextView
-              android:id="@+id/times5"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:layout_marginStart="20dp"
-              android:textSize="20sp" />
-
-          <TextView
-              android:id="@+id/times6"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:layout_marginStart="20dp"
-              android:textSize="20sp" />
-
-        </LinearLayout>
-
-        <ProgressBar
-            android:id="@+id/progressBar"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:layout_below="@+id/widgetRequestedLine"
-            android:layout_marginTop="8dp"
-            android:indeterminate="true"
-            android:visibility="gone" />
-
-      </RelativeLayout>
-
-      <RelativeLayout
-          android:id="@+id/noCurrentPathLayout"
-          android:layout_width="match_parent"
-          android:layout_height="match_parent"
-          android:layout_margin="8dp"
-          android:visibility="gone">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/noPathForWidget" />
-
-      </RelativeLayout>
-    </androidx.cardview.widget.CardView>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginBottom="12dp"
-        android:background="#15000000" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/pathRecyclerView"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:listitem="@layout/item_path" />
+        android:orientation="vertical">
 
-  </LinearLayout>
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardElevation="12dp">
 
-  <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-      android:id="@+id/buttonAdd"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_gravity="bottom|center_horizontal"
-      android:layout_margin="16dp"
-      android:text="@string/add_path"
-      android:textColor="#FFFFFF"
-      app:icon="@drawable/ic_add"
-      app:iconTint="#FFFFFF" />
+            <RelativeLayout
+                android:id="@+id/currentPathLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="8dp"
+                android:visibility="visible">
+
+                <TextView
+                    android:id="@+id/widgetRequestedLine"
+                    android:layout_width="72dp"
+                    android:layout_height="72dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentEnd="true"
+                    android:gravity="center_horizontal"
+                    android:textSize="22sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/widgetRequestedLine"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/currentPath1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        android:layout_gravity="start"
+                        android:gravity="center_vertical"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                        android:textSize="20sp" />
+
+                  <TextView
+                      android:id="@+id/currentPathSep"
+                      android:layout_width="match_parent"
+                      android:layout_height="50dp"
+                      android:layout_gravity="center_horizontal"
+                      android:ellipsize="end"
+                      android:gravity="center"
+                      android:maxLines="1"
+                      android:text="<>"
+                      android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                      android:textSize="20sp" />
+
+                  <TextView
+                      android:id="@+id/currentPath2"
+                      android:layout_width="wrap_content"
+                      android:layout_height="50dp"
+                      android:layout_gravity="end"
+                      android:gravity="center_vertical"
+                      android:ellipsize="end"
+                      android:maxLines="1"
+                      android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                      android:textSize="20sp" />
+
+                </LinearLayout>
+
+
+                <!--<LinearLayout
+                    android:id="@+id/timesLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/widgetRequestedLine"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="32dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/times1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/times2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/times3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/times4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/times5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/times6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:textSize="20sp" />
+
+                </LinearLayout>-->
+
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_below="@+id/widgetRequestedLine"
+                    android:layout_marginTop="8dp"
+                    android:indeterminate="true"
+                    android:visibility="gone" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/noCurrentPathLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="8dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/noPathForWidget" />
+
+            </RelativeLayout>
+        </androidx.cardview.widget.CardView>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="12dp"
+            android:background="#15000000" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/pathRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:listitem="@layout/item_path" />
+
+    </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/buttonAdd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_margin="16dp"
+        android:text="@string/add_path"
+        android:textColor="#FFFFFF"
+        app:icon="@drawable/ic_add"
+        app:iconTint="#FFFFFF" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -17,17 +17,6 @@ data class Path(
     @PrimaryKey(autoGenerate = true)
     var id: Long = 0
 
-    /**
-     * Vérifie la validité des arrêts saisis
-     * Par exemple on ne veut pas que l'utilisateur rentre un arrêt d'arrivée antécédant au point
-     * de départ.
-     *
-     * @return true si les arrêts sont viables, false si les arrêts ne sont pas viables
-     */
-    fun checkViability(): Boolean {
-        return true
-    }
-
     fun getName() = "${startingPoint.startName} <> ${endingPoint.endName}"
 
     override fun equals(other: Any?): Boolean {
