@@ -43,8 +43,8 @@
             android:layout_marginTop="16dp"
             android:layout_below="@+id/path"
             android:layout_alignParentEnd="true"
-            style="@style/Widget.MaterialComponents.Button"
-            android:text="Widget" />
+            android:text="@string/widget"
+            style="@style/Widget.MaterialComponents.Button" />
 
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

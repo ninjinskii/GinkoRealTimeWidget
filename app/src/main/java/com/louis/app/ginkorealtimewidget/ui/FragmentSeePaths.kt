@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.louis.app.ginkorealtimewidget.R
 import com.louis.app.ginkorealtimewidget.databinding.FragmentSeePathsBinding
 import com.louis.app.ginkorealtimewidget.model.Path
@@ -43,6 +44,12 @@ class FragmentSeePaths : Fragment(R.layout.fragment_see_paths),
             layoutManager = LinearLayoutManager(activity)
             setHasFixedSize(true)
             adapter = pathAdapter
+            addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    if (dy > 0 && binding.buttonAdd.isShown) binding.buttonAdd.hide()
+                    if (dy < 0 && !binding.buttonAdd.isShown) binding.buttonAdd.show()
+                }
+            })
         }
 
         pathViewModel.getUserPaths().observe(viewLifecycleOwner, Observer {
