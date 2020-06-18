@@ -17,7 +17,7 @@ data class Path(
     @PrimaryKey(autoGenerate = true)
     var id: Long = 0
 
-    fun getName() = "${startingPoint.startName} <> ${endingPoint.endName}"
+    fun getName() = "${startingPoint.getName()} <> ${endingPoint.getName()}"
 
     override fun equals(other: Any?): Boolean {
         if (javaClass != other?.javaClass) {

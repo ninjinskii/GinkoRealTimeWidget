@@ -57,7 +57,7 @@ class FragmentSeePaths : Fragment(R.layout.fragment_see_paths),
     private fun observeWidgetPath() {
         pathViewModel.getUserWidgetPath().observe(viewLifecycleOwner, Observer {
             if (it != null) {
-                pathViewModel.fetchBusTime(it)
+                pathViewModel.fetchBusTimes(it)
                 updateUI(it)
             } else {
                 with(binding) {
@@ -71,6 +71,8 @@ class FragmentSeePaths : Fragment(R.layout.fragment_see_paths),
             with(binding) {
                 val textViewsFirst = listOf(times1, times2, times3)
                 val textViewsSecond = listOf(times4, times5, times6)
+
+                if(it == null) return@Observer
 
                 it.first?.forEachIndexed { index, time ->
                     textViewsFirst[index].text = time.remainingTime

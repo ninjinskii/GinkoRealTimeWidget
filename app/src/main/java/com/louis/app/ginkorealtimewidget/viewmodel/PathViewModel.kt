@@ -8,12 +8,16 @@ import com.louis.app.ginkorealtimewidget.database.PathDatabase
 import com.louis.app.ginkorealtimewidget.model.Line
 import com.louis.app.ginkorealtimewidget.model.Path
 import com.louis.app.ginkorealtimewidget.model.Time
+import com.louis.app.ginkorealtimewidget.model.TimeWrapper
 import com.louis.app.ginkorealtimewidget.network.GinkoLinesResponse
 import com.louis.app.ginkorealtimewidget.util.L
 import com.louis.app.ginkorealtimewidget.util.NoSuchLineException
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.Default
 import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class PathViewModel(application: Application) : AndroidViewModel(application) {
     private val repository: PathRepository
@@ -64,63 +68,37 @@ class PathViewModel(application: Application) : AndroidViewModel(application) {
         lines.find { it.publicName == lineName }
     }
 
-    // TODO: refactor
-    fun fetchBusTime(path: Path) {
-        // Allows us to know if we have to update path with correct name
-        var isBusStopNameMispelled = false
+    // TODO: move fetching of busstops times into repository, and finish this method refactoring
+    fun fetchBusTimes(path: Path) {
+        _isFetchingData.postValue(true)
 
-        fun mockTimes() = listOf(
-                Time((1..10).shuffled().first().toString()),
-                Time((11..20).shuffled().first().toString()),
-                Time((21..35).shuffled().first().toString())
-        )
-
-        defaultScope.launch {
-            val timesResponseStartPoint = repository.getTimes(
-                    path.startingPoint.startName,
+        val results = defaultScope.launch {
+            val startPointTimes = repository.getTimes(path.startingPoint.getName(),
                     path.line.lineId,
-                    path.isStartPointNaturalWay
-            )?.data
-            val startTimeAndName = timesResponseStartPoint?.firstOrNull()?.let {
-                try {
-                    it.timeList to it.verifiedBusStopName
-                } catch (e: NoSuchElementException) {
-                    L.v("Aucun bus prévu pour le moment")
-                    L.e(e)
-                    mockTimes() to it.verifiedBusStopName
+                    path.isStartPointNaturalWay)
+
+            val endPointTimes = repository.getTimes(path.endingPoint.getName(),
+                    path.line.lineId,
+                    !path.isStartPointNaturalWay)
+
+            if (startPointTimes?.isSuccessful == true && endPointTimes?.isSuccessful == true) {
+                startPointTimes.data.firstOrNull().let {
+
                 }
             }
 
-            val timesResponseEndPoint = repository.getTimes(
-                    path.endingPoint.endName,
-                    path.line.lineId,
-                    path.isStartPointNaturalWay
-            )?.data
-            val endTimeAndName = timesResponseEndPoint?.firstOrNull()?.let {
-                try {
-                    it.timeList to it.verifiedBusStopName
-                } catch (e: NoSuchElementException) {
-                    L.v("Aucun bus prévu pour le moment")
-                    L.e(e)
-                    mockTimes() to it.verifiedBusStopName
-                }
-            }
+            L.v(startPointTimes.toString())
 
 
-            if (path.startingPoint.startName != startTimeAndName?.second || path.endingPoint.endName != endTimeAndName?.second) {
-                path.startingPoint.startName = startTimeAndName?.second.toString()
-                path.endingPoint.endName = endTimeAndName?.second.toString()
-                updatePath(path)
-            }
-
-            _currentTimes.postValue(startTimeAndName?.first to endTimeAndName?.first)
         }
+
+        _isFetchingData.postValue(false)
+        _currentTimes.postValue(null)
     }
 
-    // TODO: avoid runBlocking
-    fun getUserPaths(): LiveData<List<Path>> = runBlocking { repository.getAllPathsButCurrentPath() }
+    fun getUserPaths(): LiveData<List<Path>> = repository.getAllPathsButCurrentPath()
 
-    fun getUserWidgetPath(): LiveData<Path> = runBlocking { repository.getWidgetPath() }
+    fun getUserWidgetPath(): LiveData<Path> = repository.getWidgetPath()
 
     fun savePath(path: Path) {
         _currentPath.postValue(path)

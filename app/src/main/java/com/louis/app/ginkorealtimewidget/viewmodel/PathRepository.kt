@@ -1,13 +1,17 @@
 package com.louis.app.ginkorealtimewidget.viewmodel
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.liveData
 import com.louis.app.ginkorealtimewidget.database.PathDao
 import com.louis.app.ginkorealtimewidget.model.Path
+import com.louis.app.ginkorealtimewidget.model.TimeWrapper
 import com.louis.app.ginkorealtimewidget.network.GinkoApi
 import com.louis.app.ginkorealtimewidget.network.GinkoLinesResponse
 import com.louis.app.ginkorealtimewidget.network.GinkoTimesResponse
 import com.louis.app.ginkorealtimewidget.network.GinkoVariantResponse
 import com.louis.app.ginkorealtimewidget.util.L
 import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.GlobalScope
 
 class PathRepository(private val pathDao: PathDao) {
 
@@ -59,9 +63,7 @@ class PathRepository(private val pathDao: PathDao) {
 
     suspend fun updatePath(path: Path) = pathDao.updatePath(path)
 
-    fun getAllPaths() = pathDao.getAllPaths()
-
-    fun getAllPathsButCurrentPath() = pathDao.getAllPathsButCurrentPath()
+    fun getAllPathsButCurrentPath(): LiveData<List<Path>> = pathDao.getAllPathsButCurrentPath()
 
     fun getWidgetPath() = pathDao.getWidgetPath()
 
