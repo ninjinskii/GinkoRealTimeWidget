@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.louis.app.ginkorealtimewidget.R
 import com.louis.app.ginkorealtimewidget.databinding.FragmentSeePathsBinding
 import com.louis.app.ginkorealtimewidget.model.Path
-import com.louis.app.ginkorealtimewidget.util.L
 import com.louis.app.ginkorealtimewidget.viewmodel.PathViewModel
 
 class FragmentSeePaths : Fragment(R.layout.fragment_see_paths),
@@ -22,19 +21,17 @@ class FragmentSeePaths : Fragment(R.layout.fragment_see_paths),
     private lateinit var listener: OnAddLineRequestListener
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        L.timestamp("FragSeePaths onViewCreated") {
-            super.onViewCreated(view, savedInstanceState)
+        super.onViewCreated(view, savedInstanceState)
 
-            binding = FragmentSeePathsBinding.bind(view)
+        binding = FragmentSeePathsBinding.bind(view)
 
-            with(binding) {
-                buttonAdd.setOnClickListener {
-                    listener.onAddLineResquest()
-                }
+        with(binding) {
+            buttonAdd.setOnClickListener {
+                listener.onAddLineResquest()
             }
-            initRecyclerView()
-            observeWidgetPath()
         }
+        initRecyclerView()
+        observeWidgetPath()
     }
 
     private fun initRecyclerView() {

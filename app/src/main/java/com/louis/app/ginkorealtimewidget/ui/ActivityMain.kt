@@ -4,13 +4,11 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayoutMediator
 import com.louis.app.ginkorealtimewidget.R
 import com.louis.app.ginkorealtimewidget.databinding.ActivityMain2Binding
-import com.louis.app.ginkorealtimewidget.util.L
 import com.louis.app.ginkorealtimewidget.viewmodel.PathViewModel
 
 class ActivityMain : FragmentActivity(), FragmentSeePaths.OnAddLineRequestListener {
@@ -28,10 +26,8 @@ class ActivityMain : FragmentActivity(), FragmentSeePaths.OnAddLineRequestListen
         val rootView = binding.root
         setContentView(rootView)
 
-        L.timestamp("ActivityMain setViewPager & observe") {
-            setViewPager()
-            observe()
-        }
+        setViewPager()
+        observe()
 
     }
 
