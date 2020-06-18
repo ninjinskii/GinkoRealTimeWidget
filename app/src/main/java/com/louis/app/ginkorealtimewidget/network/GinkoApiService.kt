@@ -2,11 +2,14 @@ package com.louis.app.ginkorealtimewidget.network
 
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.louis.app.ginkorealtimewidget.network.ApiConstants.Companion.ARG_BUS_STOP_NAME
+import com.louis.app.ginkorealtimewidget.network.ApiConstants.Companion.ARG_LINES_ID
 import com.louis.app.ginkorealtimewidget.network.ApiConstants.Companion.ARG_LINE_ID
 import com.louis.app.ginkorealtimewidget.network.ApiConstants.Companion.ARG_LINE_WAY
+import com.louis.app.ginkorealtimewidget.network.ApiConstants.Companion.ARG_VARIANT_ID
 import com.louis.app.ginkorealtimewidget.network.ApiConstants.Companion.BASE_URL
 import com.louis.app.ginkorealtimewidget.network.ApiConstants.Companion.URL_GET_LINES
 import com.louis.app.ginkorealtimewidget.network.ApiConstants.Companion.URL_GET_TIMES
+import com.louis.app.ginkorealtimewidget.network.ApiConstants.Companion.URL_GET_VARIANT_DETAILS
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import kotlinx.coroutines.Deferred
@@ -31,8 +34,13 @@ interface GinkoApiService {
 
     @GET(URL_GET_TIMES)
     fun getTimesAsync(@Query(ARG_BUS_STOP_NAME) busStop: String,
-                      @Query(ARG_LINE_ID) idLine: String,
+                      @Query(ARG_LINES_ID) idLine: String,
                       @Query(ARG_LINE_WAY) naturalWay: Boolean): Deferred<GinkoTimesResponse>
+
+    @GET(URL_GET_VARIANT_DETAILS)
+    fun getVariantDetailsAsync(@Query(ARG_LINE_ID) idLine: String,
+                               @Query(ARG_VARIANT_ID) idVariant: String)
+            : Deferred<GinkoVariantResponse>
 }
 
 object GinkoApi {

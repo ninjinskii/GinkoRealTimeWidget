@@ -1,12 +1,11 @@
 package com.louis.app.ginkorealtimewidget.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.liveData
 import com.louis.app.ginkorealtimewidget.database.PathDao
 import com.louis.app.ginkorealtimewidget.model.Path
 import com.louis.app.ginkorealtimewidget.network.GinkoApi
 import com.louis.app.ginkorealtimewidget.network.GinkoLinesResponse
 import com.louis.app.ginkorealtimewidget.network.GinkoTimesResponse
+import com.louis.app.ginkorealtimewidget.network.GinkoVariantResponse
 import com.louis.app.ginkorealtimewidget.util.L
 import kotlinx.coroutines.Deferred
 
@@ -42,17 +41,23 @@ class PathRepository(private val pathDao: PathDao) {
         }
     }
 
-    suspend fun insertPath(path: Path) {
-        L.v("Inserted path", "Fix slow DB")
-        pathDao.insertPath(path)
+    suspend fun getVariantDetails(idLine: String, idVariant: String): GinkoVariantResponse? {
+        val variantResponse: Deferred<GinkoVariantResponse> = GinkoApi.retrofitService
+                .getVariantDetailsAsync(idLine, idVariant)
+
+        return try {
+            variantResponse.await()
+        } catch (e: Exception) {
+            L.e(e)
+            return null
+        }
     }
+
+    suspend fun insertPath(path: Path) = pathDao.insertPath(path)
 
     suspend fun deletePath(path: Path) = pathDao.deletePath(path)
 
-    suspend fun updatePath(path: Path) {
-        L.v("Updated path", "Fix slow DB")
-        pathDao.updatePath(path)
-    }
+    suspend fun updatePath(path: Path) = pathDao.updatePath(path)
 
     fun getAllPaths() = pathDao.getAllPaths()
 
@@ -62,8 +67,5 @@ class PathRepository(private val pathDao: PathDao) {
 
     suspend fun getWidgetPathNotLive() = pathDao.getWidgetPathNotLive()
 
-    fun resetWidgetPath() {
-        L.v("reset widget path", "Fix slow DB")
-        pathDao.resetWidgetPath()
-    }
+    fun resetWidgetPath() = pathDao.resetWidgetPath()
 }

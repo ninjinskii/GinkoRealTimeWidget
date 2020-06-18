@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import com.google.android.material.snackbar.Snackbar
 
 import com.louis.app.ginkorealtimewidget.R
 import com.louis.app.ginkorealtimewidget.databinding.FragmentAddPathBinding
@@ -54,9 +55,10 @@ class FragmentAddPath : Fragment(R.layout.fragment_add_path) {
             val isNaturalWay = binding.chooseEndpoint.isChecked
 
             if (line != null) {
+                // TODO: path validation
                 pathViewModel.savePath(Path(busStop1, busStop2, line,  isNaturalWay))
             } else {
-                // user feedback
+                showSnackbar(resources.getString(R.string.appError))
             }
         }
     }
@@ -72,5 +74,9 @@ class FragmentAddPath : Fragment(R.layout.fragment_add_path) {
             else
                 binding.progressBar.visibility = View.GONE
         })
+    }
+
+    private fun showSnackbar(message: String) {
+        Snackbar.make(binding.coordinator, message, Snackbar.LENGTH_LONG).show()
     }
 }

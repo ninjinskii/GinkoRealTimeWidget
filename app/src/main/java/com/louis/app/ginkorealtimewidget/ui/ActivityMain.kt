@@ -28,7 +28,6 @@ class ActivityMain : FragmentActivity(), FragmentSeePaths.OnAddLineRequestListen
 
         setViewPager()
         observe()
-
     }
 
     private fun setViewPager() {
@@ -63,12 +62,4 @@ class ActivityMain : FragmentActivity(), FragmentSeePaths.OnAddLineRequestListen
     override fun onAddLineResquest() {
         binding.viewPager.adapter = BusPagerAdapter(this, FragmentAddLine())
     }
-
-    /*
-    override fun onAddPathRequest() {
-        // TODO: vérification ligne correcte
-        binding.viewPager.adapter = BusPagerAdapter(this, FragmentAddPath())
-    }*/
-
-    //override fun onPathAdded(): vérifier validité du chemin, ajouter en bd, remettre le fragment initial
 }

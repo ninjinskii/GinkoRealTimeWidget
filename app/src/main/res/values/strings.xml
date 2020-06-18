@@ -4,7 +4,7 @@
   <string name="lineDirection">Ligne de bus/tram</string>
   <string name="lineImage">Ligne</string>
   <string name="ginkoServerError">Erreur du serveur Ginko</string>
-  <string name="appError">Erreur dans l\'application, tabInfos = null</string>
+  <string name="appError">Une erreur est survenue</string>
   <string name="loading">Chargement&#8230;</string>
   <string name="refreshed">Temps actualisés</string>
   <string name="refresh">Actualiser les temps</string>
