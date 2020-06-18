@@ -8,7 +8,6 @@ import com.louis.app.ginkorealtimewidget.database.PathDatabase
 import com.louis.app.ginkorealtimewidget.model.Line
 import com.louis.app.ginkorealtimewidget.model.Path
 import com.louis.app.ginkorealtimewidget.model.Time
-import com.louis.app.ginkorealtimewidget.model.VariantWithoutLine
 import com.louis.app.ginkorealtimewidget.network.GinkoLinesResponse
 import com.louis.app.ginkorealtimewidget.util.L
 import com.louis.app.ginkorealtimewidget.util.NoSuchLineException
@@ -124,41 +123,8 @@ class PathViewModel(application: Application) : AndroidViewModel(application) {
     fun getUserWidgetPath(): LiveData<Path> = runBlocking { repository.getWidgetPath() }
 
     fun savePath(path: Path) {
-        defaultScope.launch {
-            if (validatePath(path)) {
-                repository.insertPath(path)
-                _currentPath.postValue(path)
-            } else {
-                _currentPath.postValue(null)
-            }
-        }
-    }
-
-    // TODO: move into Path class
-    private suspend fun validatePath(path: Path): Boolean {
-        return defaultScope.async {
-            path.line.variants.forEach {
-                val variantDetails = repository.getVariantDetails(path.line.lineId, it.idVariant)
-                // Looking for one variant with startpoint then endpoint into it.
-                // Each variant is sort by geographical order by the API.
-                if (variantDetails != null) {
-                    val startName = path.startingPoint.startName
-                    val endName = path.endingPoint.endName
-                    var foundedVariant: VariantWithoutLine? = null
-
-                    for (variant in variantDetails.variants) {
-                        if (variant.name == startName && foundedVariant == null) {
-                            foundedVariant = variant
-                        } else if (variant.name == endName && foundedVariant != null) {
-                            // We found first array then second array, path is valid
-                            return@async true
-                        }
-                    }
-                }
-            }
-
-            return@async false
-        }.await()
+        _currentPath.postValue(path)
+        defaultScope.launch { repository.insertPath(path) }
     }
 
     fun updatePath(path: Path) = defaultScope.launch { repository.updatePath(path) }
