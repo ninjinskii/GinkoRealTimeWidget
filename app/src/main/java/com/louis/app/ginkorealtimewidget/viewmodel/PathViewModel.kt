@@ -107,6 +107,8 @@ class PathViewModel(application: Application) : AndroidViewModel(application) {
 
     fun updatePath(path: Path) = defaultScope.launch { repository.updatePath(path) }
 
+    fun deletePath(path: Path) = defaultScope.launch { repository.deletePath(path) }
+
     fun resetWidgetPath() = defaultScope.launch { repository.resetWidgetPath() }
 
     override fun onCleared() {

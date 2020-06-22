@@ -10,13 +10,14 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.louis.app.ginkorealtimewidget.R
 import com.louis.app.ginkorealtimewidget.model.Path
-import com.louis.app.ginkorealtimewidget.util.L
 
 class PathRecyclerAdapter(private val onSetPathForWidgetListener: OnSetPathForWidgetListener) :
         ListAdapter<Path, PathRecyclerAdapter.PathViewHolder>(PathItemDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = PathViewHolder(
-            LayoutInflater.from(parent.context).inflate(R.layout.item_path, parent, false),
+            LayoutInflater
+                    .from(parent.context)
+                    .inflate(R.layout.item_path, parent, false),
             onSetPathForWidgetListener
     )
 
@@ -50,10 +51,16 @@ class PathRecyclerAdapter(private val onSetPathForWidgetListener: OnSetPathForWi
                 path.isCurrentPath = 1
                 listener.onSetPathForWidget(path)
             }
+
+            itemView.setOnLongClickListener {
+                listener.onDeleteWidgetPath(path)
+                true
+            }
         }
     }
 
     interface OnSetPathForWidgetListener {
         fun onSetPathForWidget(path: Path)
+        fun onDeleteWidgetPath(path: Path)
     }
 }

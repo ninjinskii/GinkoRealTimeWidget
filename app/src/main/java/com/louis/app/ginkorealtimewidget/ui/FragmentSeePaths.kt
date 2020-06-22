@@ -118,4 +118,8 @@ class FragmentSeePaths : Fragment(R.layout.fragment_see_paths),
         pathViewModel.resetWidgetPath()
         pathViewModel.updatePath(path)
     }
+
+    override fun onDeleteWidgetPath(path: Path) {
+        pathViewModel.deletePath(path)
+    }
 }
