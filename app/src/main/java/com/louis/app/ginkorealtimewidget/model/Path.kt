@@ -8,8 +8,8 @@ import androidx.room.PrimaryKey
 // Représente un trajet de bus
 @Entity(tableName = "path")
 data class Path(
-        @Embedded var startingPoint: StartPoint,
-        @Embedded var endingPoint: EndPoint,
+        var startingPoint: String,
+        var endingPoint: String,
         @Embedded var line: Line,
         @ColumnInfo(name = "is_start_point_natural_way") var isStartPointNaturalWay: Boolean,
         @ColumnInfo(name = "is_current_path") var isCurrentPath: Int = 0,
@@ -17,7 +17,7 @@ data class Path(
     @PrimaryKey(autoGenerate = true)
     var id: Long = 0
 
-    fun getName() = "${startingPoint.getName()} <> ${endingPoint.getName()}"
+    fun getName() = "$startingPoint <> $endingPoint"
 
     override fun equals(other: Any?): Boolean {
         if (javaClass != other?.javaClass) {

@@ -2,19 +2,14 @@ package com.louis.app.ginkorealtimewidget.ui
 
 import android.graphics.Color
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.View
-import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.google.android.material.snackbar.Snackbar
-
 import com.louis.app.ginkorealtimewidget.R
 import com.louis.app.ginkorealtimewidget.databinding.FragmentAddPathBinding
-import com.louis.app.ginkorealtimewidget.model.EndPoint
 import com.louis.app.ginkorealtimewidget.model.Path
-import com.louis.app.ginkorealtimewidget.model.StartPoint
-import com.louis.app.ginkorealtimewidget.util.L
 import com.louis.app.ginkorealtimewidget.viewmodel.PathViewModel
 
 class FragmentAddPath : Fragment(R.layout.fragment_add_path) {
@@ -49,14 +44,13 @@ class FragmentAddPath : Fragment(R.layout.fragment_add_path) {
 
     private fun setListeners() {
         binding.buttonNext.setOnClickListener {
-            val busStop1 = StartPoint(binding.inputBusStop1.text.toString())
-            val busStop2 = EndPoint(binding.inputBusStop2.text.toString())
+            val startingPoint = binding.inputBusStop1.text.toString()
+            val endingPoint = binding.inputBusStop2.text.toString()
             val line = pathViewModel.currentLine.value
             val isNaturalWay = binding.chooseEndpoint.isChecked
 
             if (line != null) {
-                // TODO: path validation
-                pathViewModel.savePath(Path(busStop1, busStop2, line,  isNaturalWay))
+                pathViewModel.savePath(Path(startingPoint, endingPoint, line, isNaturalWay))
             } else {
                 showSnackbar(resources.getString(R.string.appError))
             }

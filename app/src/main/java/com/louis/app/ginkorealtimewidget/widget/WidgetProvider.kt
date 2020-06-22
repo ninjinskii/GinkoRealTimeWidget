@@ -103,7 +103,7 @@ class WidgetProvider : AppWidgetProvider() {
     private fun fetchBusTimes(repository: PathRepository, path: Path) = runBlocking {
         L.thread("fetchBusTimeWidget")
         val useStartPoint = translateBoolean(path.isStartPointUsedForWidget)
-        val busStop = if (useStartPoint) path.startingPoint.startName else path.endingPoint.endName
+        val busStop = if (useStartPoint) path.startingPoint else path.endingPoint
 
         val timesResponse: GinkoTimesResponse? = repository.getTimes(
                 busStop,
@@ -134,8 +134,8 @@ class WidgetProvider : AppWidgetProvider() {
                             path: Path,
                             times: List<Time>?) {
         val destinationName = if (translateBoolean(path.isStartPointUsedForWidget))
-            path.startingPoint.startName
-        else path.endingPoint.endName
+            path.startingPoint
+        else path.endingPoint
 
         with(views) {
             setTextColor(R.id.lineImage, parseColor("#${path.line.textColor}"))

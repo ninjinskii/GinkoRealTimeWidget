@@ -1,17 +1,13 @@
 package com.louis.app.ginkorealtimewidget.viewmodel
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.liveData
 import com.louis.app.ginkorealtimewidget.database.PathDao
 import com.louis.app.ginkorealtimewidget.model.Path
-import com.louis.app.ginkorealtimewidget.model.TimeWrapper
 import com.louis.app.ginkorealtimewidget.network.GinkoApi
 import com.louis.app.ginkorealtimewidget.network.GinkoLinesResponse
 import com.louis.app.ginkorealtimewidget.network.GinkoTimesResponse
-import com.louis.app.ginkorealtimewidget.network.GinkoVariantResponse
 import com.louis.app.ginkorealtimewidget.util.L
 import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.GlobalScope
 
 class PathRepository(private val pathDao: PathDao) {
 
@@ -39,18 +35,6 @@ class PathRepository(private val pathDao: PathDao) {
 
         return try {
             timesResponse.await()
-        } catch (e: Exception) {
-            L.e(e)
-            return null
-        }
-    }
-
-    suspend fun getVariantDetails(idLine: String, idVariant: String): GinkoVariantResponse? {
-        val variantResponse: Deferred<GinkoVariantResponse> = GinkoApi.retrofitService
-                .getVariantDetailsAsync(idLine, idVariant)
-
-        return try {
-            variantResponse.await()
         } catch (e: Exception) {
             L.e(e)
             return null

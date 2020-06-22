@@ -97,8 +97,8 @@ class FragmentSeePaths : Fragment(R.layout.fragment_see_paths),
             widgetRequestedLine.text = path.line.publicName
             widgetRequestedLine.setBackgroundColor(backColor)
             widgetRequestedLine.setTextColor(textColor)
-            currentBusStop1.text = path.startingPoint.startName
-            currentBusStop2.text = path.endingPoint.endName
+            currentBusStop1.text = path.startingPoint
+            currentBusStop2.text = path.endingPoint
         }
     }
 

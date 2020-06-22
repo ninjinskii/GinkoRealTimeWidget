@@ -73,11 +73,11 @@ class PathViewModel(application: Application) : AndroidViewModel(application) {
         _isFetchingData.postValue(true)
 
         val results = defaultScope.launch {
-            val startPointTimes = repository.getTimes(path.startingPoint.getName(),
+            val startPointTimes = repository.getTimes(path.startingPoint,
                     path.line.lineId,
                     path.isStartPointNaturalWay)
 
-            val endPointTimes = repository.getTimes(path.endingPoint.getName(),
+            val endPointTimes = repository.getTimes(path.endingPoint,
                     path.line.lineId,
                     !path.isStartPointNaturalWay)
 
