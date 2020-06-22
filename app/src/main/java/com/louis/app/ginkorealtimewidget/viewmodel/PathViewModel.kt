@@ -4,12 +4,13 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.louis.app.ginkorealtimewidget.R
 import com.louis.app.ginkorealtimewidget.database.PathDatabase
 import com.louis.app.ginkorealtimewidget.model.Line
 import com.louis.app.ginkorealtimewidget.model.Path
 import com.louis.app.ginkorealtimewidget.model.Time
-import com.louis.app.ginkorealtimewidget.model.TimeWrapper
 import com.louis.app.ginkorealtimewidget.network.GinkoLinesResponse
+import com.louis.app.ginkorealtimewidget.network.GinkoTimesResponse
 import com.louis.app.ginkorealtimewidget.util.L
 import com.louis.app.ginkorealtimewidget.util.NoSuchLineException
 import kotlinx.coroutines.CoroutineScope
@@ -68,32 +69,46 @@ class PathViewModel(application: Application) : AndroidViewModel(application) {
         lines.find { it.publicName == lineName }
     }
 
-    // TODO: move fetching of busstops times into repository, and finish this method refactoring
     fun fetchBusTimes(path: Path) {
         _isFetchingData.postValue(true)
 
-        val results = defaultScope.launch {
-            val startPointTimes = repository.getTimes(path.startingPoint,
+        defaultScope.launch {
+            val startResponse = repository.getTimes(
+                    path.startingPoint,
                     path.line.lineId,
                     path.isStartPointNaturalWay)
 
-            val endPointTimes = repository.getTimes(path.endingPoint,
+            val endResponse = repository.getTimes(
+                    path.endingPoint,
                     path.line.lineId,
                     !path.isStartPointNaturalWay)
 
-            if (startPointTimes?.isSuccessful == true && endPointTimes?.isSuccessful == true) {
-                startPointTimes.data.firstOrNull().let {
+            val startTimes = handleBusTimesResponse(startResponse, path.startingPoint)
+            val endTimes = handleBusTimesResponse(endResponse, path.endingPoint)
 
-                }
+            with(path) {
+                startingPoint = startTimes.first
+                endingPoint = endTimes.first
+                repository.updatePath(this)
             }
 
-            L.v(startPointTimes.toString())
+            _currentTimes.postValue(startTimes.second to endTimes.second)
+            _isFetchingData.postValue(false)
+        }
+    }
 
+    // [rawName] is the user input concerning the busStop
+    private fun handleBusTimesResponse(response: GinkoTimesResponse?, rawName: String)
+            : Pair<String, List<Time>> {
 
+        if (response != null && response.isSuccessful) {
+            response.data.firstOrNull()?.let {
+                return it.verifiedBusStopName to it.timeList
+            }
         }
 
-        _isFetchingData.postValue(false)
-        _currentTimes.postValue(null)
+        val label = getApplication<Application>().resources.getString(R.string.noBuses)
+        return rawName to listOf(Time(label))
     }
 
     fun getUserPaths(): LiveData<List<Path>> = repository.getAllPathsButCurrentPath()
