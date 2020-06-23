@@ -91,7 +91,10 @@ class PathViewModel(application: Application) : AndroidViewModel(application) {
             with(path) {
                 startingPoint = startTimes.first
                 endingPoint = endTimes.first
-                repository.updatePath(this)
+
+                if (startingPoint != startTimes.first || endingPoint != endTimes.first) {
+                    repository.updatePath(this)
+                }
             }
 
             _currentTimes.postValue(startTimes.second to endTimes.second)

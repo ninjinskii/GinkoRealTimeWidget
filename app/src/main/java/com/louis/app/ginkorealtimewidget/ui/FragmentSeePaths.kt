@@ -7,15 +7,12 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.louis.app.ginkorealtimewidget.R
 import com.louis.app.ginkorealtimewidget.databinding.FragmentSeePathsBinding
 import com.louis.app.ginkorealtimewidget.model.Path
-import com.louis.app.ginkorealtimewidget.util.L
 import com.louis.app.ginkorealtimewidget.viewmodel.PathViewModel
-import kotlinx.coroutines.launch
 
 class FragmentSeePaths : Fragment(R.layout.fragment_see_paths),
     PathRecyclerAdapter.OnSetPathForWidgetListener {
@@ -118,11 +115,9 @@ class FragmentSeePaths : Fragment(R.layout.fragment_see_paths),
     override fun onSetPathForWidget(path: Path) {
         binding.timesLayout.visibility = View.INVISIBLE
         binding.progressBar.visibility = View.VISIBLE
-        lifecycleScope.launch {
-            pathViewModel.resetWidgetPath()
-            path.isCurrentPath = 1
-            pathViewModel.updatePath(path)
-        }
+        path.isCurrentPath = 1
+        pathViewModel.resetWidgetPath()
+        pathViewModel.updatePath(path)
     }
 
     override fun onDeleteWidgetPath(path: Path) {
