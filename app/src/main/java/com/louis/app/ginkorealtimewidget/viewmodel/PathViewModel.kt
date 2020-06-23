@@ -128,6 +128,8 @@ class PathViewModel(application: Application) : AndroidViewModel(application) {
 
     fun resetWidgetPath() = defaultScope.launch { repository.resetWidgetPath() }
 
+    fun getAllPaths() = repository.getAllPaths()
+
     override fun onCleared() {
         super.onCleared()
 

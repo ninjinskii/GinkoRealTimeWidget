@@ -48,7 +48,6 @@ class PathRecyclerAdapter(private val onSetPathForWidgetListener: OnSetPathForWi
             pathEndPoints.text = path.getName()
 
             updateWidgetPath.setOnClickListener {
-                path.isCurrentPath = 1
                 listener.onSetPathForWidget(path)
             }
 
