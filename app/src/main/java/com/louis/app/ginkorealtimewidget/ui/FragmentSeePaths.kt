@@ -15,7 +15,7 @@ import com.louis.app.ginkorealtimewidget.model.Path
 import com.louis.app.ginkorealtimewidget.viewmodel.PathViewModel
 
 class FragmentSeePaths : Fragment(R.layout.fragment_see_paths),
-        PathRecyclerAdapter.OnSetPathForWidgetListener {
+    PathRecyclerAdapter.OnSetPathForWidgetListener {
     private val pathViewModel: PathViewModel by activityViewModels()
     private lateinit var binding: FragmentSeePathsBinding
     private lateinit var listener: OnAddLineRequestListener
@@ -72,7 +72,7 @@ class FragmentSeePaths : Fragment(R.layout.fragment_see_paths),
                 val textViewsFirst = listOf(times1, times2, times3)
                 val textViewsSecond = listOf(times4, times5, times6)
 
-                if(it == null) return@Observer
+                if (it == null) return@Observer
 
                 it.first?.forEachIndexed { index, time ->
                     textViewsFirst[index].text = time.remainingTime

@@ -1,7 +1,7 @@
 package com.louis.app.ginkorealtimewidget.network
 
 class ApiConstants {
-    companion object{
+    companion object {
         const val BASE_URL = "https://api.ginko.voyage"
         const val URL_GET_LINES = "/DR/getLignes.do"
         const val URL_GET_TIMES = "/TR/getListeTemps.do"

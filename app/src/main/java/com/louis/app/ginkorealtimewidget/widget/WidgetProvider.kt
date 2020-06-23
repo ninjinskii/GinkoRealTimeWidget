@@ -29,9 +29,11 @@ class WidgetProvider : AppWidgetProvider() {
         private const val ACTION_REVERSE = "com.louis.app.ginkorealtimewidget.REVERSE"
     }
 
-    override fun onUpdate(context: Context?,
-                          appWidgetManager: AppWidgetManager?,
-                          appWidgetIds: IntArray?) {
+    override fun onUpdate(
+        context: Context?,
+        appWidgetManager: AppWidgetManager?,
+        appWidgetIds: IntArray?
+    ) {
         L.thread("onUpdate")
         val database = PathDatabase.getInstance(context!!)
         val repository = PathRepository(database.pathDao())
@@ -55,16 +57,16 @@ class WidgetProvider : AppWidgetProvider() {
             intentReverse.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds)
 
             val pIntentUpdate = PendingIntent.getBroadcast(
-                    context,
-                    appWidgetId,
-                    intentUpdate,
-                    PendingIntent.FLAG_UPDATE_CURRENT
+                context,
+                appWidgetId,
+                intentUpdate,
+                PendingIntent.FLAG_UPDATE_CURRENT
             )
             val pIntentReverse = PendingIntent.getBroadcast(
-                    context,
-                    appWidgetId,
-                    intentReverse,
-                    PendingIntent.FLAG_UPDATE_CURRENT
+                context,
+                appWidgetId,
+                intentReverse,
+                PendingIntent.FLAG_UPDATE_CURRENT
             )
 
             views.setOnClickPendingIntent(R.id.refresh, pIntentUpdate)
@@ -106,17 +108,17 @@ class WidgetProvider : AppWidgetProvider() {
         val busStop = if (useStartPoint) path.startingPoint else path.endingPoint
 
         val timesResponse: GinkoTimesResponse? = repository.getTimes(
-                busStop,
-                path.line.lineId,
-                path.isStartPointNaturalWay
+            busStop,
+            path.line.lineId,
+            path.isStartPointNaturalWay
         )
 
         if (timesResponse != null && timesResponse.isSuccessful) {
             if (timesResponse.data.isEmpty()) {
                 listOf(
-                        Time((1..10).shuffled().first().toString()),
-                        Time((11..20).shuffled().first().toString()),
-                        Time((21..35).shuffled().first().toString())
+                    Time((1..10).shuffled().first().toString()),
+                    Time((11..20).shuffled().first().toString()),
+                    Time((21..35).shuffled().first().toString())
                 )
             } else {
                 val response: TimeWrapper? = timesResponse.data.first()
@@ -128,11 +130,13 @@ class WidgetProvider : AppWidgetProvider() {
         }
     }
 
-    private fun updateViews(context: Context,
-                            views: RemoteViews,
-                            refreshTime: String,
-                            path: Path,
-                            times: List<Time>?) {
+    private fun updateViews(
+        context: Context,
+        views: RemoteViews,
+        refreshTime: String,
+        path: Path,
+        times: List<Time>?
+    ) {
         val destinationName = if (translateBoolean(path.isStartPointUsedForWidget))
             path.startingPoint
         else path.endingPoint
@@ -142,13 +146,15 @@ class WidgetProvider : AppWidgetProvider() {
             setTextViewText(R.id.lineImage, path.line.publicName)
             setTextViewText(R.id.lineText, destinationName)
             setTextViewText(
-                    R.id.refreshTime, String.format(context.getString(R.string.refreshTime),
-                    refreshTime)
+                R.id.refreshTime, String.format(
+                    context.getString(R.string.refreshTime),
+                    refreshTime
+                )
             )
             setInt(
-                    R.id.lineImage,
-                    "setBackgroundColor",
-                    parseColor("#${path.line.backgroundColor}")
+                R.id.lineImage,
+                "setBackgroundColor",
+                parseColor("#${path.line.backgroundColor}")
             )
             val textViews = listOf(R.id.busTime1, R.id.busTime2, R.id.busTime3)
             times?.forEachIndexed { index, time ->

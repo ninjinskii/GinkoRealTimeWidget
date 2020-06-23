@@ -12,17 +12,17 @@ import com.louis.app.ginkorealtimewidget.R
 import com.louis.app.ginkorealtimewidget.model.Path
 
 class PathRecyclerAdapter(private val onSetPathForWidgetListener: OnSetPathForWidgetListener) :
-        ListAdapter<Path, PathRecyclerAdapter.PathViewHolder>(PathItemDiffCallback()) {
+    ListAdapter<Path, PathRecyclerAdapter.PathViewHolder>(PathItemDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = PathViewHolder(
-            LayoutInflater
-                    .from(parent.context)
-                    .inflate(R.layout.item_path, parent, false),
-            onSetPathForWidgetListener
+        LayoutInflater
+            .from(parent.context)
+            .inflate(R.layout.item_path, parent, false),
+        onSetPathForWidgetListener
     )
 
     override fun onBindViewHolder(holder: PathViewHolder, position: Int) =
-            holder.bind(getItem(position))
+        holder.bind(getItem(position))
 
     class PathItemDiffCallback : DiffUtil.ItemCallback<Path>() {
         override fun areItemsTheSame(oldItem: Path, newItem: Path) = oldItem.id == newItem.id
@@ -31,7 +31,7 @@ class PathRecyclerAdapter(private val onSetPathForWidgetListener: OnSetPathForWi
     }
 
     inner class PathViewHolder(itemView: View, private val listener: OnSetPathForWidgetListener) :
-            RecyclerView.ViewHolder(itemView) {
+        RecyclerView.ViewHolder(itemView) {
         private val requestedLine: TextView = itemView.findViewById(R.id.requestedLine)
         private val pathEndPoints: TextView = itemView.findViewById(R.id.path)
         private val updateWidgetPath: Button = itemView.findViewById(R.id.updateCurrentPath)
@@ -41,7 +41,7 @@ class PathRecyclerAdapter(private val onSetPathForWidgetListener: OnSetPathForWi
                 text = path.line.publicName
                 setTextColor(android.graphics.Color.parseColor("#${path.line.textColor}"))
                 setBackgroundColor(
-                        android.graphics.Color.parseColor("#${path.line.backgroundColor}")
+                    android.graphics.Color.parseColor("#${path.line.backgroundColor}")
                 )
             }
 

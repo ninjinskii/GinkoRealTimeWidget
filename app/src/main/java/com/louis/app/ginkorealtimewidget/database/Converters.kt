@@ -10,7 +10,7 @@ import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 
 class Converters {
     private val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
-    private val dataList =  Types.newParameterizedType(List::class.java, Variant::class.java)
+    private val dataList = Types.newParameterizedType(List::class.java, Variant::class.java)
     private val jsonAdapter: JsonAdapter<List<Variant>> = moshi.adapter(dataList)
 
     @TypeConverter

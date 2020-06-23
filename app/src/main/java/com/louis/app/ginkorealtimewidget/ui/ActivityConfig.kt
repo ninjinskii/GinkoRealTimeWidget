@@ -51,7 +51,7 @@ class ActivityConfig : FragmentActivity() {
     private fun setListeners() {
         binding.buttonNext.setOnClickListener {
             Snackbar.make(binding.coordinator, "Not implemented yet", Snackbar.LENGTH_LONG)
-                    .show()
+                .show()
         }
     }
 }

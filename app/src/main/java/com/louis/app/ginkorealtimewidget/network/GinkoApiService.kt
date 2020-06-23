@@ -16,23 +16,25 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 private val moshi = Moshi.Builder()
-        .add(KotlinJsonAdapterFactory())
-        .build()
+    .add(KotlinJsonAdapterFactory())
+    .build()
 
 private val retrofit = Retrofit.Builder()
-        .addConverterFactory(MoshiConverterFactory.create(moshi))
-        .addCallAdapterFactory(CoroutineCallAdapterFactory())
-        .baseUrl(BASE_URL)
-        .build()
+    .addConverterFactory(MoshiConverterFactory.create(moshi))
+    .addCallAdapterFactory(CoroutineCallAdapterFactory())
+    .baseUrl(BASE_URL)
+    .build()
 
 interface GinkoApiService {
     @GET(URL_GET_LINES)
     fun getLinesAsync(): Deferred<GinkoLinesResponse>
 
     @GET(URL_GET_TIMES)
-    fun getTimesAsync(@Query(ARG_BUS_STOP_NAME) busStop: String,
-                      @Query(ARG_LINES_ID) idLine: String,
-                      @Query(ARG_LINE_WAY) naturalWay: Boolean): Deferred<GinkoTimesResponse>
+    fun getTimesAsync(
+        @Query(ARG_BUS_STOP_NAME) busStop: String,
+        @Query(ARG_LINES_ID) idLine: String,
+        @Query(ARG_LINE_WAY) naturalWay: Boolean
+    ): Deferred<GinkoTimesResponse>
 }
 
 object GinkoApi {

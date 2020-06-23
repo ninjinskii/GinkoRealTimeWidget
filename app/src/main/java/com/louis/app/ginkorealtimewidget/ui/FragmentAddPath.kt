@@ -38,7 +38,7 @@ class FragmentAddPath : Fragment(R.layout.fragment_add_path) {
         // Display the one way line to let the user choose the direction
         val firstOneWayLine = line?.variants?.firstOrNull()
         binding.chooseEndpoint.text =
-                resources.getString(R.string.toward, firstOneWayLine?.endPointName)
+            resources.getString(R.string.toward, firstOneWayLine?.endPointName)
         naturalWay = firstOneWayLine?.naturalWay
     }
 

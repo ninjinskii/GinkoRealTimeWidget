@@ -22,15 +22,17 @@ class PathRepository(private val pathDao: PathDao) {
         }
     }
 
-    suspend fun getTimes(busStop: String,
-                         idLine: String?,
-                         naturalWay: Boolean): GinkoTimesResponse? {
+    suspend fun getTimes(
+        busStop: String,
+        idLine: String?,
+        naturalWay: Boolean
+    ): GinkoTimesResponse? {
         idLine ?: return null
 
         val timesResponse: Deferred<GinkoTimesResponse> = GinkoApi.retrofitService.getTimesAsync(
-                busStop,
-                idLine,
-                naturalWay
+            busStop,
+            idLine,
+            naturalWay
         )
 
         return try {

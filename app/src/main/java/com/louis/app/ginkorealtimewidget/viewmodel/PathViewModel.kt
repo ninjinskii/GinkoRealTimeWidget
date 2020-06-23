@@ -74,14 +74,16 @@ class PathViewModel(application: Application) : AndroidViewModel(application) {
 
         defaultScope.launch {
             val startResponse = repository.getTimes(
-                    path.startingPoint,
-                    path.line.lineId,
-                    path.isStartPointNaturalWay)
+                path.startingPoint,
+                path.line.lineId,
+                path.isStartPointNaturalWay
+            )
 
             val endResponse = repository.getTimes(
-                    path.endingPoint,
-                    path.line.lineId,
-                    !path.isStartPointNaturalWay)
+                path.endingPoint,
+                path.line.lineId,
+                !path.isStartPointNaturalWay
+            )
 
             val startTimes = handleBusTimesResponse(startResponse, path.startingPoint)
             val endTimes = handleBusTimesResponse(endResponse, path.endingPoint)

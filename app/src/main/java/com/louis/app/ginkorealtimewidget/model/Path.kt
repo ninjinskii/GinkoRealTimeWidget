@@ -8,12 +8,13 @@ import androidx.room.PrimaryKey
 // Représente un trajet de bus
 @Entity(tableName = "path")
 data class Path(
-        var startingPoint: String,
-        var endingPoint: String,
-        @Embedded var line: Line,
-        @ColumnInfo(name = "is_start_point_natural_way") var isStartPointNaturalWay: Boolean,
-        @ColumnInfo(name = "is_current_path") var isCurrentPath: Int = 0,
-        @ColumnInfo(name = "is_start_point_used_for_widget") var isStartPointUsedForWidget: Int = 1){
+    var startingPoint: String,
+    var endingPoint: String,
+    @Embedded var line: Line,
+    @ColumnInfo(name = "is_start_point_natural_way") var isStartPointNaturalWay: Boolean,
+    @ColumnInfo(name = "is_current_path") var isCurrentPath: Int = 0,
+    @ColumnInfo(name = "is_start_point_used_for_widget") var isStartPointUsedForWidget: Int = 1
+) {
     @PrimaryKey(autoGenerate = true)
     var id: Long = 0
 
