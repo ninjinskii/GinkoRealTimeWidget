@@ -74,11 +74,11 @@ class FragmentSeePaths : Fragment(R.layout.fragment_see_paths),
 
                 if (it == null) return@Observer
 
-                it.first?.forEachIndexed { index, time ->
+                it.first.forEachIndexed { index, time ->
                     textViewsFirst[index].text = time.remainingTime
                 }
 
-                it.second?.forEachIndexed { index, time ->
+                it.second.forEachIndexed { index, time ->
                     textViewsSecond[index].text = time.remainingTime
                 }
 

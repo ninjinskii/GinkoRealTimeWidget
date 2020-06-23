@@ -40,8 +40,8 @@ class PathViewModel(application: Application) : AndroidViewModel(application) {
     val currentLine: LiveData<Line>
         get() = _currentLine
 
-    private val _currentTimes = MutableLiveData<Pair<List<Time>?, List<Time>?>>()
-    val currentTimes: LiveData<Pair<List<Time>?, List<Time>?>>
+    private val _currentTimes = MutableLiveData<Pair<List<Time>, List<Time>>>()
+    val currentTimes: LiveData<Pair<List<Time>, List<Time>>>
         get() = _currentTimes
 
     private val _currentPath = MutableLiveData<Path>()
