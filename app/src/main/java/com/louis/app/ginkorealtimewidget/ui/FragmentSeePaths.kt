@@ -82,7 +82,6 @@ class FragmentSeePaths : Fragment(R.layout.fragment_see_paths),
                     textViewsSecond[index].text = time.remainingTime
                 }
 
-                binding.timesLayout.visibility = View.VISIBLE
                 binding.progressBar.visibility = View.GONE
             }
         })
@@ -113,11 +112,9 @@ class FragmentSeePaths : Fragment(R.layout.fragment_see_paths),
     }
 
     override fun onSetPathForWidget(path: Path) {
-        binding.timesLayout.visibility = View.INVISIBLE
         binding.progressBar.visibility = View.VISIBLE
         path.isCurrentPath = 1
-        pathViewModel.resetWidgetPath()
-        pathViewModel.updatePath(path)
+        pathViewModel.setNewWidgetPath(path)
     }
 
     override fun onDeleteWidgetPath(path: Path) {

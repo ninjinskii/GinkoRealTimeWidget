@@ -49,6 +49,8 @@ class PathRepository(private val pathDao: PathDao) {
 
     suspend fun updatePath(path: Path) = pathDao.updatePath(path)
 
+    suspend fun setNewWidgetPath(path: Path) = pathDao.setNewWidgetPath(path)
+
     fun getAllPathsButCurrentPath(): LiveData<List<Path>> = pathDao.getAllPathsButCurrentPath()
 
     fun getWidgetPath() = pathDao.getWidgetPath()

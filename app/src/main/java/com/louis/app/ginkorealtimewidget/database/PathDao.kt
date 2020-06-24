@@ -33,4 +33,11 @@ interface PathDao {
 
     @Query("SELECT * FROM path")
     fun getAllPaths(): LiveData<List<Path>>
+
+    // This transaction prevent DiffUtil to trigger twice, causing weird recycler view animations
+    @Transaction
+    suspend fun setNewWidgetPath(path: Path) {
+        resetWidgetPath()
+        updatePath(path)
+    }
 }
