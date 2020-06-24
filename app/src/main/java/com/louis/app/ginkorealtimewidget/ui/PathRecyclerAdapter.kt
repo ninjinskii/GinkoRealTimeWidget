@@ -35,6 +35,7 @@ class PathRecyclerAdapter(private val onSetPathForWidgetListener: OnSetPathForWi
         private val requestedLine: TextView = itemView.findViewById(R.id.requestedLine)
         private val pathEndPoints: TextView = itemView.findViewById(R.id.path)
         private val updateWidgetPath: Button = itemView.findViewById(R.id.updateCurrentPath)
+        private val towards: TextView = itemView.findViewById(R.id.towards)
 
         fun bind(path: Path) {
             with(requestedLine) {
@@ -45,6 +46,14 @@ class PathRecyclerAdapter(private val onSetPathForWidgetListener: OnSetPathForWi
                 )
             }
 
+            val startPointFinalDestination = path.line.variants.find {
+                it.naturalWay == path.isStartPointNaturalWay
+            }?.endPointName
+
+            towards.text = String.format(
+                itemView.context.getString(R.string.towardSimple),
+                startPointFinalDestination
+            )
             pathEndPoints.text = path.getName()
 
             updateWidgetPath.setOnClickListener {

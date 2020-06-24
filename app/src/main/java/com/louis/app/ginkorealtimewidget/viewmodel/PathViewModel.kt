@@ -92,6 +92,7 @@ class PathViewModel(application: Application) : AndroidViewModel(application) {
                 startingPoint = startTimes.first
                 endingPoint = endTimes.first
 
+                // TODO: Fix, doesn't seems to work
                 if (startingPoint != startTimes.first || endingPoint != endTimes.first) {
                     repository.updatePath(this)
                 }
