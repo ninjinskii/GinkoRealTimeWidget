@@ -43,8 +43,13 @@ class FragmentSeePaths : Fragment(R.layout.fragment_see_paths),
             adapter = pathAdapter
             addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                    if (dy > 0 && binding.buttonAdd.isShown) binding.buttonAdd.hide()
-                    if (dy < 0 && !binding.buttonAdd.isShown) binding.buttonAdd.show()
+                    // Show button no matter what if RV can't be scrolled
+                    if (
+                        !recyclerView.canScrollVertically(1) &&
+                        !recyclerView.canScrollVertically(-1)
+                    ) binding.buttonAdd.show()
+                    else if (dy > 0 && binding.buttonAdd.isShown) binding.buttonAdd.hide()
+                    else if (dy < 0 && !binding.buttonAdd.isShown) binding.buttonAdd.show()
                 }
             })
         }
