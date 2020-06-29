@@ -4,46 +4,37 @@
     android:id="@+id/coordinator"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/colorPrimaryLight">
+    android:background="@color/colorPrimaryLight"
+    android:orientation="vertical">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:elevation="0dp">
+        android:layout_height="wrap_content">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
-            app:titleTextColor="@color/colorLightText"
-            app:title="@string/app_name" >
-
-            <ProgressBar
-                android:id="@+id/progressBar"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginStart="24dp"
-                android:indeterminate="true"
-                android:visibility="gone" />
+            app:elevation="12dp"
+            app:title="@string/app_name"
+            app:titleTextColor="@color/colorLightText">
 
         </androidx.appcompat.widget.Toolbar>
 
-    </com.google.android.material.appbar.AppBarLayout>
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabLayout"
+            style="@style/Widget.MaterialComponents.TabLayout.Colored"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tabLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:elevation="4dp"
-        style="@style/Widget.MaterialComponents.TabLayout.Colored" />
+    </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragmentContainer"
+        android:name="com.louis.app.ginkorealtimewidget.ui.FragmentAddLine"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:name="com.louis.app.ginkorealtimewidget.ui.FragmentAddLine"
         android:visibility="gone">
 
     </androidx.fragment.app.FragmentContainerView>
