@@ -7,11 +7,13 @@
     <string name="appError">Une erreur est survenue</string>
     <string name="loading">Chargement&#8230;</string>
     <string name="refreshed">Temps actualisés</string>
+    <string name="pathDeleted">Trajet supprimé</string>
     <string name="refresh">Actualiser les temps</string>
     <string name="reverse">Inverser le sens du trajet</string>
     <string name="internetError">Erreur du serveur Ginko. Vérifiez votre connexion internet dans un premier temps.</string>
     <string name="next">Suivant</string>
     <string name="validate">Valider</string>
+    <string name="cancel">Annuler</string>
     <string name="hint1">Renseignez le nom de la ligne souhaitée</string>
     <string name="hint2">Saisissez les informations suivantes pour configurer le widget</string>
     <string name="refreshTime">Actualisé à %1$s</string>

@@ -19,7 +19,7 @@ interface PathDao {
     /*@Query("SELECT * FROM path WHERE start_point_name=:busStopName")
     suspend fun getPathForStartPoint(busStopName: String)*/
 
-    @Query("SELECT * FROM path WHERE is_current_path = 0")
+    @Query("SELECT * FROM path WHERE is_current_path = 0 AND is_soft_deleted = 0")
     fun getAllPathsButCurrentPath(): LiveData<List<Path>>
 
     @Query("SELECT * FROM path WHERE is_current_path = 1")
@@ -31,7 +31,7 @@ interface PathDao {
     @Query("UPDATE path SET is_current_path = 0 WHERE is_current_path = 1")
     suspend fun resetWidgetPath()
 
-    @Query("SELECT * FROM path")
+    @Query("SELECT * FROM path WHERE is_soft_deleted = 0")
     fun getAllPaths(): LiveData<List<Path>>
 
     // This transaction prevent DiffUtil to trigger twice, causing weird recycler view animations
@@ -40,4 +40,10 @@ interface PathDao {
         resetWidgetPath()
         updatePath(path)
     }
+
+    @Query("UPDATE path SET is_soft_deleted = NOT is_soft_deleted WHERE path.id=:pathId")
+    suspend fun toggleSoftDeletePath(pathId: Long)
+
+    @Query("DELETE FROM path WHERE is_soft_deleted = 1")
+    suspend fun purgeSoftDeletedPaths()
 }

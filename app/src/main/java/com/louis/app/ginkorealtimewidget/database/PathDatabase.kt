@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.louis.app.ginkorealtimewidget.model.Path
 
-@Database(entities = [Path::class], version = 4, exportSchema = false)
+@Database(entities = [Path::class], version = 5, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class PathDatabase : RoomDatabase() {
 

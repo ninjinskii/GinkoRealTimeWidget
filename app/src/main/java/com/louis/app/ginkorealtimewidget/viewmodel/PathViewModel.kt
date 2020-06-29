@@ -128,7 +128,11 @@ class PathViewModel(application: Application) : AndroidViewModel(application) {
 
     fun setNewWidgetPath(path: Path) = defaultScope.launch { repository.setNewWidgetPath(path) }
 
-    fun deletePath(path: Path) = defaultScope.launch { repository.deletePath(path) }
+    fun toggleSoftDeletePath(path: Path) =
+        defaultScope.launch { repository.toggleSoftDeletePath(path) }
+
+    fun purgeSoftDeletePaths() =
+        defaultScope.launch { repository.purgeSoftDeletedPaths() }
 
     fun getAllPaths() = repository.getAllPaths()
 

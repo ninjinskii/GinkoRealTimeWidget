@@ -9,6 +9,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import com.louis.app.ginkorealtimewidget.R
 import com.louis.app.ginkorealtimewidget.databinding.FragmentSeePathsBinding
 import com.louis.app.ginkorealtimewidget.model.Path
@@ -120,6 +121,11 @@ class FragmentSeePaths : Fragment(R.layout.fragment_see_paths),
         super.onResume()
     }
 
+    override fun onDestroy() {
+        pathViewModel.purgeSoftDeletePaths()
+        super.onDestroy()
+    }
+
     override fun onSetPathForWidget(path: Path) {
         binding.progressBar.visibility = View.VISIBLE
         path.isCurrentPath = 1
@@ -127,7 +133,13 @@ class FragmentSeePaths : Fragment(R.layout.fragment_see_paths),
     }
 
     override fun onDeleteWidgetPath(path: Path) {
-        pathViewModel.deletePath(path)
+        pathViewModel.toggleSoftDeletePath(path)
+        Snackbar
+            .make(binding.coordinator, R.string.pathDeleted, Snackbar.LENGTH_LONG)
+            .setAction(R.string.cancel) {
+                pathViewModel.toggleSoftDeletePath(path)
+            }
+            .show()
     }
 
     interface OnAddLineRequestListener {
