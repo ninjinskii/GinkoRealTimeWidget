@@ -112,8 +112,12 @@ class FragmentSeePaths : Fragment(R.layout.fragment_see_paths),
         listener = context as OnAddLineRequestListener
     }
 
-    interface OnAddLineRequestListener {
-        fun onAddLineResquest()
+    override fun onResume() {
+        pathViewModel.currentPath.value?.let {
+            pathViewModel.fetchBusTimes(it)
+        }
+
+        super.onResume()
     }
 
     override fun onSetPathForWidget(path: Path) {
@@ -124,5 +128,9 @@ class FragmentSeePaths : Fragment(R.layout.fragment_see_paths),
 
     override fun onDeleteWidgetPath(path: Path) {
         pathViewModel.deletePath(path)
+    }
+
+    interface OnAddLineRequestListener {
+        fun onAddLineResquest()
     }
 }
