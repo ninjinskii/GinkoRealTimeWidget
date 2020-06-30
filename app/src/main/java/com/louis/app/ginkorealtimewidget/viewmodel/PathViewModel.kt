@@ -65,9 +65,8 @@ class PathViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    private suspend fun filterLines(lines: List<Line>, lineName: String) = withContext(Default) {
-        lines.find { it.publicName == lineName }
-    }
+    private suspend fun filterLines(lines: List<Line>, lineName: String) =
+        withContext(Default) { lines.find { it.publicName == lineName } }
 
     fun fetchBusTimes(path: Path) {
         _isFetchingData.postValue(true)
@@ -89,11 +88,9 @@ class PathViewModel(application: Application) : AndroidViewModel(application) {
             val endTimes = handleBusTimesResponse(endResponse, path.endingPoint)
 
             with(path) {
-                startingPoint = startTimes.first
-                endingPoint = endTimes.first
-
-                // TODO: Fix, doesn't seems to work
                 if (startingPoint != startTimes.first || endingPoint != endTimes.first) {
+                    startingPoint = startTimes.first
+                    endingPoint = endTimes.first
                     repository.updatePath(this)
                 }
             }
@@ -104,9 +101,10 @@ class PathViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     // [rawName] is the user input concerning the busStop
-    private fun handleBusTimesResponse(response: GinkoTimesResponse?, rawName: String)
-            : Pair<String, List<Time>> {
-
+    private fun handleBusTimesResponse(
+        response: GinkoTimesResponse?,
+        rawName: String
+    ): Pair<String, List<Time>> {
         if (response != null && response.isSuccessful) {
             response.data.firstOrNull()?.let {
                 return it.verifiedBusStopName to it.timeList
