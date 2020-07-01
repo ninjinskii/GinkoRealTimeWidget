@@ -48,9 +48,9 @@ class FragmentSeePaths : Fragment(R.layout.fragment_see_paths),
                     if (
                         !recyclerView.canScrollVertically(1) &&
                         !recyclerView.canScrollVertically(-1)
-                    ) binding.buttonAdd.show()
-                    else if (dy > 0 && binding.buttonAdd.isShown) binding.buttonAdd.hide()
-                    else if (dy < 0 && !binding.buttonAdd.isShown) binding.buttonAdd.show()
+                    ) binding.buttonAdd.extend()
+                    else if (dy > 0 && binding.buttonAdd.isExtended) binding.buttonAdd.shrink()
+                    else if (dy < 0 && !binding.buttonAdd.isExtended) binding.buttonAdd.extend()
                 }
             })
         }
@@ -78,23 +78,22 @@ class FragmentSeePaths : Fragment(R.layout.fragment_see_paths),
                 val textViewsFirst = listOf(times1, times2, times3)
                 val textViewsSecond = listOf(times4, times5, times6)
 
-                if (it == null) return@Observer
+                if (it != null) {
+                    it.first.forEachIndexed { index, time ->
+                        textViewsFirst[index].text = time.remainingTime
+                    }
 
-                it.first.forEachIndexed { index, time ->
-                    textViewsFirst[index].text = time.remainingTime
+                    it.second.forEachIndexed { index, time ->
+                        textViewsSecond[index].text = time.remainingTime
+                    }
+
+                    binding.progressBar.visibility = View.GONE
                 }
 
-                it.second.forEachIndexed { index, time ->
-                    textViewsSecond[index].text = time.remainingTime
-                }
-
-                binding.progressBar.visibility = View.GONE
             }
         })
 
-        pathViewModel.errorChannel.observe(viewLifecycleOwner, Observer {
-            showSnackbar(it, null)
-        })
+        pathViewModel.errorChannel.observe(viewLifecycleOwner, Observer { showSnackbar(it, null) })
     }
 
     private fun updateUI(path: Path) {
