@@ -32,7 +32,7 @@ class FragmentSeePaths : Fragment(R.layout.fragment_see_paths),
             }
         }
         initRecyclerView()
-        observeWidgetPath()
+        observe()
     }
 
     private fun initRecyclerView() {
@@ -60,7 +60,7 @@ class FragmentSeePaths : Fragment(R.layout.fragment_see_paths),
         })
     }
 
-    private fun observeWidgetPath() {
+    private fun observe() {
         pathViewModel.getUserWidgetPath().observe(viewLifecycleOwner, Observer {
             if (it != null) {
                 pathViewModel.fetchBusTimes(it)
@@ -91,6 +91,10 @@ class FragmentSeePaths : Fragment(R.layout.fragment_see_paths),
                 binding.progressBar.visibility = View.GONE
             }
         })
+
+        pathViewModel.errorChannel.observe(viewLifecycleOwner, Observer {
+            showSnackbar(it, null)
+        })
     }
 
     private fun updateUI(path: Path) {
@@ -105,6 +109,12 @@ class FragmentSeePaths : Fragment(R.layout.fragment_see_paths),
             currentBusStop1.text = path.startingPoint
             currentBusStop2.text = path.endingPoint
         }
+    }
+
+    private fun showSnackbar(stringRes: Int, actionStringRes: Int?, action: (View) -> Unit = { }) {
+        val snackbar = Snackbar.make(binding.coordinator, stringRes, Snackbar.LENGTH_LONG)
+        if (actionStringRes != null) snackbar.setAction(actionStringRes, action)
+        snackbar.show()
     }
 
     override fun onAttach(context: Context) {
@@ -134,12 +144,9 @@ class FragmentSeePaths : Fragment(R.layout.fragment_see_paths),
 
     override fun onDeleteWidgetPath(path: Path) {
         pathViewModel.toggleSoftDeletePath(path)
-        Snackbar
-            .make(binding.coordinator, R.string.pathDeleted, Snackbar.LENGTH_LONG)
-            .setAction(R.string.cancel) {
-                pathViewModel.toggleSoftDeletePath(path)
-            }
-            .show()
+        showSnackbar(R.string.pathDeleted, R.string.cancel) {
+            pathViewModel.toggleSoftDeletePath(path)
+        }
     }
 
     interface OnAddLineRequestListener {

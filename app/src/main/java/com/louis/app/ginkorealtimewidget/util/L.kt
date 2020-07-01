@@ -10,7 +10,7 @@ class L {
         }
 
         fun e(throwable: Throwable) {
-            Log.e("_______________", throwable.message)
+            Log.e("_______________", throwable.message ?: "Exception is null")
         }
 
         fun thread(currentMethod: String) {

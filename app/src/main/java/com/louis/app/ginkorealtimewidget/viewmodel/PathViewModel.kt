@@ -48,6 +48,10 @@ class PathViewModel(application: Application) : AndroidViewModel(application) {
     val currentPath: LiveData<Path>
         get() = _currentPath
 
+    private val _errorChannel = MutableLiveData<Int>()
+    val errorChannel: LiveData<Int>
+        get() = _errorChannel
+
     fun fetchLine(requestedLineName: String) {
         _isFetchingData.postValue(true)
 
@@ -58,7 +62,7 @@ class PathViewModel(application: Application) : AndroidViewModel(application) {
                 val line = filterLines(lines, requestedLineName)
                 line.let { _currentLine.postValue(it) }
             } else {
-                L.e(NoSuchLineException("An error occured while fetching lines"))
+                _errorChannel.postValue(R.string.appError)
             }
 
             _isFetchingData.postValue(false)
