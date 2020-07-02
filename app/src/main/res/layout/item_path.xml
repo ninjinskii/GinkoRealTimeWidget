@@ -29,9 +29,10 @@
             android:layout_height="50dp"
             android:layout_alignParentEnd="true"
             android:layout_toEndOf="@id/requestedLine"
-            android:ellipsize="end"
+            android:singleLine="true"
+            android:ellipsize="marquee"
+            android:marqueeRepeatLimit="marquee_forever"
             android:gravity="center_vertical"
-            android:maxLines="1"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textSize="20sp" />
 

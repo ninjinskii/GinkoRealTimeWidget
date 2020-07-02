@@ -31,6 +31,7 @@ class FragmentSeePaths : Fragment(R.layout.fragment_see_paths),
                 listener.onAddLineResquest()
             }
         }
+
         initRecyclerView()
         observe()
     }

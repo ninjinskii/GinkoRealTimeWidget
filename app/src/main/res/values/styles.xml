@@ -4,12 +4,11 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="snackbarButtonStyle">@style/SnackbarTheme</item>
+        <item name="snackbarButtonStyle">@style/SnackbarButton</item>
     </style>
 
-    <style name="SnackbarTheme" parent="@style/Widget.MaterialComponents.Button.TextButton">
-        <item name="backgroundTint">@android:color/transparent</item>
-        <item name="backgroundColor">@android:color/transparent</item>
+    <style name="SnackbarButton" parent="@style/Widget.MaterialComponents.Button.TextButton">
+        <item name="android:backgroundTint">@android:color/transparent</item>
         <item name="android:textColor">@color/colorAccent</item>
     </style>
 </resources>
