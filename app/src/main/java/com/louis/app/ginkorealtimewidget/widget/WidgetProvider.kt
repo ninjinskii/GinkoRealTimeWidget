@@ -17,9 +17,7 @@ import com.louis.app.ginkorealtimewidget.network.GinkoTimesResponse
 import com.louis.app.ginkorealtimewidget.util.FetchTimeException
 import com.louis.app.ginkorealtimewidget.util.L
 import com.louis.app.ginkorealtimewidget.viewmodel.PathRepository
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -29,6 +27,9 @@ class WidgetProvider : AppWidgetProvider() {
         private const val ACTION_REVERSE = "com.louis.app.ginkorealtimewidget.REVERSE"
     }
 
+    private var widgetJob = Job()
+    private val defaultScope = CoroutineScope(Dispatchers.IO + widgetJob)
+
     override fun onUpdate(
         context: Context?,
         appWidgetManager: AppWidgetManager?,
@@ -37,9 +38,20 @@ class WidgetProvider : AppWidgetProvider() {
         L.thread("onUpdate")
         val database = PathDatabase.getInstance(context!!)
         val repository = PathRepository(database.pathDao())
-        val path = runBlocking { repository.getWidgetPathNotLive() }
-        val times = fetchBusTimes(repository, path)
 
+        defaultScope.launch {
+            val path = repository.getWidgetPathNotLive()
+            val times = fetchBusTimes(repository, path)
+            updateWidgets(path, times, context, appWidgetManager, appWidgetIds)
+            showToast(context, R.string.refreshed)
+        }
+    }
+
+    private fun updateWidgets(
+        path: Path, times: List<Time>?, context: Context,
+        appWidgetManager: AppWidgetManager?,
+        appWidgetIds: IntArray?
+    ) {
         for (appWidgetId in appWidgetIds!!) {
             L.v("In for loop appWidgetIds", "loop")
             val views = RemoteViews(context.packageName, R.layout.ginko_widget)
@@ -71,10 +83,9 @@ class WidgetProvider : AppWidgetProvider() {
 
             views.setOnClickPendingIntent(R.id.refresh, pIntentUpdate)
             views.setOnClickPendingIntent(R.id.reverse, pIntentReverse)
-            appWidgetManager!!.updateAppWidget(appWidgetId, views)
+            appWidgetManager?.updateAppWidget(appWidgetId, views)
 
         }
-        Toast.makeText(context, R.string.refreshed, Toast.LENGTH_SHORT).show()
     }
 
     override fun onReceive(context: Context?, intent: Intent?) {
@@ -164,4 +175,13 @@ class WidgetProvider : AppWidgetProvider() {
     }
 
     private fun translateBoolean(boolean: Int) = boolean == 1
+
+    private suspend fun showToast(context: Context, resId: Int) =
+        withContext(Dispatchers.Main) {
+            Toast.makeText(
+                context,
+                context.resources.getString(resId),
+                Toast.LENGTH_SHORT
+            ).show()
+        }
 }
