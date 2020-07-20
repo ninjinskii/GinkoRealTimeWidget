@@ -51,7 +51,6 @@
                         android:ellipsize="end"
                         android:gravity="center"
                         android:maxLines="1"
-                        android:text="Isenbart"
                         android:textAppearance="@style/TextAppearance.AppCompat.Large"
                         android:textSize="20sp" />
 
@@ -75,7 +74,6 @@
                         android:ellipsize="end"
                         android:gravity="center"
                         android:maxLines="1"
-                        android:text="Crous Université"
                         android:textAppearance="@style/TextAppearance.AppCompat.Large"
                         android:textSize="20sp" />
 

@@ -55,8 +55,6 @@ class PathRepository(private val pathDao: PathDao) {
 
     suspend fun getWidgetPathNotLive() = pathDao.getWidgetPathNotLive()
 
-    fun getAllPaths() = pathDao.getAllPaths()
-
     suspend fun toggleSoftDeletePath(path: Path) = pathDao.toggleSoftDeletePath(path.id)
 
     suspend fun purgeSoftDeletedPaths() = pathDao.purgeSoftDeletedPaths()

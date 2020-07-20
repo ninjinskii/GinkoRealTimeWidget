@@ -3,19 +3,13 @@
 
     <string name="lineDirection">Ligne de bus/tram</string>
     <string name="lineImage">Ligne</string>
-    <string name="ginkoServerError">Erreur du serveur Ginko</string>
     <string name="appError">Une erreur est survenue</string>
-    <string name="loading">Chargement&#8230;</string>
     <string name="refreshed">Temps actualisés</string>
     <string name="pathDeleted">Trajet supprimé</string>
     <string name="refresh">Actualiser les temps</string>
     <string name="reverse">Inverser le sens du trajet</string>
-    <string name="internetError">Erreur du serveur Ginko. Vérifiez votre connexion internet dans un premier temps.</string>
-    <string name="next">Suivant</string>
     <string name="validate">Valider</string>
     <string name="cancel">Annuler</string>
-    <string name="hint1">Renseignez le nom de la ligne souhaitée</string>
-    <string name="hint2">Saisissez les informations suivantes pour configurer le widget</string>
     <string name="refreshTime">Actualisé à %1$s</string>
     <string name="toward">Vers %1$s ?</string>
     <string name="towardSimple">Vers %1$s.</string>
@@ -26,20 +20,9 @@
     <string name="HINT_busStop1">Arrêt de départ</string>
     <string name="HINT_busStop2">Arrêt de retour</string>
 
-    <string name="CONFIG_ligne">Ligne demandée: %1$s</string>
-    <string name="CONFIG_vers1">Vers %1$s ?</string>
-    <string name="CONFIG_vers2">Vers %1$s ?</string>
     <string name="CONFIG_lineError">Aucune ligne trouvée pour la recherche</string>
-    <string name="CONFIG_notSupported">Ligne non prise en charge</string>
     <string name="noBuses">Aucun bus</string>
-    <string name="CONFIG_finished">Widget configuré !</string>
 
-    <string name="explanation">L\'application va enregistrer votre trajet et l\'afficher sur un widget.
-                                Vous pouvez changer le sens du trajet depuis le widget.
-                                Vous pouvez gérez la liste de tous vos trajets en cliquant sur les flèches en haut droite.</string>
-    <string name="managePath">Gérer vos trajets</string>
-    <string name="add_path">Ajouter un trajet</string>
-    <string name="currentPath">Trajet actuel</string>
     <string name="noPathForWidget">Aucun trajet sélectionné pour le widget</string>
     <string name="pathSep"><![CDATA[<>]]></string>
     <string name="widget">Widget</string>

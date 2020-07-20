@@ -7,8 +7,8 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
+import com.louis.app.ginkorealtimewidget.R
 import com.louis.app.ginkorealtimewidget.databinding.ActivityConfig2Binding
-import com.louis.app.ginkorealtimewidget.util.L
 import com.louis.app.ginkorealtimewidget.viewmodel.PathViewModel
 
 class ActivityConfig : FragmentActivity() {
@@ -37,15 +37,17 @@ class ActivityConfig : FragmentActivity() {
                 with(line) {
                     binding.requestedLine.setBackgroundColor(Color.parseColor(backgroundColor))
                     binding.requestedLine.setTextColor(Color.parseColor(textColor))
-                    binding.chooseEndpoint.text = "Vers ${oneWayLine?.endPointName} ?"
+                    binding.chooseEndpoint.text = String.format(
+                        resources.getString(R.string.toward),
+                        oneWayLine?.endPointName
+                    )
+
                     Snackbar.make(binding.coordinator, "with", Snackbar.LENGTH_LONG).show()
                 }
             } else {
                 Toast.makeText(this, "line is null", Toast.LENGTH_LONG).show()
             }
         })
-        // Current line is null since the viewmodel can be shared beteween activities
-        L.v(pathViewModel.currentLine.value.toString(), "ViewModel - currentLine")
     }
 
     private fun setListeners() {
