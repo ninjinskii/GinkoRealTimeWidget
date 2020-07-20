@@ -3,7 +3,7 @@
     android:id="@+id/widgetLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000000">
+    android:background="#50D3D3D3">
 
     <TextView
         android:id="@+id/lineImage"
@@ -21,8 +21,8 @@
         android:layout_width="400dp"
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
-        android:layout_toEndOf="@id/lineImage"
         android:layout_toStartOf="@+id/refresh"
+        android:layout_toEndOf="@id/lineImage"
         android:ellipsize="end"
         android:maxLines="1"
         android:text="@string/lineDirection"
@@ -96,8 +96,8 @@
         android:id="@+id/reverse"
         android:layout_width="42dp"
         android:layout_height="42dp"
+        android:layout_below="@+id/refresh"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
         android:background="?android:selectableItemBackground"
         android:contentDescription="@string/reverse"
         android:src="@drawable/ic_reverse" />

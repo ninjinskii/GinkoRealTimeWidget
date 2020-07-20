@@ -131,11 +131,6 @@ class FragmentSeePaths : Fragment(R.layout.fragment_see_paths),
         super.onResume()
     }
 
-    override fun onDestroy() {
-        pathViewModel.purgeSoftDeletePaths()
-        super.onDestroy()
-    }
-
     override fun onSetPathForWidget(path: Path) {
         binding.progressBar.visibility = View.VISIBLE
         path.isCurrentPath = 1

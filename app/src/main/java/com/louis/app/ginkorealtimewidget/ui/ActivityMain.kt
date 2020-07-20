@@ -13,10 +13,6 @@ import com.louis.app.ginkorealtimewidget.viewmodel.PathViewModel
 
 class ActivityMain : FragmentActivity(), FragmentSeePaths.OnAddLineRequestListener {
 
-    companion object {
-        const val EXTRA_LINE = "com.louis.app.ginkorealtimewidget.EXTRA_LINE"
-    }
-
     private val pathViewModel: PathViewModel by viewModels()
     lateinit var binding: ActivityMain2Binding
 
@@ -31,7 +27,8 @@ class ActivityMain : FragmentActivity(), FragmentSeePaths.OnAddLineRequestListen
     }
 
     private fun setViewPager() {
-        val tabTitles = arrayOf("Mes trajets", "Mon widget")
+        val tabTitles =
+            arrayOf(resources.getString(R.string.tab1), resources.getString(R.string.tab2))
         val viewPager = binding.viewPager
         viewPager.adapter = BusPagerAdapter(this, FragmentSeePaths())
         viewPager.orientation = ViewPager2.ORIENTATION_HORIZONTAL
@@ -57,6 +54,11 @@ class ActivityMain : FragmentActivity(), FragmentSeePaths.OnAddLineRequestListen
 
     private fun showSnackbar(message: String) {
         Snackbar.make(binding.coordinator, message, Snackbar.LENGTH_LONG).show()
+    }
+
+    override fun onDestroy() {
+        pathViewModel.purgeSoftDeletePaths()
+        super.onDestroy()
     }
 
     override fun onAddLineResquest() {

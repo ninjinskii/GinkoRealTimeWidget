@@ -14,7 +14,6 @@ import com.louis.app.ginkorealtimewidget.model.Path
 import com.louis.app.ginkorealtimewidget.model.Time
 import com.louis.app.ginkorealtimewidget.model.TimeWrapper
 import com.louis.app.ginkorealtimewidget.network.GinkoTimesResponse
-import com.louis.app.ginkorealtimewidget.util.FetchTimeException
 import com.louis.app.ginkorealtimewidget.util.L
 import com.louis.app.ginkorealtimewidget.viewmodel.PathRepository
 import kotlinx.coroutines.*
@@ -35,13 +34,12 @@ class WidgetProvider : AppWidgetProvider() {
         appWidgetManager: AppWidgetManager?,
         appWidgetIds: IntArray?
     ) {
-        L.thread("onUpdate")
         val database = PathDatabase.getInstance(context!!)
         val repository = PathRepository(database.pathDao())
 
         defaultScope.launch {
             val path = repository.getWidgetPathNotLive()
-            val times = fetchBusTimes(repository, path)
+            val times = fetchBusTimes(repository, path, context)
             updateWidgets(path, times, context, appWidgetManager, appWidgetIds)
             showToast(context, R.string.refreshed)
         }
@@ -53,7 +51,6 @@ class WidgetProvider : AppWidgetProvider() {
         appWidgetIds: IntArray?
     ) {
         for (appWidgetId in appWidgetIds!!) {
-            L.v("In for loop appWidgetIds", "loop")
             val views = RemoteViews(context.packageName, R.layout.ginko_widget)
             val simpleDateFormat = SimpleDateFormat("HH:mm", Locale.FRANCE)
             val refreshTime = simpleDateFormat.format(Calendar.getInstance().time)
@@ -89,20 +86,18 @@ class WidgetProvider : AppWidgetProvider() {
     }
 
     override fun onReceive(context: Context?, intent: Intent?) {
-        L.thread("onReceive")
         if (intent!!.action != null) {
             if (intent.action == ACTION_REVERSE) {
                 val database = PathDatabase.getInstance(context!!)
                 val repository = PathRepository(database.pathDao())
-                val currentWidgetPath = runBlocking { repository.getWidgetPathNotLive() }
 
-                val startPoint = translateBoolean(currentWidgetPath.isStartPointUsedForWidget)
-                if (startPoint)
-                    currentWidgetPath.isStartPointUsedForWidget = 0
-                else
-                    currentWidgetPath.isStartPointUsedForWidget = 1
+                defaultScope.launch {
+                    val currentWidgetPath = repository.getWidgetPathNotLive()
+                    currentWidgetPath.isStartPointUsedForWidget =
+                        currentWidgetPath.isStartPointUsedForWidget.toggleBoolean()
 
-                GlobalScope.launch { repository.updatePath(currentWidgetPath) }
+                    repository.updatePath(currentWidgetPath)
+                }
 
                 intent.action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
             }
@@ -113,31 +108,29 @@ class WidgetProvider : AppWidgetProvider() {
 
     private fun parseColor(color: String) = Color.parseColor(color)
 
-    private fun fetchBusTimes(repository: PathRepository, path: Path) = runBlocking {
-        L.thread("fetchBusTimeWidget")
-        val useStartPoint = translateBoolean(path.isStartPointUsedForWidget)
+    private suspend fun fetchBusTimes(
+        repository: PathRepository,
+        path: Path,
+        context: Context
+    ): List<Time>? {
+        val useStartPoint = path.isStartPointUsedForWidget.translateBoolean()
         val busStop = if (useStartPoint) path.startingPoint else path.endingPoint
-
         val timesResponse: GinkoTimesResponse? = repository.getTimes(
             busStop,
             path.line.lineId,
             path.isStartPointNaturalWay
         )
 
-        if (timesResponse != null && timesResponse.isSuccessful) {
+        return if (timesResponse != null && timesResponse.isSuccessful) {
             if (timesResponse.data.isEmpty()) {
-                listOf(
-                    Time((1..10).shuffled().first().toString()),
-                    Time((11..20).shuffled().first().toString()),
-                    Time((21..35).shuffled().first().toString())
-                )
+                listOf(Time(context.resources.getString(R.string.noBuses)))
             } else {
                 val response: TimeWrapper? = timesResponse.data.first()
                 response?.timeList
             }
         } else {
-            L.e(FetchTimeException("An error occured while fetching times"))
-            listOf(Time("error"), Time("error"), Time("error"))
+            showToast(context, R.string.appError)
+            return listOf(Time(context.resources.getString(R.string.noBuses)))
         }
     }
 
@@ -148,9 +141,11 @@ class WidgetProvider : AppWidgetProvider() {
         path: Path,
         times: List<Time>?
     ) {
-        val destinationName = if (translateBoolean(path.isStartPointUsedForWidget))
+        val destinationName = if (path.isStartPointUsedForWidget.translateBoolean()) {
             path.startingPoint
-        else path.endingPoint
+        } else {
+            path.endingPoint
+        }
 
         with(views) {
             setTextColor(R.id.lineImage, parseColor("#${path.line.textColor}"))
@@ -174,7 +169,9 @@ class WidgetProvider : AppWidgetProvider() {
         }
     }
 
-    private fun translateBoolean(boolean: Int) = boolean == 1
+    // Helpers for numeric boolean
+    private fun Int.translateBoolean() = this == 1
+    private fun Int.toggleBoolean() = if (this == 1) 0 else 1
 
     private suspend fun showToast(context: Context, resId: Int) =
         withContext(Dispatchers.Main) {
