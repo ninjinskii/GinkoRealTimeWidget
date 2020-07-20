@@ -11,8 +11,6 @@ import com.louis.app.ginkorealtimewidget.model.Path
 import com.louis.app.ginkorealtimewidget.model.Time
 import com.louis.app.ginkorealtimewidget.network.GinkoLinesResponse
 import com.louis.app.ginkorealtimewidget.network.GinkoTimesResponse
-import com.louis.app.ginkorealtimewidget.util.L
-import com.louis.app.ginkorealtimewidget.util.NoSuchLineException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.Default
 import kotlinx.coroutines.Dispatchers.IO

@@ -10,7 +10,7 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:allowBackup="true">
+        android:allowBackup="false">
         <activity android:name=".ui.ActivityConfig" />
         <activity android:name=".ui.ActivityMain"
             android:windowSoftInputMode="adjustResize">

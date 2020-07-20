@@ -43,8 +43,7 @@ class ActivityMain : FragmentActivity() {
             if (line != null) {
                 binding.viewPager.adapter = BusPagerAdapter(this, FragmentAddPath())
                 binding.viewPager.currentItem = 1
-            }
-            else
+            } else
                 showSnackbar(resources.getString(R.string.CONFIG_lineError))
         })
 

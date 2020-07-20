@@ -1,6 +1,5 @@
 package com.louis.app.ginkorealtimewidget.ui
 
-import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
@@ -8,7 +7,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.louis.app.ginkorealtimewidget.R
 import com.louis.app.ginkorealtimewidget.databinding.FragmentSeePathsBinding

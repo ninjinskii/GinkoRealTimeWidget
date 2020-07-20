@@ -16,9 +16,6 @@ interface PathDao {
     @Delete
     suspend fun deletePath(path: Path)
 
-    /*@Query("SELECT * FROM path WHERE start_point_name=:busStopName")
-    suspend fun getPathForStartPoint(busStopName: String)*/
-
     @Query("SELECT * FROM path WHERE is_current_path = 0 AND is_soft_deleted = 0")
     fun getAllPathsButCurrentPath(): LiveData<List<Path>>
 

@@ -14,7 +14,6 @@ import com.louis.app.ginkorealtimewidget.model.Path
 import com.louis.app.ginkorealtimewidget.model.Time
 import com.louis.app.ginkorealtimewidget.model.TimeWrapper
 import com.louis.app.ginkorealtimewidget.network.GinkoTimesResponse
-import com.louis.app.ginkorealtimewidget.util.L
 import com.louis.app.ginkorealtimewidget.viewmodel.PathRepository
 import kotlinx.coroutines.*
 import java.text.SimpleDateFormat
