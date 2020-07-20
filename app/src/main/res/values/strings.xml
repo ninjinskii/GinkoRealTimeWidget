@@ -20,7 +20,7 @@
     <string name="toward">Vers %1$s ?</string>
     <string name="towardSimple">Vers %1$s.</string>
     <string name="tab1">Mes Trajets</string>
-    <string name="tab2">Mon Widget</string>
+    <string name="tab2">Nouveau Trajet</string>
 
     <string name="HINT_lineDirection">Ligne du bus/tram</string>
     <string name="HINT_busStop1">Arrêt de départ</string>

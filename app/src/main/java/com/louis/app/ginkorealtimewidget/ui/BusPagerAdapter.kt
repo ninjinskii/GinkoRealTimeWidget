@@ -9,8 +9,8 @@ class BusPagerAdapter(fragmentActivity: FragmentActivity, private val fragmentTo
 
     override fun createFragment(position: Int): Fragment {
         return when (position) {
-            0 -> fragmentToShow
-            else -> FragmentConfigWidget()
+            0 -> FragmentSeePaths()
+            else -> fragmentToShow
         }
     }
 

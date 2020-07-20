@@ -19,18 +19,11 @@ class FragmentSeePaths : Fragment(R.layout.fragment_see_paths),
     PathRecyclerAdapter.OnSetPathForWidgetListener {
     private val pathViewModel: PathViewModel by activityViewModels()
     private lateinit var binding: FragmentSeePathsBinding
-    private lateinit var listener: OnAddLineRequestListener
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         binding = FragmentSeePathsBinding.bind(view)
-
-        with(binding) {
-            buttonAdd.setOnClickListener {
-                listener.onAddLineResquest()
-            }
-        }
 
         initRecyclerView()
         observe()
@@ -43,17 +36,6 @@ class FragmentSeePaths : Fragment(R.layout.fragment_see_paths),
             layoutManager = LinearLayoutManager(activity)
             setHasFixedSize(true)
             adapter = pathAdapter
-            addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                    // Show button no matter what if RV can't be scrolled
-                    if (
-                        !recyclerView.canScrollVertically(1) &&
-                        !recyclerView.canScrollVertically(-1)
-                    ) binding.buttonAdd.extend()
-                    else if (dy > 0 && binding.buttonAdd.isExtended) binding.buttonAdd.shrink()
-                    else if (dy < 0 && !binding.buttonAdd.isExtended) binding.buttonAdd.extend()
-                }
-            })
         }
 
         pathViewModel.getUserPaths().observe(viewLifecycleOwner, Observer {
@@ -117,12 +99,6 @@ class FragmentSeePaths : Fragment(R.layout.fragment_see_paths),
         snackbar.show()
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-
-        listener = context as OnAddLineRequestListener
-    }
-
     override fun onResume() {
         pathViewModel.currentPath.value?.let {
             pathViewModel.fetchBusTimes(it)
@@ -142,9 +118,5 @@ class FragmentSeePaths : Fragment(R.layout.fragment_see_paths),
         showSnackbar(R.string.pathDeleted, R.string.cancel) {
             pathViewModel.toggleSoftDeletePath(path)
         }
-    }
-
-    interface OnAddLineRequestListener {
-        fun onAddLineResquest()
     }
 }

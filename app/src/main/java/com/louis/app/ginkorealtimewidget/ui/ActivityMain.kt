@@ -11,7 +11,7 @@ import com.louis.app.ginkorealtimewidget.R
 import com.louis.app.ginkorealtimewidget.databinding.ActivityMain2Binding
 import com.louis.app.ginkorealtimewidget.viewmodel.PathViewModel
 
-class ActivityMain : FragmentActivity(), FragmentSeePaths.OnAddLineRequestListener {
+class ActivityMain : FragmentActivity() {
 
     private val pathViewModel: PathViewModel by viewModels()
     lateinit var binding: ActivityMain2Binding
@@ -30,7 +30,7 @@ class ActivityMain : FragmentActivity(), FragmentSeePaths.OnAddLineRequestListen
         val tabTitles =
             arrayOf(resources.getString(R.string.tab1), resources.getString(R.string.tab2))
         val viewPager = binding.viewPager
-        viewPager.adapter = BusPagerAdapter(this, FragmentSeePaths())
+        viewPager.adapter = BusPagerAdapter(this, FragmentAddLine())
         viewPager.orientation = ViewPager2.ORIENTATION_HORIZONTAL
 
         TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
@@ -40,15 +40,17 @@ class ActivityMain : FragmentActivity(), FragmentSeePaths.OnAddLineRequestListen
 
     private fun observe() {
         pathViewModel.currentLine.observe(this, Observer { line ->
-            if (line != null)
+            if (line != null) {
                 binding.viewPager.adapter = BusPagerAdapter(this, FragmentAddPath())
+                binding.viewPager.currentItem = 1
+            }
             else
                 showSnackbar(resources.getString(R.string.CONFIG_lineError))
         })
 
         pathViewModel.currentPath.observe(this, Observer { path ->
             if (path != null)
-                binding.viewPager.adapter = BusPagerAdapter(this, FragmentSeePaths())
+                binding.viewPager.adapter = BusPagerAdapter(this, FragmentAddLine())
         })
     }
 
@@ -59,9 +61,5 @@ class ActivityMain : FragmentActivity(), FragmentSeePaths.OnAddLineRequestListen
     override fun onDestroy() {
         pathViewModel.purgeSoftDeletePaths()
         super.onDestroy()
-    }
-
-    override fun onAddLineResquest() {
-        binding.viewPager.adapter = BusPagerAdapter(this, FragmentAddLine())
     }
 }
