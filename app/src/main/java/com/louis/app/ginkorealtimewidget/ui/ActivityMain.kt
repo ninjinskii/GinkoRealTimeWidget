@@ -14,7 +14,7 @@ import com.louis.app.ginkorealtimewidget.viewmodel.PathViewModel
 class ActivityMain : FragmentActivity() {
 
     private val pathViewModel: PathViewModel by viewModels()
-    lateinit var binding: ActivityMain2Binding
+    private lateinit var binding: ActivityMain2Binding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

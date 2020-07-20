@@ -24,7 +24,6 @@ class FragmentAddPath : Fragment(R.layout.fragment_add_path) {
         updateUI()
         setListeners()
         observe()
-
     }
 
     private fun updateUI() {

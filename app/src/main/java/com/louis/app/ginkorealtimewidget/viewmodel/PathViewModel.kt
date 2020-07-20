@@ -134,8 +134,6 @@ class PathViewModel(application: Application) : AndroidViewModel(application) {
     fun purgeSoftDeletePaths() =
         defaultScope.launch { repository.purgeSoftDeletedPaths() }
 
-    fun getAllPaths() = repository.getAllPaths()
-
     override fun onCleared() {
         super.onCleared()
 

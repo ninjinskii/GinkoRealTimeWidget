@@ -45,8 +45,6 @@ class PathRepository(private val pathDao: PathDao) {
 
     suspend fun insertPath(path: Path) = pathDao.insertPath(path)
 
-    suspend fun deletePath(path: Path) = pathDao.deletePath(path)
-
     suspend fun updatePath(path: Path) = pathDao.updatePath(path)
 
     suspend fun setNewWidgetPath(path: Path) = pathDao.setNewWidgetPath(path)
@@ -56,8 +54,6 @@ class PathRepository(private val pathDao: PathDao) {
     fun getWidgetPath() = pathDao.getWidgetPath()
 
     suspend fun getWidgetPathNotLive() = pathDao.getWidgetPathNotLive()
-
-    suspend fun resetWidgetPath() = pathDao.resetWidgetPath()
 
     fun getAllPaths() = pathDao.getAllPaths()
 
