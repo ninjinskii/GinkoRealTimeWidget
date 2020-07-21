@@ -1,6 +1,7 @@
 package com.louis.app.ginkorealtimewidget.ui
 
 import android.os.Bundle
+import android.os.PersistableBundle
 import androidx.activity.viewModels
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
@@ -13,6 +14,10 @@ import com.louis.app.ginkorealtimewidget.viewmodel.PathViewModel
 
 class ActivityMain : FragmentActivity() {
 
+    companion object {
+        const val KEY_SAVED_STATE = "com.louis.app.ginkorealtimewidget.KEY_SAVED_STATE"
+    }
+
     private val pathViewModel: PathViewModel by viewModels()
     private lateinit var binding: ActivityMain2Binding
 
@@ -24,6 +29,10 @@ class ActivityMain : FragmentActivity() {
 
         setViewPager()
         observe()
+    }
+
+    private fun restoreState() {
+
     }
 
     private fun setViewPager() {
@@ -60,5 +69,17 @@ class ActivityMain : FragmentActivity() {
     override fun onDestroy() {
         pathViewModel.purgeSoftDeletePaths()
         super.onDestroy()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
+        super.onSaveInstanceState(outState, outPersistentState)
+        outState.putInt(KEY_SAVED_STATE, binding.viewPager.currentItem)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        
+        val tabPosition = savedInstanceState.getInt(KEY_SAVED_STATE)
+        binding.viewPager.currentItem = tabPosition
     }
 }
