@@ -12,6 +12,7 @@ import com.louis.app.ginkorealtimewidget.R
 import com.louis.app.ginkorealtimewidget.databinding.FragmentSeePathsBinding
 import com.louis.app.ginkorealtimewidget.model.Path
 import com.louis.app.ginkorealtimewidget.viewmodel.PathViewModel
+import java.lang.IndexOutOfBoundsException
 
 class FragmentSeePaths : Fragment(R.layout.fragment_see_paths),
     PathRecyclerAdapter.OnSetPathForWidgetListener {

@@ -114,7 +114,7 @@ class PathViewModel(application: Application) : AndroidViewModel(application) {
         }
 
         val label = getApplication<Application>().resources.getString(R.string.noBuses)
-        return rawName to listOf(Time(label))
+        return rawName to listOf(Time(label), Time(""), Time(""))
     }
 
     fun getUserPaths(): LiveData<List<Path>> = repository.getAllPathsButCurrentPath()
