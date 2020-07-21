@@ -34,7 +34,7 @@ class PathViewModel(application: Application) : AndroidViewModel(application) {
     val isFetchingData: LiveData<Boolean>
         get() = _isFetchingData
 
-    private val _currentLine = MutableLiveData<Line>()
+    private var _currentLine = MutableLiveData<Line>()
     val currentLine: LiveData<Line>
         get() = _currentLine
 
@@ -123,6 +123,7 @@ class PathViewModel(application: Application) : AndroidViewModel(application) {
 
     fun savePath(path: Path) {
         _currentPath.postValue(path)
+        _currentLine = MutableLiveData()    // Provisional fix
         defaultScope.launch { repository.insertPath(path) }
     }
 

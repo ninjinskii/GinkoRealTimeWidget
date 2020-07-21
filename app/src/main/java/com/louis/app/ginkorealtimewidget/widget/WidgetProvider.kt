@@ -180,4 +180,14 @@ class WidgetProvider : AppWidgetProvider() {
                 Toast.LENGTH_SHORT
             ).show()
         }
+
+    override fun onDisabled(context: Context?) {
+        super.onDisabled(context)
+        widgetJob.cancel()
+    }
+
+    override fun onDeleted(context: Context?, appWidgetIds: IntArray?) {
+        super.onDeleted(context, appWidgetIds)
+        widgetJob.cancel()
+    }
 }
