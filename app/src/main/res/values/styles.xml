@@ -7,6 +7,10 @@
         <item name="snackbarButtonStyle">@style/SnackbarButton</item>
     </style>
 
+    <style name="AppTheme.Launcher">
+        <item name="android:windowBackground">@drawable/launch_screen</item>
+    </style>
+
     <style name="SnackbarButton" parent="@style/Widget.MaterialComponents.Button.TextButton">
         <item name="android:backgroundTint">@android:color/transparent</item>
         <item name="android:textColor">@color/colorAccent</item>
