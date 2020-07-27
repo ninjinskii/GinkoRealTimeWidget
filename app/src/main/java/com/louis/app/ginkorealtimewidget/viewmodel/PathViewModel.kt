@@ -1,6 +1,7 @@
 package com.louis.app.ginkorealtimewidget.viewmodel
 
 import android.app.Application
+import android.view.View
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -11,12 +12,10 @@ import com.louis.app.ginkorealtimewidget.model.Path
 import com.louis.app.ginkorealtimewidget.model.Time
 import com.louis.app.ginkorealtimewidget.network.GinkoLinesResponse
 import com.louis.app.ginkorealtimewidget.network.GinkoTimesResponse
-import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.Default
 import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.channels.Channel
 
 class PathViewModel(application: Application) : AndroidViewModel(application) {
     private val repository: PathRepository
@@ -139,6 +138,5 @@ class PathViewModel(application: Application) : AndroidViewModel(application) {
         super.onCleared()
 
         _isFetchingData.postValue(false)
-        viewModelJob.cancel()
     }
 }

@@ -26,4 +26,5 @@
     <string name="noPathForWidget">Aucun trajet sélectionné pour le widget</string>
     <string name="pathSep"><![CDATA[<>]]></string>
     <string name="widget">Widget</string>
+    <string name="newPath">Nouveau trajet</string>
 </resources>

@@ -7,10 +7,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.louis.app.ginkorealtimewidget.R
 import com.louis.app.ginkorealtimewidget.databinding.FragmentSeePathsBinding
 import com.louis.app.ginkorealtimewidget.model.Path
+import com.louis.app.ginkorealtimewidget.util.L
 import com.louis.app.ginkorealtimewidget.viewmodel.PathViewModel
 import java.lang.IndexOutOfBoundsException
 
@@ -35,6 +37,17 @@ class FragmentSeePaths : Fragment(R.layout.fragment_see_paths),
             layoutManager = LinearLayoutManager(activity)
             setHasFixedSize(true)
             adapter = pathAdapter
+            addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    // Show button no matter what if RV can't be scrolled
+                    if (
+                        !recyclerView.canScrollVertically(1) &&
+                        !recyclerView.canScrollVertically(-1)
+                    ) binding.buttonAdd.extend()
+                    else if (dy > 0 && binding.buttonAdd.isExtended) binding.buttonAdd.shrink()
+                    else if (dy < 0 && !binding.buttonAdd.isExtended) binding.buttonAdd.extend()
+                }
+            })
         }
 
         pathViewModel.getUserPaths().observe(viewLifecycleOwner, Observer {
@@ -94,7 +107,7 @@ class FragmentSeePaths : Fragment(R.layout.fragment_see_paths),
 
     private fun showSnackbar(stringRes: Int, actionStringRes: Int?, action: (View) -> Unit = { }) {
         val snackbar = Snackbar.make(binding.coordinator, stringRes, Snackbar.LENGTH_LONG)
-        if (actionStringRes != null) snackbar.setAction(actionStringRes, action).duration = 8000
+        actionStringRes?.let { snackbar.setAction(it, action).duration = 8000 }
         snackbar.show()
     }
 
