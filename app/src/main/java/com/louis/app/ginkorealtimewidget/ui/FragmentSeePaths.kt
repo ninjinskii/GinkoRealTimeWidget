@@ -12,9 +12,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.louis.app.ginkorealtimewidget.R
 import com.louis.app.ginkorealtimewidget.databinding.FragmentSeePathsBinding
 import com.louis.app.ginkorealtimewidget.model.Path
-import com.louis.app.ginkorealtimewidget.util.L
 import com.louis.app.ginkorealtimewidget.viewmodel.PathViewModel
-import java.lang.IndexOutOfBoundsException
 
 class FragmentSeePaths : Fragment(R.layout.fragment_see_paths),
     PathRecyclerAdapter.OnSetPathForWidgetListener {
@@ -106,9 +104,9 @@ class FragmentSeePaths : Fragment(R.layout.fragment_see_paths),
     }
 
     private fun showSnackbar(stringRes: Int, actionStringRes: Int?, action: (View) -> Unit = { }) {
-        val snackbar = Snackbar.make(binding.coordinator, stringRes, Snackbar.LENGTH_LONG)
-        actionStringRes?.let { snackbar.setAction(it, action).duration = 8000 }
-        snackbar.show()
+        Snackbar.make(binding.coordinator, stringRes, Snackbar.LENGTH_LONG).apply {
+            actionStringRes?.let { setAction(it, action).duration = 8000 }
+        }.show()
     }
 
     override fun onResume() {
