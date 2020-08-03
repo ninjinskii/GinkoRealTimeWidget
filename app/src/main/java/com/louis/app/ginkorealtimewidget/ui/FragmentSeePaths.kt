@@ -93,9 +93,9 @@ class FragmentSeePaths : Fragment(R.layout.fragment_see_paths),
     }
 
     private fun showSnackbar(stringRes: Int, actionStringRes: Int?, action: (View) -> Unit = { }) {
-        val snackbar = Snackbar.make(binding.coordinator, stringRes, Snackbar.LENGTH_LONG)
-        if (actionStringRes != null) snackbar.setAction(actionStringRes, action).duration = 8000
-        snackbar.show()
+        Snackbar.make(binding.coordinator, stringRes, Snackbar.LENGTH_LONG).apply {
+            if (actionStringRes != null) setAction(actionStringRes, action).duration = 8000
+        }.show()
     }
 
     override fun onResume() {
