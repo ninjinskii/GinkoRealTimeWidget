@@ -3,6 +3,7 @@ package com.louis.app.ginkorealtimewidget.ui
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
+import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -12,6 +13,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.louis.app.ginkorealtimewidget.R
 import com.louis.app.ginkorealtimewidget.databinding.FragmentSeePathsBinding
 import com.louis.app.ginkorealtimewidget.model.Path
+import com.louis.app.ginkorealtimewidget.util.showSnackbar
 import com.louis.app.ginkorealtimewidget.viewmodel.PathViewModel
 
 class FragmentSeePaths : Fragment(R.layout.fragment_see_paths),
@@ -86,12 +88,13 @@ class FragmentSeePaths : Fragment(R.layout.fragment_see_paths),
             }
         })
 
-        pathViewModel.errorChannel.observe(viewLifecycleOwner, Observer { showSnackbar(it, null) })
+        //pathViewModel.errorChannel.observe(viewLifecycleOwner, Observer { showSnackbar(it, null) })
     }
 
     private fun updateUI(path: Path) {
         val backColor = Color.parseColor("#${path.line.backgroundColor}")
         val textColor = Color.parseColor("#${path.line.textColor}")
+
         with(binding) {
             currentPathLayout.visibility = View.VISIBLE
             noCurrentPathLayout.visibility = View.GONE
@@ -103,14 +106,8 @@ class FragmentSeePaths : Fragment(R.layout.fragment_see_paths),
         }
     }
 
-    private fun showSnackbar(stringRes: Int, actionStringRes: Int?, action: (View) -> Unit = { }) {
-        Snackbar.make(binding.coordinator, stringRes, Snackbar.LENGTH_LONG).apply {
-            actionStringRes?.let { setAction(it, action).duration = 8000 }
-        }.show()
-    }
-
     override fun onResume() {
-        pathViewModel.currentPath.value?.let {
+        pathViewModel.getUserWidgetPath().value?.let {
             pathViewModel.fetchBusTimes(it)
         }
 
@@ -125,7 +122,7 @@ class FragmentSeePaths : Fragment(R.layout.fragment_see_paths),
 
     override fun onDeleteWidgetPath(path: Path) {
         pathViewModel.toggleSoftDeletePath(path)
-        showSnackbar(R.string.pathDeleted, R.string.cancel) {
+        binding.root.showSnackbar(R.string.pathDeleted, R.string.cancel) {
             pathViewModel.toggleSoftDeletePath(path)
         }
     }

@@ -7,10 +7,10 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.louis.app.ginkorealtimewidget.R
 import com.louis.app.ginkorealtimewidget.databinding.FragmentAddLineBinding
-import com.louis.app.ginkorealtimewidget.viewmodel.PathViewModel
+import com.louis.app.ginkorealtimewidget.viewmodel.AddPathViewModel
 
 class FragmentAddLine : Fragment(R.layout.fragment_add_line) {
-    private val pathViewModel: PathViewModel by activityViewModels()
+    private val addPathViewModel: AddPathViewModel by activityViewModels()
     private lateinit var binding: FragmentAddLineBinding
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -22,18 +22,15 @@ class FragmentAddLine : Fragment(R.layout.fragment_add_line) {
     }
 
     private fun observe() {
-        pathViewModel.isFetchingData.observe(viewLifecycleOwner, Observer {
-            if (it)
-                binding.progressBar.visibility = View.VISIBLE
-            else
-                binding.progressBar.visibility = View.GONE
+        addPathViewModel.isFetchingData.observe(viewLifecycleOwner, Observer {
+           binding.progressBar.visibility = if (it) View.VISIBLE else View.GONE
         })
     }
 
     private fun setListener() {
         binding.buttonNext.setOnClickListener {
             val requestedLine = binding.inputLine.text.toString()
-            pathViewModel.fetchLine(requestedLine)
+            addPathViewModel.fetchLine(requestedLine)
         }
     }
 }

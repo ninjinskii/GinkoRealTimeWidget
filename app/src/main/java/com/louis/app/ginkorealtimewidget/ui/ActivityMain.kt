@@ -23,30 +23,6 @@ class ActivityMain : FragmentActivity() {
         binding = ActivityMain2Binding.inflate(layoutInflater)
         val rootView = binding.root
         setContentView(rootView)
-
-        observe()
-    }
-
-    private fun restoreState() {
-
-    }
-
-    private fun observe() {
-        pathViewModel.currentLine.observe(this, Observer { line ->
-            if (line != null) {
-
-            } else
-                showSnackbar(resources.getString(R.string.CONFIG_lineError))
-        })
-
-        pathViewModel.currentPath.observe(this, Observer { path ->
-            //if (path != null)
-
-        })
-    }
-
-    private fun showSnackbar(message: String) {
-        Snackbar.make(binding.coordinator, message, Snackbar.LENGTH_LONG).show()
     }
 
     override fun onDestroy() {

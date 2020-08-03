@@ -1,21 +1,18 @@
 package com.louis.app.ginkorealtimewidget.viewmodel
 
 import android.app.Application
-import android.view.View
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.louis.app.ginkorealtimewidget.R
 import com.louis.app.ginkorealtimewidget.database.PathDatabase
 import com.louis.app.ginkorealtimewidget.model.Line
 import com.louis.app.ginkorealtimewidget.model.Path
 import com.louis.app.ginkorealtimewidget.model.Time
-import com.louis.app.ginkorealtimewidget.network.GinkoLinesResponse
 import com.louis.app.ginkorealtimewidget.network.GinkoTimesResponse
-import kotlinx.coroutines.*
-import kotlinx.coroutines.Dispatchers.Default
 import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.launch
 
 class PathViewModel(application: Application) : AndroidViewModel(application) {
     private val repository: PathRepository
@@ -26,53 +23,18 @@ class PathViewModel(application: Application) : AndroidViewModel(application) {
         repository = PathRepository(pathDao)
     }
 
-    private var viewModelJob = Job()
-    private val defaultScope = CoroutineScope(IO + viewModelJob)
-
     private val _isFetchingData = MutableLiveData<Boolean>()
     val isFetchingData: LiveData<Boolean>
         get() = _isFetchingData
-
-    private var _currentLine = MutableLiveData<Line>()
-    val currentLine: LiveData<Line>
-        get() = _currentLine
 
     private val _currentTimes = MutableLiveData<Pair<List<Time>, List<Time>>>()
     val currentTimes: LiveData<Pair<List<Time>, List<Time>>>
         get() = _currentTimes
 
-    private val _currentPath = MutableLiveData<Path>()
-    val currentPath: LiveData<Path>
-        get() = _currentPath
-
-    private val _errorChannel = MutableLiveData<Int>()
-    val errorChannel: LiveData<Int>
-        get() = _errorChannel
-
-    fun fetchLine(requestedLineName: String) {
-        _isFetchingData.postValue(true)
-
-        defaultScope.launch {
-            val linesResponse: GinkoLinesResponse? = repository.getLines()
-            if (linesResponse?.isSuccessful == true) {
-                val lines = linesResponse.lines
-                val line = filterLines(lines, requestedLineName)
-                line.let { _currentLine.postValue(it) }
-            } else {
-                _errorChannel.postValue(R.string.appError)
-            }
-
-            _isFetchingData.postValue(false)
-        }
-    }
-
-    private suspend fun filterLines(lines: List<Line>, lineName: String) =
-        withContext(Default) { lines.find { it.publicName == lineName } }
-
     fun fetchBusTimes(path: Path) {
         _isFetchingData.postValue(true)
 
-        defaultScope.launch {
+        viewModelScope.launch(IO) {
             val startResponse = repository.getTimes(
                 path.startingPoint,
                 path.line.lineId,
@@ -120,19 +82,14 @@ class PathViewModel(application: Application) : AndroidViewModel(application) {
 
     fun getUserWidgetPath(): LiveData<Path> = repository.getWidgetPath()
 
-    fun savePath(path: Path) {
-        _currentPath.postValue(path)
-        _currentLine = MutableLiveData()    // Provisional fix
-        defaultScope.launch { repository.insertPath(path) }
-    }
-
-    fun setNewWidgetPath(path: Path) = defaultScope.launch { repository.setNewWidgetPath(path) }
+    fun setNewWidgetPath(path: Path) =
+        viewModelScope.launch(IO) { repository.setNewWidgetPath(path) }
 
     fun toggleSoftDeletePath(path: Path) =
-        defaultScope.launch { repository.toggleSoftDeletePath(path) }
+        viewModelScope.launch(IO) { repository.toggleSoftDeletePath(path) }
 
     fun purgeSoftDeletePaths() =
-        defaultScope.launch { repository.purgeSoftDeletedPaths() }
+        viewModelScope.launch(IO) { repository.purgeSoftDeletedPaths() }
 
     override fun onCleared() {
         super.onCleared()
