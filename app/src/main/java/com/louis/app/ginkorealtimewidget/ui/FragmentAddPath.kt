@@ -6,14 +6,14 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
-import com.google.android.material.snackbar.Snackbar
 import com.louis.app.ginkorealtimewidget.R
 import com.louis.app.ginkorealtimewidget.databinding.FragmentAddPathBinding
 import com.louis.app.ginkorealtimewidget.model.Path
-import com.louis.app.ginkorealtimewidget.viewmodel.PathViewModel
+import com.louis.app.ginkorealtimewidget.util.showSnackbar
+import com.louis.app.ginkorealtimewidget.viewmodel.AddPathViewModel
 
 class FragmentAddPath : Fragment(R.layout.fragment_add_path) {
-    private val pathViewModel: PathViewModel by activityViewModels()
+    private val addPathViewModel: AddPathViewModel by activityViewModels()
     private lateinit var binding: FragmentAddPathBinding
     private var naturalWay: Boolean? = null
 
@@ -27,7 +27,7 @@ class FragmentAddPath : Fragment(R.layout.fragment_add_path) {
     }
 
     private fun updateUI() {
-        val line = pathViewModel.currentLine.value
+        val line = addPathViewModel.currentLine.value?.peekContent()
         with(binding.requestedLine) {
             text = line?.publicName
             setTextColor(Color.parseColor("#${line?.textColor}"))
@@ -45,31 +45,18 @@ class FragmentAddPath : Fragment(R.layout.fragment_add_path) {
         binding.buttonNext.setOnClickListener {
             val startingPoint = binding.inputBusStop1.text.toString()
             val endingPoint = binding.inputBusStop2.text.toString()
-            val line = pathViewModel.currentLine.value
+            val line = addPathViewModel.currentLine.value?.getContentIfNotHandled()
             val isNaturalWay = binding.chooseEndpoint.isChecked
 
-            if (line != null) {
-                pathViewModel.savePath(Path(startingPoint, endingPoint, line, isNaturalWay))
-            } else {
-                showSnackbar(resources.getString(R.string.appError))
-            }
+            if (line != null)
+                addPathViewModel.savePath(Path(startingPoint, endingPoint, line, isNaturalWay))
+            else binding.coordinator.showSnackbar(R.string.appError)
         }
     }
 
     private fun observe() {
-//        pathViewModel.currentTimes.observe(viewLifecycleOwner, Observer {
-//            Toast.makeText(activity, "New times! : ${it?.get(0)}, ${it?.get(0)}", Toast.LENGTH_LONG).show()
-//        })
-
-        pathViewModel.isFetchingData.observe(viewLifecycleOwner, Observer {
-            if (it)
-                binding.progressBar.visibility = View.VISIBLE
-            else
-                binding.progressBar.visibility = View.GONE
+        addPathViewModel.isFetchingData.observe(viewLifecycleOwner, Observer {
+            binding.progressBar.visibility = if (it) View.VISIBLE else View.GONE
         })
-    }
-
-    private fun showSnackbar(message: String) {
-        Snackbar.make(binding.coordinator, message, Snackbar.LENGTH_LONG).show()
     }
 }

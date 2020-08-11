@@ -7,7 +7,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.louis.app.ginkorealtimewidget.R
 import com.louis.app.ginkorealtimewidget.database.PathDatabase
-import com.louis.app.ginkorealtimewidget.model.Line
 import com.louis.app.ginkorealtimewidget.model.Path
 import com.louis.app.ginkorealtimewidget.model.Time
 import com.louis.app.ginkorealtimewidget.network.GinkoTimesResponse
@@ -23,17 +22,11 @@ class PathViewModel(application: Application) : AndroidViewModel(application) {
         repository = PathRepository(pathDao)
     }
 
-    private val _isFetchingData = MutableLiveData<Boolean>()
-    val isFetchingData: LiveData<Boolean>
-        get() = _isFetchingData
-
     private val _currentTimes = MutableLiveData<Pair<List<Time>, List<Time>>>()
     val currentTimes: LiveData<Pair<List<Time>, List<Time>>>
         get() = _currentTimes
 
     fun fetchBusTimes(path: Path) {
-        _isFetchingData.postValue(true)
-
         viewModelScope.launch(IO) {
             val startResponse = repository.getTimes(
                 path.startingPoint,
@@ -59,7 +52,6 @@ class PathViewModel(application: Application) : AndroidViewModel(application) {
             }
 
             _currentTimes.postValue(startTimes.second to endTimes.second)
-            _isFetchingData.postValue(false)
         }
     }
 
@@ -90,10 +82,4 @@ class PathViewModel(application: Application) : AndroidViewModel(application) {
 
     fun purgeSoftDeletePaths() =
         viewModelScope.launch(IO) { repository.purgeSoftDeletedPaths() }
-
-    override fun onCleared() {
-        super.onCleared()
-
-        _isFetchingData.postValue(false)
-    }
 }

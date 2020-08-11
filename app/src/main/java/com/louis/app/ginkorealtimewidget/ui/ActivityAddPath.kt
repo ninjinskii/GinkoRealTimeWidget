@@ -3,12 +3,12 @@ package com.louis.app.ginkorealtimewidget.ui
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.louis.app.ginkorealtimewidget.R
 import com.louis.app.ginkorealtimewidget.databinding.ActivityAddPathBinding
 import com.louis.app.ginkorealtimewidget.util.showSnackbar
 import com.louis.app.ginkorealtimewidget.viewmodel.AddPathViewModel
-import com.louis.app.ginkorealtimewidget.viewmodel.PathViewModel
 
 class ActivityAddPath : AppCompatActivity() {
 
@@ -22,25 +22,22 @@ class ActivityAddPath : AppCompatActivity() {
         setContentView(rootView)
 
         observe()
-
-//        if (savedInstanceState == null) {
-//            supportFragmentManager.beginTransaction()
-//                .replace(R.id.container, FragmentAddLine())
-//                .commitNow()
-//        }
     }
 
     private fun observe() {
         addPathViewModel.currentLine.observe(this, Observer { line ->
-            if (line != null) {
-
-            } else
-                binding.root.showSnackbar(R.string.CONFIG_lineError)
+            if (!line.hasBeenHandled) replaceFragment(FragmentAddPath())
         })
 
         addPathViewModel.currentPath.observe(this, Observer { path ->
-            //if (path != null)
-            // TODO: avoid livedata used to manage fragment state in addPathViewModel
+            if (!path.hasBeenHandled) finish()
         })
+    }
+
+    private fun replaceFragment(fragment: Fragment) {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragmentContainer, fragment)
+            .addToBackStack(null)
+            .commit()
     }
 }

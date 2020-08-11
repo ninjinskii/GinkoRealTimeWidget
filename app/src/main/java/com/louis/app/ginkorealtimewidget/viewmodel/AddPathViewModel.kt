@@ -9,11 +9,12 @@ import com.louis.app.ginkorealtimewidget.R
 import com.louis.app.ginkorealtimewidget.database.PathDatabase
 import com.louis.app.ginkorealtimewidget.model.Line
 import com.louis.app.ginkorealtimewidget.model.Path
-import com.louis.app.ginkorealtimewidget.model.Time
 import com.louis.app.ginkorealtimewidget.network.GinkoLinesResponse
-import com.louis.app.ginkorealtimewidget.network.GinkoTimesResponse
-import kotlinx.coroutines.*
+import com.louis.app.ginkorealtimewidget.util.Event
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class AddPathViewModel(application: Application) : AndroidViewModel(application) {
     private val repository: PathRepository
@@ -28,20 +29,16 @@ class AddPathViewModel(application: Application) : AndroidViewModel(application)
     val isFetchingData: LiveData<Boolean>
         get() = _isFetchingData
 
-    private var _currentLine = MutableLiveData<Line>()
-    val currentLine: LiveData<Line>
+    private var _currentLine = MutableLiveData<Event<Line>>()
+    val currentLine: LiveData<Event<Line>>
         get() = _currentLine
 
-    private val _currentTimes = MutableLiveData<Pair<List<Time>, List<Time>>>()
-    val currentTimes: LiveData<Pair<List<Time>, List<Time>>>
-        get() = _currentTimes
-
-    private val _currentPath = MutableLiveData<Path>()
-    val currentPath: LiveData<Path>
+    private val _currentPath = MutableLiveData<Event<Path>>()
+    val currentPath: LiveData<Event<Path>>
         get() = _currentPath
 
-    private val _errorChannel = MutableLiveData<Int>()
-    val errorChannel: LiveData<Int>
+    private val _errorChannel = MutableLiveData<Event<Int>>()
+    val errorChannel: LiveData<Event<Int>>
         get() = _errorChannel
 
     fun fetchLine(requestedLineName: String) {
@@ -52,9 +49,11 @@ class AddPathViewModel(application: Application) : AndroidViewModel(application)
             if (linesResponse?.isSuccessful == true) {
                 val lines = linesResponse.lines
                 val line = filterLines(lines, requestedLineName)
-                line.let { _currentLine.postValue(it) }
+
+                if (line != null) _currentLine.postValue(Event(line))
+                else _errorChannel.postValue(Event(R.string.CONFIG_lineError))
             } else {
-                _errorChannel.postValue(R.string.appError)
+                _errorChannel.postValue(Event(R.string.appError))
             }
 
             _isFetchingData.postValue(false)
@@ -65,8 +64,8 @@ class AddPathViewModel(application: Application) : AndroidViewModel(application)
         withContext(Dispatchers.Default) { lines.find { it.publicName == lineName } }
 
     fun savePath(path: Path) {
-        _currentPath.postValue(path)
-        _currentLine = MutableLiveData()    // Provisional fix
+        _currentPath.postValue(Event(path))
+        //_currentLine = MutableLiveData()    // Provisional fix
         viewModelScope.launch { repository.insertPath(path) }
     }
 

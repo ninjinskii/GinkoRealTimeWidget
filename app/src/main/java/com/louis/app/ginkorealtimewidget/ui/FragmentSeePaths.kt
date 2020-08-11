@@ -1,15 +1,14 @@
 package com.louis.app.ginkorealtimewidget.ui
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
-import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.snackbar.Snackbar
 import com.louis.app.ginkorealtimewidget.R
 import com.louis.app.ginkorealtimewidget.databinding.FragmentSeePathsBinding
 import com.louis.app.ginkorealtimewidget.model.Path
@@ -27,6 +26,7 @@ class FragmentSeePaths : Fragment(R.layout.fragment_see_paths),
         binding = FragmentSeePathsBinding.bind(view)
 
         initRecyclerView()
+        setListeners()
         observe()
     }
 
@@ -53,6 +53,13 @@ class FragmentSeePaths : Fragment(R.layout.fragment_see_paths),
         pathViewModel.getUserPaths().observe(viewLifecycleOwner, Observer {
             pathAdapter.submitList(it)
         })
+    }
+
+    private fun setListeners() {
+        binding.buttonAdd.setOnClickListener {
+            val intent = Intent(activity, ActivityAddPath::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun observe() {
@@ -87,8 +94,6 @@ class FragmentSeePaths : Fragment(R.layout.fragment_see_paths),
 
             }
         })
-
-        //pathViewModel.errorChannel.observe(viewLifecycleOwner, Observer { showSnackbar(it, null) })
     }
 
     private fun updateUI(path: Path) {
