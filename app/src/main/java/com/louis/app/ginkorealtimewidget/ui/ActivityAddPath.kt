@@ -1,13 +1,12 @@
 package com.louis.app.ginkorealtimewidget.ui
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.louis.app.ginkorealtimewidget.R
 import com.louis.app.ginkorealtimewidget.databinding.ActivityAddPathBinding
-import com.louis.app.ginkorealtimewidget.util.showSnackbar
 import com.louis.app.ginkorealtimewidget.viewmodel.AddPathViewModel
 
 class ActivityAddPath : AppCompatActivity() {
@@ -21,7 +20,16 @@ class ActivityAddPath : AppCompatActivity() {
         val rootView = binding.root
         setContentView(rootView)
 
+        setupToolbar()
         observe()
+    }
+
+    private fun setupToolbar() {
+        binding.toolbarLayout.toolbar.apply { setSupportActionBar(this) }
+        supportActionBar?.run {
+            setDisplayHomeAsUpEnabled(true)
+            setDisplayShowHomeEnabled(true)
+        }
     }
 
     private fun observe() {
@@ -39,5 +47,10 @@ class ActivityAddPath : AppCompatActivity() {
             .replace(R.id.fragmentContainer, fragment)
             .addToBackStack(null)
             .commit()
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return super.onSupportNavigateUp()
     }
 }
