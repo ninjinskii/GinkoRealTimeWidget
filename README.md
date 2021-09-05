@@ -1,6 +1,8 @@
 # GinkoRealTimeWidget
-Project migration to Kotlin
+A simple app that helps you take the bus for your regular trips.
 
-# Features
-- Register your bus stops to know when the bus you are looking for is coming
-- A widget is available to get this information right in the launcher screen
+## Features
+⋅⋅* Register as much trips as you want
+⋅⋅* Select one trip to be shown in the home screen widget
+⋅⋅* Update bus times from your home screen
+⋅⋅* Reverse directions to get back home
