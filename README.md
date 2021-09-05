@@ -8,3 +8,10 @@ A simple app that helps you take the bus for your regular trips.
 - Select one trip to be shown in the home screen widget
 - Update bus times from your home screen
 - Reverse directions to get back home
+
+## Screenshots
+<p float="left">
+  <img src="/path.png" width="100" />
+  <img src="/assets/widget.png" width="100" />
+</p>
+
