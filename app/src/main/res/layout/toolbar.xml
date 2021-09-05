@@ -4,14 +4,15 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        app:elevation="12dp"
-        app:title="@string/app_name"
-        app:titleTextColor="@color/colorLightText">
+  <com.google.android.material.appbar.MaterialToolbar
+      android:id="@+id/toolbar"
+      android:layout_width="match_parent"
+      android:layout_height="?attr/actionBarSize"
+      android:background="?attr/colorPrimary"
+      app:elevation="12dp"
+      app:navigationIconTint="@color/colorLightText"
+      app:title="@string/app_name"
+      app:titleTextColor="@color/colorLightText">
 
-    </androidx.appcompat.widget.Toolbar>
+  </com.google.android.material.appbar.MaterialToolbar>
 </com.google.android.material.appbar.AppBarLayout>

@@ -9,52 +9,52 @@
     android:foreground="?android:attr/selectableItemBackground"
     app:cardElevation="4dp">
 
-    <RelativeLayout
+  <RelativeLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layout_margin="8dp">
+
+    <TextView
+        android:id="@+id/requestedLine"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="12dp"
+        android:gravity="center"
+        android:textSize="22sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/path"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="8dp">
+        android:layout_height="50dp"
+        android:layout_alignParentEnd="true"
+        android:layout_toEndOf="@id/requestedLine"
+        android:ellipsize="marquee"
+        android:gravity="center_vertical"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:singleLine="true"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textSize="20sp" />
 
-        <TextView
-            android:id="@+id/requestedLine"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginEnd="12dp"
-            android:gravity="center"
-            android:textSize="22sp"
-            android:textStyle="bold" />
+    <TextView
+        android:id="@+id/towards"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/path"
+        android:layout_marginTop="-12dp"
+        android:layout_toEndOf="@+id/requestedLine"
+        android:textStyle="italic" />
 
-        <TextView
-            android:id="@+id/path"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_alignParentEnd="true"
-            android:layout_toEndOf="@id/requestedLine"
-            android:singleLine="true"
-            android:ellipsize="marquee"
-            android:marqueeRepeatLimit="marquee_forever"
-            android:gravity="center_vertical"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:textSize="20sp" />
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/updateCurrentPath"
+        style="@style/Widget.MaterialComponents.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/path"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/widget" />
 
-        <TextView
-            android:id="@+id/towards"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/path"
-            android:layout_marginTop="-12dp"
-            android:layout_toEndOf="@+id/requestedLine"
-            android:textStyle="italic" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/updateCurrentPath"
-            style="@style/Widget.MaterialComponents.Button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/path"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="8dp"
-            android:text="@string/widget" />
-
-    </RelativeLayout>
+  </RelativeLayout>
 </androidx.cardview.widget.CardView>

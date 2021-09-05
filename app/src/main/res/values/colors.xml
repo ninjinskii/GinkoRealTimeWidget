@@ -5,5 +5,5 @@
     <color name="colorPrimaryLight">#CCFFFF</color>
     <color name="colorOnAccent">#FFFFFF</color>
     <color name="colorAccent">#CC0066</color>
-    <color name="colorLightText">#82FFFFFF</color>
+    <color name="colorLightText">#FEFEFE</color>
 </resources>

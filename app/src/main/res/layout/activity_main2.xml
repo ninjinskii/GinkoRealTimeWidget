@@ -6,16 +6,14 @@
     android:background="@color/colorPrimaryLight"
     android:orientation="vertical">
 
-    <include
-        android:id="@+id/toolbarLayout"
-        layout="@layout/toolbar" />
+  <include
+      android:id="@+id/toolbarLayout"
+      layout="@layout/toolbar" />
 
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/fragmentContainer"
-        android:name="com.louis.app.ginkorealtimewidget.ui.FragmentSeePaths"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-    </androidx.fragment.app.FragmentContainerView>
+  <androidx.fragment.app.FragmentContainerView
+      android:id="@+id/fragmentContainer"
+      android:name="com.louis.app.ginkorealtimewidget.ui.FragmentSeePaths"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
