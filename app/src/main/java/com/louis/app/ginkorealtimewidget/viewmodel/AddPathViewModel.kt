@@ -65,7 +65,6 @@ class AddPathViewModel(application: Application) : AndroidViewModel(application)
 
     fun savePath(path: Path) {
         _currentPath.postValue(Event(path))
-        //_currentLine = MutableLiveData()    // Provisional fix
         viewModelScope.launch { repository.insertPath(path) }
     }
 

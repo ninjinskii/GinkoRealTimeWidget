@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import com.louis.app.ginkorealtimewidget.R
 import com.louis.app.ginkorealtimewidget.databinding.FragmentAddLineBinding
 import com.louis.app.ginkorealtimewidget.util.showSnackbar
@@ -23,15 +22,15 @@ class FragmentAddLine : Fragment(R.layout.fragment_add_line) {
     }
 
     private fun observe() {
-        addPathViewModel.isFetchingData.observe(viewLifecycleOwner, Observer {
+        addPathViewModel.isFetchingData.observe(viewLifecycleOwner) {
             binding.progressBar.visibility = if (it) View.VISIBLE else View.GONE
-        })
+        }
 
-        addPathViewModel.errorChannel.observe(viewLifecycleOwner, Observer { error ->
+        addPathViewModel.errorChannel.observe(viewLifecycleOwner) { error ->
             error.getContentIfNotHandled()?.let {
                 binding.coordinator.showSnackbar(it)
             }
-        })
+        }
     }
 
     private fun setListener() {

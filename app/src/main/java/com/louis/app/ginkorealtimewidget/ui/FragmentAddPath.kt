@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import com.louis.app.ginkorealtimewidget.R
 import com.louis.app.ginkorealtimewidget.databinding.FragmentAddPathBinding
 import com.louis.app.ginkorealtimewidget.model.Path
@@ -55,8 +54,8 @@ class FragmentAddPath : Fragment(R.layout.fragment_add_path) {
     }
 
     private fun observe() {
-        addPathViewModel.isFetchingData.observe(viewLifecycleOwner, Observer {
+        addPathViewModel.isFetchingData.observe(viewLifecycleOwner) {
             binding.progressBar.visibility = if (it) View.VISIBLE else View.GONE
-        })
+        }
     }
 }

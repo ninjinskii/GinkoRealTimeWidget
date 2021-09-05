@@ -4,15 +4,13 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import com.louis.app.ginkorealtimewidget.R
 import com.louis.app.ginkorealtimewidget.databinding.ActivityAddPathBinding
 import com.louis.app.ginkorealtimewidget.viewmodel.AddPathViewModel
 
 class ActivityAddPath : AppCompatActivity() {
-
-    private val addPathViewModel: AddPathViewModel by viewModels()
     private lateinit var binding: ActivityAddPathBinding
+    private val addPathViewModel: AddPathViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,18 +26,21 @@ class ActivityAddPath : AppCompatActivity() {
         binding.toolbarLayout.toolbar.apply { setSupportActionBar(this) }
         supportActionBar?.run {
             setDisplayHomeAsUpEnabled(true)
-            setDisplayShowHomeEnabled(true)
         }
     }
 
     private fun observe() {
-        addPathViewModel.currentLine.observe(this, Observer { line ->
-            if (!line.hasBeenHandled) replaceFragment(FragmentAddPath())
-        })
+        addPathViewModel.currentLine.observe(this) { line ->
+            line.getContentIfNotHandled()?.let {
+                replaceFragment(FragmentAddPath())
+            }
+        }
 
-        addPathViewModel.currentPath.observe(this, Observer { path ->
-            if (!path.hasBeenHandled) finish()
-        })
+        addPathViewModel.currentPath.observe(this) { path ->
+            path.getContentIfNotHandled()?.let {
+                finish()
+            }
+        }
     }
 
     private fun replaceFragment(fragment: Fragment) {

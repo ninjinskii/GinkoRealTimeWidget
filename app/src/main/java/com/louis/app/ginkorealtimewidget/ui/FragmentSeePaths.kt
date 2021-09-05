@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.louis.app.ginkorealtimewidget.R
@@ -17,8 +16,8 @@ import com.louis.app.ginkorealtimewidget.viewmodel.PathViewModel
 
 class FragmentSeePaths : Fragment(R.layout.fragment_see_paths),
     PathRecyclerAdapter.OnSetPathForWidgetListener {
-    private val pathViewModel: PathViewModel by activityViewModels()
     private lateinit var binding: FragmentSeePathsBinding
+    private val pathViewModel: PathViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -50,9 +49,9 @@ class FragmentSeePaths : Fragment(R.layout.fragment_see_paths),
             })
         }
 
-        pathViewModel.getUserPaths().observe(viewLifecycleOwner, Observer {
+        pathViewModel.getUserPaths().observe(viewLifecycleOwner) {
             pathAdapter.submitList(it)
-        })
+        }
     }
 
     private fun setListeners() {
@@ -63,7 +62,7 @@ class FragmentSeePaths : Fragment(R.layout.fragment_see_paths),
     }
 
     private fun observe() {
-        pathViewModel.getUserWidgetPath().observe(viewLifecycleOwner, Observer {
+        pathViewModel.getUserWidgetPath().observe(viewLifecycleOwner) {
             if (it != null) {
                 pathViewModel.fetchBusTimes(it)
                 updateUI(it)
@@ -73,9 +72,9 @@ class FragmentSeePaths : Fragment(R.layout.fragment_see_paths),
                     currentPathLayout.visibility = View.GONE
                 }
             }
-        })
+        }
 
-        pathViewModel.currentTimes.observe(viewLifecycleOwner, Observer {
+        pathViewModel.currentTimes.observe(viewLifecycleOwner) {
             with(binding) {
                 val textViewsFirst = listOf(times1, times2, times3)
                 val textViewsSecond = listOf(times4, times5, times6)
@@ -91,9 +90,8 @@ class FragmentSeePaths : Fragment(R.layout.fragment_see_paths),
 
                     binding.progressBar.visibility = View.GONE
                 }
-
             }
-        })
+        }
     }
 
     private fun updateUI(path: Path) {
