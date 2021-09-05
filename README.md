@@ -11,7 +11,7 @@ A simple app that helps you take the bus for your regular trips.
 
 ## Screenshots
 <p float="left">
-  <img src="/path.png" width="100" />
-  <img src="/assets/widget.png" width="100" />
+  <img src="/assets/path.png" width="300" />
+  <img src="/assets/widget.png" width="300" />
 </p>
 
