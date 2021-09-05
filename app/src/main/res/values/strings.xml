@@ -18,10 +18,10 @@
 
     <string name="HINT_lineDirection">Ligne du bus/tram</string>
     <string name="HELPER_lineDirection">Ex: L3</string>
+    <string name="HELPER_busStop1">Ex: Isenbart</string>
     <string name="HINT_busStop1">Arrêt de départ</string>
-    <string name="HELPER_busStop1">Ex: Crous université</string>
     <string name="HINT_busStop2">Arrêt de retour</string>
-    <string name="HELPER_busStop2">Ex: Isenbart</string>
+    <string name="HELPER_busStop2">Ex: Crous université</string>
 
     <string name="CONFIG_lineError">Aucune ligne trouvée pour la recherche</string>
     <string name="noBuses">Aucun bus</string>

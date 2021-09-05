@@ -45,6 +45,10 @@ class ActivityAddPath : AppCompatActivity() {
 
     private fun replaceFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction()
+            .setCustomAnimations(
+                android.R.anim.fade_in,
+                android.R.anim.fade_out
+            )
             .replace(R.id.fragmentContainer, fragment)
             .addToBackStack(null)
             .commit()
