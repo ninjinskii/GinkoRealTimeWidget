@@ -96,6 +96,7 @@ class WidgetProvider : AppWidgetProvider() {
                         currentWidgetPath.isStartPointUsedForWidget.toggleBoolean()
 
                     repository.updatePath(currentWidgetPath)
+                    fetchBusTimes(repository, currentWidgetPath, context)
                 }
 
                 intent.action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
