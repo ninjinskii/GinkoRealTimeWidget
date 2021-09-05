@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import com.google.android.material.transition.MaterialFade
 import com.louis.app.ginkorealtimewidget.R
 import com.louis.app.ginkorealtimewidget.databinding.FragmentAddPathBinding
 import com.louis.app.ginkorealtimewidget.model.Path
@@ -15,6 +16,13 @@ class FragmentAddPath : Fragment(R.layout.fragment_add_path) {
     private val addPathViewModel: AddPathViewModel by activityViewModels()
     private lateinit var binding: FragmentAddPathBinding
     private var naturalWay: Boolean? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        exitTransition = MaterialFade()
+        enterTransition = MaterialFade()
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
