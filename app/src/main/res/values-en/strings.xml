@@ -1,0 +1,34 @@
+<resources>
+    <string name="app_name">Ginko Real Time Widget</string>
+
+    <string name="lineDirection">Bus/train line</string>
+    <string name="lineImage">Line</string>
+    <string name="appError">An error occurred</string>
+    <string name="refreshed">Times updated</string>
+    <string name="pathDeleted">Trip deleted</string>
+    <string name="refresh">Update times</string>
+    <string name="reverse">Reverse directions</string>
+    <string name="validate">Submit</string>
+    <string name="cancel">Cancel</string>
+    <string name="refreshTime">Last updated at %1$s</string>
+    <string name="toward">Towards %1$s ?</string>
+    <string name="towardSimple">Towards %1$s.</string>
+    <string name="tab1">My trips</string>
+    <string name="tab2">New trip</string>
+
+    <string name="HINT_lineDirection">Bus/train line</string>
+    <string name="HELPER_lineDirection">Ex: L3</string>
+    <string name="HELPER_busStop1">Ex: Isenbart</string>
+    <string name="HINT_busStop1">Starting stop</string>
+    <string name="HINT_busStop2">Returning stop</string>
+    <string name="HELPER_busStop2">Ex: Crous université</string>
+
+    <string name="CONFIG_lineError">No line founded</string>
+    <string name="noBuses">No buses</string>
+
+    <string name="noPathForWidget">No trips selected for the widget</string>
+    <string name="pathSep"><![CDATA[<>]]></string>
+    <string name="widget">Widget</string>
+    <string name="newPath">New trip</string>
+</resources>
+
