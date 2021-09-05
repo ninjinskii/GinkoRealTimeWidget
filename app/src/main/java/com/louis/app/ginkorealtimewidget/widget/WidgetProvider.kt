@@ -16,6 +16,7 @@ import com.louis.app.ginkorealtimewidget.model.TimeWrapper
 import com.louis.app.ginkorealtimewidget.network.GinkoTimesResponse
 import com.louis.app.ginkorealtimewidget.viewmodel.PathRepository
 import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers.IO
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -26,7 +27,7 @@ class WidgetProvider : AppWidgetProvider() {
     }
 
     private var widgetJob = Job()
-    private val defaultScope = CoroutineScope(Dispatchers.IO + widgetJob)
+    private val defaultScope = CoroutineScope(IO + widgetJob)
 
     override fun onUpdate(
         context: Context?,
@@ -85,25 +86,25 @@ class WidgetProvider : AppWidgetProvider() {
     }
 
     override fun onReceive(context: Context?, intent: Intent?) {
-        if (intent!!.action != null) {
-            if (intent.action == ACTION_REVERSE) {
-                val database = PathDatabase.getInstance(context!!)
-                val repository = PathRepository(database.pathDao())
+        defaultScope.launch(IO) {
+            if (intent?.action != null) {
+                if (intent.action == ACTION_REVERSE) {
+                    val database = PathDatabase.getInstance(context!!)
+                    val repository = PathRepository(database.pathDao())
 
-                defaultScope.launch {
                     val currentWidgetPath = repository.getWidgetPathNotLive()
                     currentWidgetPath.isStartPointUsedForWidget =
                         currentWidgetPath.isStartPointUsedForWidget.toggleBoolean()
 
                     repository.updatePath(currentWidgetPath)
-                    fetchBusTimes(repository, currentWidgetPath, context)
+
                 }
 
                 intent.action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
             }
-        }
 
-        super.onReceive(context, intent)
+            super.onReceive(context, intent)
+        }
     }
 
     private fun parseColor(color: String) = Color.parseColor(color)
@@ -125,8 +126,8 @@ class WidgetProvider : AppWidgetProvider() {
             if (timesResponse.data.isEmpty()) {
                 listOf(Time(context.resources.getString(R.string.noBuses)))
             } else {
-                val response: TimeWrapper? = timesResponse.data.first()
-                response?.timeList
+                val response: TimeWrapper = timesResponse.data.first()
+                response.timeList
             }
         } else {
             showToast(context, R.string.appError)
