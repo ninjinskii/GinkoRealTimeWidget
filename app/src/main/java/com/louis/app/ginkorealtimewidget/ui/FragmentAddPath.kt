@@ -44,7 +44,7 @@ class FragmentAddPath : Fragment(R.layout.fragment_add_path) {
         binding.buttonNext.setOnClickListener {
             val startingPoint = binding.inputBusStop1.text.toString()
             val endingPoint = binding.inputBusStop2.text.toString()
-            val line = addPathViewModel.currentLine.value?.getContentIfNotHandled()
+            val line = addPathViewModel.currentLine.value?.peekContent()
             val isNaturalWay = binding.chooseEndpoint.isChecked
 
             if (line != null)
