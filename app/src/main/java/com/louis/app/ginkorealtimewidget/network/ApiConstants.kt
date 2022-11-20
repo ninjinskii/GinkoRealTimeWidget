@@ -8,5 +8,6 @@ class ApiConstants {
         const val ARG_BUS_STOP_NAME = "listeNoms"
         const val ARG_LINES_ID = "listeIdLignes"
         const val ARG_LINE_WAY = "listeSensAller"
+        const val ARG_API_KEY = "apiKey="
     }
 }
